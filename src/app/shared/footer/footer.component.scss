@@ -1,4 +1,4 @@
-@use 'sass:color';
+@use "sass:color";
 
 // Variables
 $primary-color: #e50914;
@@ -10,7 +10,7 @@ $border-color: rgba(255, 255, 255, 0.15);
 .footer {
   background-color: $dark-bg;
   color: $secondary-text;
-  padding: 4rem 0 2rem 0;
+  padding: 4rem 0 2rem 4rem;
   border-top: 1px solid $border-color;
 }
 
@@ -131,7 +131,7 @@ $border-color: rgba(255, 255, 255, 0.15);
 
 .schedule-content {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.9fr 1fr;
   gap: 4rem;
 }
 
@@ -207,7 +207,7 @@ $border-color: rgba(255, 255, 255, 0.15);
   background-color: transparent;
   padding: 2rem 0 0 0;
   border-top: 1px solid $border-color;
-  text-align: left;
+  text-align: center;
 
   p {
     color: $secondary-text;
@@ -216,7 +216,6 @@ $border-color: rgba(255, 255, 255, 0.15);
     line-height: 1.4;
   }
 
-
   .eco-mention {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
@@ -224,22 +223,21 @@ $border-color: rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.75rem;
     display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     flex-wrap: wrap;
-
   }
   a {
-      color: $primary-color;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.2s ease;
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
 
-      &:hover {
-        text-decoration: underline;
-        color: color.adjust($primary-color, $lightness: 10%);
-      }
+    &:hover {
+      text-decoration: underline;
+      color: color.adjust($primary-color, $lightness: 10%);
     }
+  }
 }
 
 /* Responsive - Tablette */

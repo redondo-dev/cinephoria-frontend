@@ -215,6 +215,31 @@ $border-color: rgba(255, 255, 255, 0.15);
     margin: 1rem 0;
     line-height: 1.4;
   }
+
+
+  .eco-mention {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(229, 9, 20, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+  }
+  a {
+      color: $primary-color;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+
+      &:hover {
+        text-decoration: underline;
+        color: color.adjust($primary-color, $lightness: 10%);
+      }
+    }
 }
 
 /* Responsive - Tablette */

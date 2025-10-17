@@ -1,0 +1,62 @@
+<div class="home-container">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Bienvenue sur Cinephoria</h1>
+      <p class="hero-subtitle">Découvrez et réservez vos films préférés</p>
+      <div class="hero-buttons">
+        <button (click)="navigate('/films')" class="btn btn-primary">
+          Découvrir les films
+        </button>
+        <button (click)="navigate('/reservation')" class="btn btn-secondary">
+          Faire une réservation
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="section-container">
+      <h2 class="section-title">Pourquoi choisir Cinephoria ?</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Sélection Premium</h3>
+          <p>Accédez aux derniers films et sorties en avant-première</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Réservation Facile</h3>
+          <p>Réservez vos places en quelques clics simplement</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Tarifs Avantageux</h3>
+          <p>Profitez de nos réductions et offres spéciales</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎬</div>
+          <h3>Expérience Unique</h3>
+          <p>Vivez l'expérience cinéma en toute sérénité</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="cta-content">
+      <h2>Prêt à explorer le cinéma ?</h2>
+      <p>Commencez dès maintenant et découvrez nos films à l'affiche</p>
+      <button (click)="navigate('/films')" class="btn btn-primary btn-large">
+        Parcourir les films
+      </button>
+    </div>
+  </section>
+</div>

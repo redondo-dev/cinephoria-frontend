@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   recentFilms: Film[] = [];
@@ -18,10 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private filmService: FilmService,
-    private router: Router
-  ) {}
+  constructor(private filmService: FilmService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadRecentFilms();
@@ -34,7 +31,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.filmService.getRecentFilms()
+    this.filmService
+      .getRecentFilms()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (films: Film[]) => {
@@ -43,9 +41,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Erreur lors du chargement des films récents:', error);
-          this.errorMessage = 'Impossible de charger les films récents. Veuillez réessayer.';
+          this.errorMessage =
+            'Impossible de charger les films récents. Veuillez réessayer.';
           this.isLoading = false;
-        }
+        },
       });
   }
 
@@ -75,18 +74,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   /**
    * Afficher les genres sous forme de string
    */
-  getGenresText(genres: string[]): string {
-    return genres.join(', ');
+  getGenresText(genres: string[] | undefined): string {
+  if (!genres || !Array.isArray(genres)) {
+    return 'Genre non disponible';
   }
+  return genres.join(', ');
+}
 
   /**
    * Obtenir la classe CSS pour la notation (étoile)
    */
-  getRatingClass(rating: number): string {
-    if (rating >= 8) return 'rating-high';
-    if (rating >= 6) return 'rating-medium';
-    return 'rating-low';
-  }
+getRatingClass(note: number | undefined): string {
+  if (!note) return 'rating-average';
+  if (note >= 8) return 'rating-excellent';
+  if (note >= 6) return 'rating-good';
+  return 'rating-average';
+}
 
   ngOnDestroy(): void {
     this.destroy$.next();

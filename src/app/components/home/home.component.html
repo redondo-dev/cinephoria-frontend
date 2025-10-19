@@ -1,14 +1,12 @@
-
-
-      <!-- Features Section -->
+<!-- Features Section -->
 <div class="home-container">
   <!-- Section Hero -->
   <section class="hero-section">
     <div class="hero-content">
-       <h1 class="hero-title">Bienvenue sur Cinephoria</h1>
+      <h1 class="hero-title">Bienvenue sur Cinephoria</h1>
       <p class="hero-subtitle">Découvrez et réservez vos films préférés</p>
       <p>Découvrez les derniers films ajoutés cette semaine</p>
-       <div class="hero-buttons">
+      <div class="hero-buttons">
         <button [routerLink]="['/films']" class="btn btn-primary">
           Découvrir les films
         </button>
@@ -49,15 +47,10 @@
 
       <article *ngFor="let film of recentFilms" class="film-card" [routerLink]="['/films', film.id]">
         <div class="film-poster">
-          <img
-            [src]="film.affiche"
-            [alt]="film.titre"
-            class="poster-image"
-            loading="lazy"
-          />
+          <img [src]="film.affiche" [alt]="film.titre" class="poster-image" loading="lazy" />
           <div class="film-overlay">
-            <span class="rating" [ngClass]="getRatingClass(film.note)">
-              ★ {{ film.note.toFixed(1) }}
+            <span class="rating" [ngClass]="getRatingClass(film.note_moyenne)">
+              ★ {{ film.note_moyenne?.toFixed(1) || 'N/A' }}
             </span>
           </div>
         </div>
@@ -66,7 +59,7 @@
           <h3 class="film-title">{{ film.titre }}</h3>
 
           <div class="film-meta">
-            <span class="genre">{{ getGenresText(film.genre) }}</span>
+            <span class="genre">{{ film.genre?.join(', ') || 'Genre non disponible' }}</span>
             <span class="duration">⏱ {{ formatDuration(film.duree) }}</span>
           </div>
 
@@ -89,7 +82,7 @@
     </div>
   </section>
 
-   <!-- Features Section -->
+  <!-- Features Section -->
   <section class="features">
     <div class="section-container">
       <h2 class="section-title">Pourquoi choisir Cinephoria ?</h2>
@@ -122,5 +115,3 @@
     </div>
   </section>
 </div>
-
-

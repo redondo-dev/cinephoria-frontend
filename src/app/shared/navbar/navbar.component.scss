@@ -180,7 +180,20 @@
 .btn-login:hover::before {
   left: 0;
 }
+.btn-logout {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
 
+.btn-logout:hover {
+  background-color: #c0392b;
+}
 /* Responsive - Mobile */
 @media (max-width: 768px) {
   .menu-toggle {
@@ -270,3 +283,4 @@
     font-size: 1rem;
   }
 }
+

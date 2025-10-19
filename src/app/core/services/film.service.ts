@@ -1,3 +1,5 @@
+import { environmentProd } from './../../../environments/.environment';
+import { environment } from './../../../environments/.environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,8 +8,8 @@ export interface Film {
   id: string;
   titre: string;
   affiche: string;
-  note: number;
-  genre: string[];
+  note_moyenne?: number;
+  genre?: string[];
   duree: number;
   dateAjout: string;
   description: string;
@@ -15,10 +17,10 @@ export interface Film {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FilmService {
-  private apiUrl = '/api/films';
+  private apiUrl = `${environment.apiUrl}/api/films`;
 
   constructor(private http: HttpClient) {}
 
@@ -33,7 +35,11 @@ export class FilmService {
   /**
    * Récupère tous les films avec pagination et filtres
    */
-  getAllFilms(page = 1, limit = 20, filters?: any): Observable<{ films: Film[]; total: number }> {
+  getAllFilms(
+    page = 1,
+    limit = 20,
+    filters?: any
+  ): Observable<{ films: Film[]; total: number }> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
@@ -45,7 +51,9 @@ export class FilmService {
       params = params.set('search', filters.search);
     }
 
-    return this.http.get<{ films: Film[]; total: number }>(this.apiUrl, { params });
+    return this.http.get<{ films: Film[]; total: number }>(this.apiUrl, {
+      params,
+    });
   }
 
   /**

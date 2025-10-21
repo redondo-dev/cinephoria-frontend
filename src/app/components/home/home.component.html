@@ -1,0 +1,117 @@
+<!-- Features Section -->
+<div class="home-container">
+  <!-- Section Hero -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Bienvenue sur Cinephoria</h1>
+      <p class="hero-subtitle">Découvrez et réservez vos films préférés</p>
+      <p>Découvrez les derniers films ajoutés cette semaine</p>
+      <div class="hero-buttons">
+        <button [routerLink]="['/films']" class="btn btn-primary">
+          Découvrir les films
+        </button>
+        <button [routerLink]="['/reservation']" class="btn btn-secondary">
+          Faire une réservation
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Section Films Récents -->
+  <section class="recent-films-section">
+    <div class="section-header">
+      <h2>Nouveautés du dernier mercredi</h2>
+      <p class="subtitle">Les films les plus fraîchement ajoutés</p>
+
+    </div>
+
+    <!-- État de chargement -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Chargement des films...</p>
+    </div>
+
+    <!-- État d'erreur -->
+    <div *ngIf="errorMessage && !isLoading" class="error-state">
+      <p class="error-message">{{ errorMessage }}</p>
+      <button (click)="loadRecentFilms()" class="btn btn-primary">Réessayer</button>
+    </div>
+
+    <!-- Grille de films -->
+    <div *ngIf="!isLoading && !errorMessage" class="films-grid">
+      <div *ngIf="recentFilms.length === 0" class="no-films">
+        <p>Aucun film ajouté cette semaine pour le moment.</p>
+      </div>
+
+      <article *ngFor="let film of recentFilms" class="film-card" [routerLink]="['/films', film.id]">
+        <div class="film-poster">
+          <img [src]="film.affiche" [alt]="film.titre" class="poster-image" loading="lazy" />
+          <div class="film-overlay">
+            <span class="rating" [ngClass]="getRatingClass(film.note_moyenne)">
+              ★ {{ film.note_moyenne?.toFixed(1) || 'N/A' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="film-info">
+          <h3 class="film-title">{{ film.titre }}</h3>
+
+          <div class="film-meta">
+            <span class="genre">{{ film.genre?.join(', ') || 'Genre non disponible' }}</span>
+            <span class="duration">⏱ {{ formatDuration(film.duree) }}</span>
+          </div>
+
+          <!-- <p class="film-year">{{ film.année }}</p> -->
+
+          <div class="film-description">
+            {{ film.description | slice:0:80 }}...
+          </div>
+
+          <button class="btn-details">Voir les détails</button>
+        </div>
+      </article>
+    </div>
+
+    <!-- Bouton Voir tous les films -->
+    <div class="action-section">
+      <button (click)="navigateToAllFilms()" class="btn btn-primary btn-large">
+        Voir tous les films
+      </button>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="section-container">
+      <h2 class="section-title">Pourquoi choisir Cinephoria ?</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Sélection Premium</h3>
+          <p>Accédez aux derniers films et sorties en avant-première</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Réservation Facile</h3>
+          <p>Réservez vos places en quelques clics simplement</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Tarifs Avantageux</h3>
+          <p>Profitez de nos réductions et offres spéciales</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎬</div>
+          <h3>Expérience Unique</h3>
+          <p>Vivez l'expérience cinéma en toute sérénité</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

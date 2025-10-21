@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   menuOpen = false;

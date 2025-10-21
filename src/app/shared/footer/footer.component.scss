@@ -1,0 +1,375 @@
+@use "sass:color";
+
+// Variables
+$primary-color: #e50914;
+$dark-bg: #141414;
+$light-text: #ffffff;
+$secondary-text: #808080;
+$border-color: rgba(255, 255, 255, 0.15);
+
+.footer {
+  background-color: $dark-bg;
+  color: $secondary-text;
+  padding: 4rem 0 2rem 4rem;
+  border-top: 1px solid $border-color;
+}
+
+.section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Footer Main Content */
+.footer-container {
+  padding: 0 0 3rem 0;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.footer-logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: $primary-color;
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: -2px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .logo-icon {
+    font-size: 2rem;
+  }
+}
+
+/* Footer Columns */
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+}
+
+.footer-column {
+  h3 {
+    color: $secondary-text;
+    font-size: 0.813rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    opacity: 0.7;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  a {
+    color: $secondary-text;
+    text-decoration: none;
+    font-size: 0.813rem;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $light-text;
+    }
+  }
+}
+
+.contact-list {
+  li {
+    color: $secondary-text;
+    font-size: 0.813rem;
+    line-height: 1.4;
+  }
+
+  a {
+    color: $secondary-text;
+    font-weight: 400;
+
+    &:hover {
+      color: $light-text;
+    }
+  }
+}
+
+/* Footer Top - Language Selector */
+.footer-top {
+  display: none;
+}
+
+.language-selector {
+  display: none;
+}
+
+/* Schedule Section */
+.footer-schedule {
+  background-color: transparent;
+  padding: 2.5rem 0;
+  border-top: 1px solid $border-color;
+}
+
+.schedule-content {
+  display: grid;
+  grid-template-columns: 1.9fr 1fr;
+  gap: 4rem;
+}
+
+.schedule-column {
+  h4 {
+    color: $secondary-text;
+    font-size: 0.813rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    opacity: 0.7;
+  }
+}
+
+.schedule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 2rem;
+
+  li {
+    color: $secondary-text;
+    font-size: 0.813rem;
+    line-height: 1.4;
+
+    span {
+      color: $secondary-text;
+      font-weight: 400;
+      display: inline;
+      margin-right: 0.4rem;
+    }
+  }
+}
+
+.social-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: 1.5px solid $secondary-text;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 1rem;
+  color: $secondary-text;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: $light-text;
+    color: $light-text;
+  }
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  background-color: transparent;
+  padding: 2rem 0 0 0;
+  border-top: 1px solid $border-color;
+  text-align: center;
+
+  p {
+    color: $secondary-text;
+    font-size: 0.813rem;
+    margin: 1rem 0;
+    line-height: 1.4;
+  }
+
+  .eco-mention {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(229, 9, 20, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+      text-decoration: underline;
+      color: color.adjust($primary-color, $lightness: 10%);
+    }
+  }
+}
+
+/* Responsive - Tablette */
+@media (max-width: 992px) {
+  .footer {
+    padding: 3rem 0 2rem 0;
+  }
+
+  .footer-columns {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  .schedule-content {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .section-container {
+    padding: 0 2rem;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 0 1.5rem 0;
+  }
+
+  .section-container {
+    padding: 0 1.5rem;
+  }
+
+  .footer-container {
+    padding: 0 0 2rem 0;
+  }
+
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-column h3 {
+    font-size: 0.75rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .footer-column a {
+    font-size: 0.75rem;
+  }
+
+  .footer-logo {
+    font-size: 1.5rem;
+
+    .logo-icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  .schedule-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .schedule-list {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .schedule-column h4 {
+    font-size: 0.75rem;
+  }
+
+  .footer-schedule {
+    padding: 1.5rem 0;
+  }
+
+  .social-links {
+    justify-content: flex-start;
+  }
+
+  .footer-bottom {
+    padding: 1.5rem 0 0 0;
+  }
+
+  .footer-bottom p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 0 1rem 0;
+  }
+
+  .section-container {
+    padding: 0 1rem;
+  }
+
+  .footer-logo {
+    font-size: 1.3rem;
+
+    .logo-icon {
+      font-size: 1.3rem;
+    }
+  }
+
+  .footer-columns {
+    gap: 1.5rem;
+  }
+
+  .footer-column h3 {
+    font-size: 0.7rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-column a,
+  .contact-list li {
+    font-size: 0.7rem;
+  }
+
+  .schedule-list li {
+    font-size: 0.7rem;
+  }
+
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.7rem;
+  }
+}

@@ -30,7 +30,17 @@ export const routes: Routes = [
         (m) => m.FilmDetailComponentComponent
       ),
   },
-// Routes d'authentification
+  // Routes d'authentification
+
+  {
+    path: 'auth/register',
+    loadComponent: () =>
+      import('./components/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+    title: 'Créer un compte - Cinephoria',
+  },
+
   {
     path: 'auth/login',
     loadComponent: () =>

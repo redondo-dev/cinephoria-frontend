@@ -1,40 +1,44 @@
-import { Component } from '@angular/core';
+// src/app/components/navbar/navbar.component.ts
+import { Component, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+  styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+  private authService = inject(AuthService);
+
+  // Observables pour l'authentification
+  isAuthenticated$ = this.authService.isAuthenticated$;
+  currentUser$ = this.authService.currentUser$;
+
   menuOpen = false;
-  isAuthenticated$!: Observable<boolean>;
+  scrolled = false;
+
+  // Détecte le scroll pour changer le style de la navbar
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.scrolled = window.scrollY > 50;
+  }
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
-  }
-  constructor(public authService: AuthService) {
-    this.isAuthenticated$ = this.authService.isAuthenticated$;
   }
 
   closeMenu(): void {
     this.menuOpen = false;
   }
 
+  // Méthode de déconnexion avec confirmation
   logout(): void {
-    this.authService.logout();
+    if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+      this.authService.logout();
+    }
   }
-
-  // searchFilm(event: any): void {
-  //   const searchTerm = event.target.value;
-  //   if (searchTerm.trim()) {
-  //     console.log('Recherche:', searchTerm);
-  //     // À implémenter: naviguer vers la page films avec filtre
-  //   }
-  // }
 }

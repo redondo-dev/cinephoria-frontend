@@ -9,6 +9,20 @@ export interface AuthResponse {
   user: { id: string; email: string; name: string };
 }
 
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+}
+
+export interface RegisterResponse {
+  success: boolean;
+  message: string;
+  userId?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -32,7 +46,13 @@ export class AuthService {
     const user = localStorage.getItem('current_user');
     return user ? JSON.parse(user) : null;
   }
-
+  // Nouvelle méthode pour l'inscription
+  register(data: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(
+      `${this.apiUrl}/auth/register`,
+      data
+    );
+  }
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/auth/login`, { email, password })

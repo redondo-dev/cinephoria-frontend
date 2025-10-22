@@ -9,12 +9,14 @@
   --error-color: #ff6b6b;
   --success-color: #4caf50;
   --transition: all 0.3s ease;
+  --navbar-height: 70px; /* Variable pour la hauteur de navbar */
 }
 
 /* ===== LAYOUT PRINCIPAL ===== */
 .login-container {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--navbar-height)); /* Ajusté pour la navbar */
+  margin-top: var(--navbar-height); /* Espace pour la navbar fixe */
   background-color: var(--secondary-color);
 }
 
@@ -48,8 +50,13 @@
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .logo h1 {
@@ -373,8 +380,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ===== DIVIDER ===== */
@@ -388,7 +399,7 @@
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background-color: var(--border-color);
@@ -446,6 +457,7 @@
 @media (max-width: 1024px) {
   .login-container {
     flex-direction: column;
+    margin-top: var(--navbar-height);
   }
 
   .login-branding {
@@ -477,6 +489,14 @@
 }
 
 @media (max-width: 768px) {
+  :host {
+    --navbar-height: 60px; /* Navbar plus petite sur mobile */
+  }
+
+  .login-container {
+    margin-top: var(--navbar-height);
+  }
+
   .login-branding {
     padding: 20px;
   }

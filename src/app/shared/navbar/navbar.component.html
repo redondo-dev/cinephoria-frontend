@@ -32,9 +32,14 @@
           Se connecter</a>
 
         <!-- Si connecté -->
-        <button *ngIf="isAuthenticated$ | async" (click)="logout(); closeMenu()" class="btn-logout">
-          Se déconnecter
-        </button>
+        <div *ngIf="isAuthenticated$ | async" class="user-section">
+          <span class="user-name" *ngIf="currentUser$ | async as user">
+            Bonjour, {{ user.name }}
+          </span>
+          <button (click)="logout(); closeMenu()" class="btn-logout">
+            Se déconnecter
+          </button>
+        </div>
       </div>
     </div>
   </div>

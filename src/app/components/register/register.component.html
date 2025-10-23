@@ -1,0 +1,155 @@
+<!-- src/app/features/auth/register/register.component.html -->
+<div class="register-container">
+  <div class="register-card">
+    <h1>Créer un compte</h1>
+    <p class="subtitle">Rejoignez Cinephoria dès maintenant</p>
+
+    <!-- Messages de succès et d'erreur -->
+    @if (successMessage) {
+    <div class="alert alert-success">
+      {{ successMessage }}
+    </div>
+    }
+
+    @if (errorMessage) {
+    <div class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Adresse email *</label>
+        <input type="email" id="email" formControlName="email" placeholder="exemple@email.com"
+          [class.invalid]="email?.invalid && email?.touched" />
+        @if (email?.invalid && email?.touched) {
+        <div class="error-message">
+          @if (email?.errors?.['required']) {
+          <span>L'email est requis</span>
+          }
+          @if (email?.errors?.['email']) {
+          <span>Email invalide</span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Prénom -->
+      <div class="form-group">
+        <label for="firstName">Prénom *</label>
+        <input type="text" id="firstName" formControlName="firstName" placeholder="Votre prénom"
+          [class.invalid]="firstName?.invalid && firstName?.touched" />
+        @if (firstName?.invalid && firstName?.touched) {
+        <div class="error-message">
+          @if (firstName?.errors?.['required']) {
+          <span>Le prénom est requis</span>
+          }
+          @if (firstName?.errors?.['minlength']) {
+          <span>Le prénom doit contenir au moins 2 caractères</span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Nom -->
+      <div class="form-group">
+        <label for="lastName">Nom *</label>
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Votre nom"
+          [class.invalid]="lastName?.invalid && lastName?.touched" />
+        @if (lastName?.invalid && lastName?.touched) {
+        <div class="error-message">
+          @if (lastName?.errors?.['required']) {
+          <span>Le nom est requis</span>
+          }
+          @if (lastName?.errors?.['minlength']) {
+          <span>Le nom doit contenir au moins 2 caractères</span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Nom d'utilisateur -->
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur *</label>
+        <input type="text" id="username" formControlName="username" placeholder="Choisissez un nom d'utilisateur"
+          [class.invalid]="username?.invalid && username?.touched" />
+        @if (username?.invalid && username?.touched) {
+        <div class="error-message">
+          @if (username?.errors?.['required']) {
+          <span>Le nom d'utilisateur est requis</span>
+          }
+          @if (username?.errors?.['minlength']) {
+          <span>Le nom d'utilisateur doit contenir au moins 3 caractères</span>
+          }
+          @if (username?.errors?.['maxlength']) {
+          <span>Le nom d'utilisateur ne peut pas dépasser 20 caractères</span>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Mot de passe -->
+      <div class="form-group">
+        <label for="password">Mot de passe *</label>
+        <input type="password" id="password" formControlName="password" placeholder="••••••••"
+          [class.invalid]="password?.invalid && password?.touched" />
+        @if (password?.invalid && password?.touched) {
+        <div class="error-message">
+          @if (password?.errors?.['required']) {
+          <span>Le mot de passe est requis</span>
+          }
+          @if (password?.errors?.['passwordStrength']) {
+          <div class="password-requirements">
+            <p>Le mot de passe doit contenir :</p>
+            <ul>
+              <li [class.valid]="password?.errors?.['passwordStrength'].hasMinLength">
+                Au moins 8 caractères
+              </li>
+              <li [class.valid]="password?.errors?.['passwordStrength'].hasUpperCase">
+                Au moins une majuscule
+              </li>
+              <li [class.valid]="password?.errors?.['passwordStrength'].hasLowerCase">
+                Au moins une minuscule
+              </li>
+              <li [class.valid]="password?.errors?.['passwordStrength'].hasNumber">
+                Au moins un chiffre
+              </li>
+              <li [class.valid]="password?.errors?.['passwordStrength'].hasSpecialChar">
+                Au moins un caractère spécial (!&#64;#$%^&*...)
+              </li>
+            </ul>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Confirmation mot de passe -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le mot de passe *</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="••••••••"
+          [class.invalid]="(confirmPassword?.invalid || registerForm.errors?.['passwordMismatch']) && confirmPassword?.touched" />
+        @if (confirmPassword?.touched && registerForm.errors?.['passwordMismatch']) {
+        <div class="error-message">
+          <span>Les mots de passe ne correspondent pas</span>
+        </div>
+        }
+      </div>
+
+      <!-- Bouton de soumission -->
+      <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+        @if (isSubmitting) {
+        <span>Création en cours...</span>
+        } @else {
+        <span>Créer mon compte</span>
+        }
+      </button>
+    </form>
+
+    <div class="login-link">
+      <p>Vous avez déjà un compte ? <a routerLink="/auth/login">Se connecter</a></p>
+    </div>
+  </div>
+</div>

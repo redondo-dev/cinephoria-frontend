@@ -1,5 +1,5 @@
 // environment.prod.ts
-export const environmentProd = {
+export const environment = {
   production: true,
-  apiUrl: 'https://cinephoria-9y7y.onrender.com/api',
+  apiUrl: 'https://cinephoria-9y7y.onrender.com',
 };

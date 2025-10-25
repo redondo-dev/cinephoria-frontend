@@ -4,6 +4,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+
+
+export interface User {
+  name: string;
+  email: string;
+}
+
 export interface AuthResponse {
   token: string;
   user: { id: string; email: string; name: string };

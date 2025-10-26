@@ -1,0 +1,179 @@
+<div class="reservation-container">
+  <div class="header">
+    <h1>Réservation de séance</h1>
+    <button class="btn-reset" (click)="reset()" *ngIf="selectedCinema">
+      <i class="icon-reset"></i> Recommencer
+    </button>
+  </div>
+
+  <!-- Contrôle du nombre de personnes -->
+  <div class="nombre-personnes-section" *ngIf="selectedCinema">
+    <label for="nbPersonnes">Nombre de personnes :</label>
+    <input
+      type="number"
+      id="nbPersonnes"
+      [(ngModel)]="nombrePersonnes"
+      (change)="onNombrePersonnesChange()"
+      min="1"
+      max="10"
+      class="input-personnes">
+  </div>
+
+  <!-- ========== ÉTAPE 1 : SÉLECTION DU CINÉMA ========== -->
+  <section class="section-cinemas">
+    <div class="section-header">
+      <h2>
+        <span class="step-number">1</span>
+        Choisissez votre cinéma
+      </h2>
+      <span class="badge-success" *ngIf="selectedCinema">✓ Sélectionné</span>
+    </div>
+
+    <div class="loading" *ngIf="loadingCinemas">
+      <div class="spinner"></div>
+      <p>Chargement des cinémas...</p>
+    </div>
+
+    <div class="error-message" *ngIf="errorCinemas">
+      {{ errorCinemas }}
+      <button class="btn-retry" (click)="loadCinemas()">Réessayer</button>
+    </div>
+
+    <div class="cinema-grid" *ngIf="!loadingCinemas && cinemas.length > 0">
+      <div
+        *ngFor="let cinema of cinemas"
+        class="cinema-card"
+        [class.selected]="isCinemaSelected(cinema)"
+        (click)="selectCinema(cinema)">
+        <div class="card-header">
+          <h3>{{ cinema.nom }}</h3>
+          <span class="check-icon" *ngIf="isCinemaSelected(cinema)">✓</span>
+        </div>
+        <p class="cinema-ville">{{ cinema.ville }}</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ÉTAPE 2 : SÉLECTION DU FILM ========== -->
+  <section class="section-films" *ngIf="selectedCinema">
+    <div class="section-header">
+      <h2>
+        <span class="step-number">2</span>
+        Choisissez votre film
+      </h2>
+      <span class="badge-success" *ngIf="selectedFilm">✓ Sélectionné</span>
+    </div>
+
+    <div class="loading" *ngIf="loadingFilms">
+      <div class="spinner"></div>
+      <p>Chargement des films...</p>
+    </div>
+
+    <div class="error-message" *ngIf="errorFilms">
+      {{ errorFilms }}
+    </div>
+
+    <div class="film-grid" *ngIf="!loadingFilms && films.length > 0">
+      <div
+        *ngFor="let film of films"
+        class="film-card"
+        [class.selected]="isFilmSelected(film)"
+        (click)="selectFilm(film)">
+        <div class="film-image" *ngIf="film.affiche">
+          <img [src]="film.affiche" [alt]="film.titre">
+          <span class="check-icon" *ngIf="isFilmSelected(film)">✓</span>
+        </div>
+        <div class="film-content">
+          <h3>{{ film.titre }}</h3>
+          <div class="film-info">
+            <span class="film-duree">{{ film.duree }} min</span>
+            <span class="separator">|</span>
+            <span class="film-genre">{{ film.genre }}</span>
+          </div>
+          <p class="film-description" *ngIf="film.description">
+            {{ film.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loadingFilms && films.length === 0">
+      <p>Aucun film disponible pour ce cinéma</p>
+    </div>
+  </section>
+
+  <!-- ========== ÉTAPE 3 : SÉLECTION DE LA SÉANCE ========== -->
+  <section class="section-seances" *ngIf="selectedCinema && selectedFilm">
+    <div class="section-header">
+      <h2>
+        <span class="step-number">3</span>
+        Choisissez votre séance
+      </h2>
+      <span class="badge-success" *ngIf="selectedSeance">✓ Sélectionné</span>
+    </div>
+
+    <div class="loading" *ngIf="loadingSeances">
+      <div class="spinner"></div>
+      <p>Chargement des séances...</p>
+    </div>
+
+    <div class="error-message" *ngIf="errorSeances">
+      {{ errorSeances }}
+    </div>
+
+    <div class="seance-grid" *ngIf="!loadingSeances && seances.length > 0">
+      <div
+        *ngFor="let seance of seances"
+        class="seance-card"
+        [class.selected]="isSeanceSelected(seance)"
+        (click)="selectSeance(seance)">
+        <div class="seance-date">
+          {{ seance.dateHeureDebut | date:'EEEE d MMMM yyyy' }}
+        </div>
+        <div class="seance-heure">
+          {{ seance.dateHeureFin | date:'HH:mm' }}
+        </div>
+        <div class="seance-details">
+          <span class="seance-salle">Salle {{ seance.salle }}</span>
+          <span class="seance-places">
+            {{ seance.places_disponibles }} places disponibles
+          </span>
+        </div>
+        <span class="check-icon" *ngIf="isSeanceSelected(seance)">✓</span>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loadingSeances && seances.length === 0">
+      <p>Aucune séance disponible pour {{ nombrePersonnes }} personne(s)</p>
+    </div>
+  </section>
+
+  <!-- ========== RÉCAPITULATIF ========== -->
+  <section class="recap-section" *ngIf="selectedSeance">
+    <h2>Récapitulatif de votre réservation</h2>
+    <div class="recap-card">
+      <div class="recap-item">
+        <span class="recap-label">Cinéma :</span>
+        <span class="recap-value">{{ selectedCinema?.nom }} - {{ selectedCinema?.ville }}</span>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">Film :</span>
+        <span class="recap-value">{{ selectedFilm?.titre }}</span>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">Séance :</span>
+        <span class="recap-value">
+          {{ selectedSeance?.dateHeureDebut | date:'EEEE d MMMM yyyy à HH:mm' }} - Salle {{ selectedSeance?.salle }}
+        </span>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">Nombre de places :</span>
+        <span class="recap-value">{{ nombrePersonnes }}</span>
+      </div>
+      <button class="btn-continuer">
+        Continuer la réservation
+      </button>
+    </div>
+  </section>
+</div>

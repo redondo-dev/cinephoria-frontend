@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cinema, Film } from '../models/reservation.model';
+import { Cinema, Film, Seance } from '../models/reservation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,27 +12,25 @@ export class ReservationService {
 
   constructor(private http: HttpClient) {}
 
-  //  Routes publiques
-
-  // Gestion des cinemas
-
+  // Étape 1 : Récupérer la liste des cinémas
   getCinemas(): Observable<Cinema[]> {
     return this.http.get<Cinema[]>(
       `${this.apiUrl}/public/reservations/cinemas`
     );
   }
-  // Gestion des films
 
-  getFilmsByCinema(cinema_id: number): Observable<Film[]> {
+  // Étape 2 : Récupérer les films d'un cinéma
+  getFilmsByCinema(cinemaId: number): Observable<Film[]> {
     return this.http.get<Film[]>(
-      `${this.apiUrl}/public/reservations/cinemas/${cinema_id}/films`
+      `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films`
     );
   }
-  // Gestion des seances
-  getSeances(cinemaId: number, filmId: number, nbPersonnes: number) {
-    return this.http.get(
+
+  // Étape 3 : Récupérer les séances pour un cinéma et un film
+  getSeances(cinemaId: number, filmId: number, nbPersonnes: number): Observable<Seance[]> {
+    return this.http.get<Seance[]>(
       `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films/${filmId}/seances`,
-      { params: { nbPersonnes } }
+      { params: { nbPersonnes: nbPersonnes.toString() } }
     );
   }
 }

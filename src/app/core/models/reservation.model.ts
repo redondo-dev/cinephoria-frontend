@@ -57,7 +57,7 @@ export interface Film {
   titre: string;
   duree: number; // en minutes
   affiche?: string;
-  synopsis?: string;
+  description?: string;
   genre?: string;
   annee_sortie?: number;
   realisateur?: string;

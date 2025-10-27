@@ -18,7 +18,7 @@ export const routes: Routes = [
     data: { title: 'Cinephoria - Tous les films' },
     loadComponent: () =>
       import('./components/films-list-component/films-list-component').then(
-        (m) => m.FilmsListComponent
+        (m) => m.FilmListComponent
       ),
   },
 
@@ -52,15 +52,28 @@ export const routes: Routes = [
   // Route reservations
   {
     path: 'reservation',
-    loadComponent: () =>
-      import('./components/reservation/reservation.component').then(
-        (m) => m.ReservationComponent
-      ),
+
     children: [
       {
         path: '',
         redirectTo: 'selection',
         pathMatch: 'full',
+      },
+
+      {
+        path: 'selection',
+        loadComponent: () =>
+          import('./components/reservation/reservation.component').then(
+            (m) => m.ReservationComponent
+          ),
+      },
+
+      {
+        path: 'sieges/:seanceId',
+        loadComponent: () =>
+          import('./components/seat-selection/seat-selection.component').then(
+            (m) => m.SeatSelectionComponent
+          ),
       },
     ],
   },

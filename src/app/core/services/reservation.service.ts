@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cinema, Film, Seance } from '../models/reservation.model';
+import { SiegeWithStatus } from '../models/siege.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,4 +34,11 @@ export class ReservationService {
       { params: { nbPersonnes: nbPersonnes.toString() } }
     );
   }
+
+// Étape 4 : Récupérer les sièges d'une séance
+getSiegesBySeance(seanceId: number): Observable<SiegeWithStatus[]> {
+  return this.http.get<SiegeWithStatus[]>(
+    `${this.apiUrl}/public/reservations/seances/${seanceId}/sieges`
+  );
+}
 }

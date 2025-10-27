@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ReservationService } from '../../core/services/reservation.service';
 import { Cinema, Film, Seance } from '../../core/models/reservation.model';
 
@@ -34,7 +35,10 @@ export class ReservationComponent implements OnInit {
   errorFilms = '';
   errorSeances = '';
 
-  constructor(private reservationService: ReservationService) {}
+  constructor(
+    private reservationService: ReservationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadCinemas();
@@ -122,11 +126,20 @@ export class ReservationComponent implements OnInit {
     });
   }
 
-  selectSeance(seance: Seance): void {
-    this.selectedSeance = seance;
-    console.log('Séance sélectionnée:', seance);
-    
-  }
+ selectSeance(seance: Seance): void {
+  this.selectedSeance = seance;
+
+  // Sauvegarder les infos dans sessionStorage pour les récupérer sur la page sièges
+  sessionStorage.setItem('reservationData', JSON.stringify({
+    cinema: this.selectedCinema,
+    film: this.selectedFilm,
+    seance: seance,
+    nombrePersonnes: this.nombrePersonnes
+  }));
+
+  // Navigation vers la sélection de sièges
+  this.router.navigate(['/reservation/sieges', seance.id]);
+}
 
   isSeanceSelected(seance: Seance): boolean {
     return this.selectedSeance?.id === seance.id;

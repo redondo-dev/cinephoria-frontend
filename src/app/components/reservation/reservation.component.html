@@ -9,14 +9,8 @@
   <!-- Contrôle du nombre de personnes -->
   <div class="nombre-personnes-section" *ngIf="selectedCinema">
     <label for="nbPersonnes">Nombre de personnes :</label>
-    <input
-      type="number"
-      id="nbPersonnes"
-      [(ngModel)]="nombrePersonnes"
-      (change)="onNombrePersonnesChange()"
-      min="1"
-      max="10"
-      class="input-personnes">
+    <input type="number" id="nbPersonnes" [(ngModel)]="nombrePersonnes" (change)="onNombrePersonnesChange()" min="1"
+      max="10" class="input-personnes">
   </div>
 
   <!-- ========== ÉTAPE 1 : SÉLECTION DU CINÉMA ========== -->
@@ -40,10 +34,7 @@
     </div>
 
     <div class="cinema-grid" *ngIf="!loadingCinemas && cinemas.length > 0">
-      <div
-        *ngFor="let cinema of cinemas"
-        class="cinema-card"
-        [class.selected]="isCinemaSelected(cinema)"
+      <div *ngFor="let cinema of cinemas" class="cinema-card" [class.selected]="isCinemaSelected(cinema)"
         (click)="selectCinema(cinema)">
         <div class="card-header">
           <h3>{{ cinema.nom }}</h3>
@@ -75,10 +66,7 @@
     </div>
 
     <div class="film-grid" *ngIf="!loadingFilms && films.length > 0">
-      <div
-        *ngFor="let film of films"
-        class="film-card"
-        [class.selected]="isFilmSelected(film)"
+      <div *ngFor="let film of films" class="film-card" [class.selected]="isFilmSelected(film)"
         (click)="selectFilm(film)">
         <div class="film-image" *ngIf="film.affiche">
           <img [src]="film.affiche" [alt]="film.titre">
@@ -123,10 +111,7 @@
     </div>
 
     <div class="seance-grid" *ngIf="!loadingSeances && seances.length > 0">
-      <div
-        *ngFor="let seance of seances"
-        class="seance-card"
-        [class.selected]="isSeanceSelected(seance)"
+      <div *ngFor="let seance of seances" class="seance-card" [class.selected]="isSeanceSelected(seance)"
         (click)="selectSeance(seance)">
         <div class="seance-date">
           {{ seance.dateHeureDebut | date:'EEEE d MMMM yyyy' }}
@@ -164,7 +149,8 @@
       <div class="recap-item">
         <span class="recap-label">Séance :</span>
         <span class="recap-value">
-          {{ selectedSeance?.dateHeureDebut| date:'EEEE d MMMM yyyy à HH:mm' }} - Salle {{ selectedSeance?.salle?.nom_salle }}
+          {{ selectedSeance.dateHeureDebut| date:'EEEE d MMMM yyyy à HH:mm' }} - Salle {{
+          selectedSeance.salle?.nom_salle }}
         </span>
       </div>
       <div class="recap-item">

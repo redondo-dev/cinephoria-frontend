@@ -135,7 +135,7 @@
           {{ seance.dateHeureFin | date:'HH:mm' }}
         </div>
         <div class="seance-details">
-          <span class="seance-salle">Salle {{ seance.salle }}</span>
+          <span class="seance-salle">Salle {{ seance.salle?.nom_salle }}</span>
           <span class="seance-places">
             {{ seance.places_disponibles }} places disponibles
           </span>
@@ -164,7 +164,7 @@
       <div class="recap-item">
         <span class="recap-label">Séance :</span>
         <span class="recap-value">
-          {{ selectedSeance?.dateHeureDebut | date:'EEEE d MMMM yyyy à HH:mm' }} - Salle {{ selectedSeance?.salle }}
+          {{ selectedSeance?.dateHeureDebut| date:'EEEE d MMMM yyyy à HH:mm' }} - Salle {{ selectedSeance?.salle?.nom_salle }}
         </span>
       </div>
       <div class="recap-item">

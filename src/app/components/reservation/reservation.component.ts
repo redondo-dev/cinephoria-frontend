@@ -125,7 +125,7 @@ export class ReservationComponent implements OnInit {
   selectSeance(seance: Seance): void {
     this.selectedSeance = seance;
     console.log('Séance sélectionnée:', seance);
-    // Ici vous pouvez naviguer vers l'étape suivante ou afficher un récapitulatif
+    
   }
 
   isSeanceSelected(seance: Seance): boolean {

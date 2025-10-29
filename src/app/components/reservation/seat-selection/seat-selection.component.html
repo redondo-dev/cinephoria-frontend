@@ -1,0 +1,118 @@
+<!-- seat-selection.component.html -->
+<div class="seat-selection-container">
+  <!-- Header -->
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <div class="movie-info">
+      <h1>{{ reservationData?.film?.titre }}</h1>
+      <p class="details">
+        {{ reservationData?.cinema?.nom }} • {{ reservationData?.seance?.horaire }} •
+        {{ reservationData?.nombrePersonnes }} place(s)
+      </p>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="error-message" *ngIf="error && !loading">
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="retryLoad()">Réessayer</button>
+  </div>
+
+  <!-- Écran -->
+  <div class="screen-section" *ngIf="!loading && !error">
+    <div class="screen">ÉCRAN</div>
+  </div>
+
+  <!-- Plan des sièges -->
+  <div class="seats-container" *ngIf="!loading && !error && seats.length > 0">
+    <div class="seats-grid">
+      <div class="seat-row" *ngFor="let row of seats">
+        <span class="row-label">{{ row[0].rangee }}</span>
+
+       <div *ngFor="let seat of row"
+     class="seat"
+     [class.available]="seat.isAvailable"
+     [class.occupied]="!seat.isAvailable"
+     [class.selected]="seat.isSelected"
+     [class.classique]="seat.type_siege === 'classique'"
+     [class.pmr]="seat.type_siege === 'pmr'"
+     [class.premium]="seat.type_siege === 'premium'"
+     [attr.title]="seat.type_siege === 'pmr' ? 'Siège PMR' : ''"
+     (click)="toggleSeat(seat)">
+  <span class="seat-number">{{ seat.numero_siege }}</span>
+
+  <!-- Icône accessibilité uniquement pour PMR -->
+  <svg *ngIf="seat.type_siege === 'pmr'" class="pmr-icon" width="12" height="12" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2a2 2 0 012 2 2 2 0 01-2 2 2 2 0 01-2-2 2 2 0 012-2m0 17c3.31 0 6-2.69 6-6s-2.69-6-6-6-6 2.69-6 6 2.69 6 6 6z"/>
+  </svg>
+</div>
+
+
+        <span class="row-label">{{ row[0].rangee }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucun siège -->
+  <div class="no-seats" *ngIf="!loading && !error && seats.length === 0">
+    <p>Aucun siège disponible pour cette séance.</p>
+  </div>
+
+  <!-- Légende -->
+  <div class="legend" *ngIf="!loading && !error && seats.length > 0">
+    <div class="legend-item">
+      <div class="seat-icon available"></div>
+      <span>Disponible</span>
+    </div>
+    <div class="legend-item">
+      <div class="seat-icon selected"></div>
+      <span>Sélectionné</span>
+    </div>
+    <div class="legend-item">
+      <div class="seat-icon occupied"></div>
+      <span>Occupé</span>
+    </div>
+    <div class="legend-item">
+      <div class="seat-icon pmr"></div>
+      <span>PMR</span>
+    </div>
+     <div class="legend-item">
+      <div class="seat-icon premium"></div>
+      <span>Premium</span>
+    </div>
+  </div>
+
+  <!-- Footer avec récapitulatif -->
+  <div class="footer" *ngIf="!loading && !error && seats.length > 0">
+    <div class="selected-info">
+      <div class="selected-seats">
+        <span class="label">Sièges sélectionnés:</span>
+        <span class="seats-list" *ngIf="selectedSeats.length > 0">
+          {{ getSelectedSeatsDisplay() }}
+        </span>
+        <span class="seats-list empty" *ngIf="selectedSeats.length === 0">
+          Aucun siège sélectionné
+        </span>
+      </div>
+      <div class="price-info">
+        <span class="label">Total:</span>
+        <span class="price">{{ getTotalPrice() | number:'1.2-2' }} €</span>
+      </div>
+    </div>
+
+    <button class="confirm-btn" [disabled]="!canConfirm()" (click)="confirmSeats()">
+      Confirmer ({{ selectedSeats.length }}/{{ reservationData?.nombrePersonnes }})
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Chargement des sièges...</p>
+  </div>
+</div>

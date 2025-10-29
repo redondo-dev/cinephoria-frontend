@@ -3,7 +3,7 @@ export interface Siege {
   id: number;
   numero_siege: number;
   rangee: string;
-  type_siege: boolean;
+  type_siege: 'classique' | 'premium' | 'pmr';
   salle_id: number;
   createdAt?: string;
   updatedAt?: string;

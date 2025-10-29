@@ -18,6 +18,7 @@ export class SeatSelectionComponent implements OnInit {
   seats: SiegeWithStatus[][] = [];
   selectedSeats: SiegeWithStatus[] = [];
   loading = false;
+  error: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,22 +32,72 @@ export class SeatSelectionComponent implements OnInit {
     const data = sessionStorage.getItem('reservationData');
     if (data) {
       this.reservationData = JSON.parse(data);
+      console.log('📦 Données de réservation:', this.reservationData);
       this.loadSeats();
     } else {
+      console.error(' Pas de données de réservation');
       this.router.navigate(['/reservation']);
     }
   }
 
   loadSeats(): void {
     this.loading = true;
+    this.error = null;
+
+    console.log(' Chargement des sièges pour séance:', this.seanceId);
+
     this.reservationService.getSiegesBySeance(this.seanceId).subscribe({
-      next: (sieges) => {
-        this.organizeSeatsInRows(sieges);
+      next: (response: any) => {
+        console.log(' Réponse API:', response);
+
+        // L'API retourne { salle: {...}, sieges: [...] }
+        let sieges: any[] = [];
+        if (Array.isArray(response)) {
+          sieges = response;
+        } else if (response && Array.isArray(response.sieges)) {
+          sieges = response.sieges;
+        }
+
+        if (!sieges || !Array.isArray(sieges)) {
+          console.error(' Format de réponse invalide:', response);
+          this.error = 'Format de données invalide';
+          this.loading = false;
+          return;
+        }
+
+        console.log(` ${sieges.length} sièges reçus`);
+
+        // Mapper vers le format SiegeWithStatus
+        const siegesWithStatus: SiegeWithStatus[] = sieges.map((siege) => ({
+          id: siege.id,
+          numero_siege: siege.numero,
+          rangee: siege.rangee,
+          type_siege:
+            siege.type && typeof siege.type === 'string'
+              ? siege.type.toLowerCase() === 'pmr'
+                ? 'pmr'
+                : siege.type.toLowerCase() === 'premium'
+                ? 'premium'
+                : 'classique'
+              : 'classique',
+          salle_id: siege.salle_id, // Ajout de la propriété requise
+          isAvailable: siege.disponible,
+          isSelected: false,
+          price: 10.5, // Prix par défaut,
+        }));
+
+        this.organizeSeatsInRows(siegesWithStatus);
         this.loading = false;
+
+        console.log(' Sièges organisés en rangées:', this.seats.length);
       },
       error: (error) => {
-        console.error('Erreur chargement sièges:', error);
+        console.error(' Erreur chargement sièges:', error);
+        this.error = 'Impossible de charger les sièges. Veuillez réessayer.';
         this.loading = false;
+      },
+      complete: () => {
+        console.log(' Chargement terminé');
       },
     });
   }
@@ -54,6 +105,7 @@ export class SeatSelectionComponent implements OnInit {
   getSelectedSeatsDisplay(): string {
     return this.selectedSeats.map((s) => s.rangee + s.numero_siege).join(', ');
   }
+
   // Organiser les sièges par rangée
   organizeSeatsInRows(sieges: SiegeWithStatus[]): void {
     // Grouper par rangée
@@ -87,6 +139,7 @@ export class SeatSelectionComponent implements OnInit {
       }
     }
   }
+
   getTotalPrice(): number {
     return this.selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
   }
@@ -113,27 +166,14 @@ export class SeatSelectionComponent implements OnInit {
         JSON.stringify(reservationComplete)
       );
 
-      console.log('Sièges confirmés:', this.selectedSeats);
+      console.log(' Sièges confirmés:', this.selectedSeats);
+
+      // Rediriger vers la page de paiement ou confirmation
+      this.router.navigate(['/reservation/confirmation']);
     }
   }
-  // Méthode optionnelle pour créer la réservation directement
-  private createReservation(): void {
-    const reservationData = {
-      seance_id: this.seanceId,
-      nombre_personnes: this.reservationData.nombrePersonnes,
-      siege_ids: this.selectedSeats.map((s) => s.id),
-    };
 
-    // Appel au service pour créer la réservation
-    // this.reservationService.createReservation(reservationData).subscribe({
-    //   next: (response) => {
-    //     console.log('Réservation créée:', response);
-    //     this.router.navigate(['/reservation/success', response.id]);
-    //   },
-    //   error: (error) => {
-    //     console.error('Erreur création réservation:', error);
-    //     // Afficher un message d'erreur
-    //   }
-    // });
+  retryLoad(): void {
+    this.loadSeats();
   }
 }

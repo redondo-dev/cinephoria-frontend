@@ -71,10 +71,28 @@ export const routes: Routes = [
       {
         path: 'sieges/:seanceId',
         loadComponent: () =>
-          import('./components/seat-selection/seat-selection.component').then(
+          import('./components/reservation/seat-selection/seat-selection.component').then(
             (m) => m.SeatSelectionComponent
           ),
       },
+
+      {
+        path: 'confirmation',
+        loadComponent: () =>
+          import(
+            './components/reservation/reservation-confirmation/reservation-confirmation.component'
+          ).then((m) => m.ReservationConfirmationComponent),
+      },
+
+   {
+        path: 'payment',
+        loadComponent: () =>
+          import(
+            './components/reservation/payment/payment.component'
+          ).then((m) => m.PaymentComponent),
+      },
+
+
     ],
   },
 ];

@@ -18,7 +18,7 @@ export const routes: Routes = [
     data: { title: 'Cinephoria - Tous les films' },
     loadComponent: () =>
       import('./components/films-list-component/films-list-component').then(
-        (m) => m.FilmListComponent
+        (m) => m.FilmsListComponent
       ),
   },
 

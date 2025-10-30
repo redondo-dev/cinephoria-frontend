@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -86,12 +86,35 @@ export const routes: Routes = [
 
    {
         path: 'payment',
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import(
             './components/reservation/payment/payment.component'
           ).then((m) => m.PaymentComponent),
       },
 
+      {
+        path: 'payment/card',
+        loadComponent: () =>
+          import('./components/reservation/payment/payment-card/payment-card.component').then(
+            (m) => m.PaymentCardComponent
+          ),
+      },
+      {
+        path: 'payment/paypal',
+        loadComponent: () =>
+          import('./components/reservation/payment/payment-paypal/payment-paypal.component').then(
+            (m) => m.PaymentPaypalComponent
+          ),
+      },
+
+   {
+        path: 'success/:id',
+        loadComponent: () =>
+          import(
+            './components/reservation/success/success.component'
+          ).then((m) => m.ReservationSuccessComponent),
+      },
 
     ],
   },

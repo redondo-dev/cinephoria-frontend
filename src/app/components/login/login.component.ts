@@ -80,11 +80,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.loginForm.enable();
           this.successMessage = `Bienvenue ${response.user.name}!`;
+          const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+          sessionStorage.removeItem('redirectAfterLogin'); // nettoyage
 
-          setTimeout(() => {
+          if (redirectUrl) {
+            this.router.navigateByUrl(redirectUrl);
+          } else {
             this.router.navigate(['/']);
-          }, 1500);
+          }
         },
+
         error: (error) => {
           this.isLoading = false;
           this.loginForm.enable();
@@ -141,3 +146,4 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
+

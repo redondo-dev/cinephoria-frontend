@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Cinema, Film, Seance } from '../models/reservation.model';
+import { Cinema, Film, Seance, Reservation } from '../models/reservation.model';
 import { SiegeWithStatus } from '../models/siege.model';
 
 @Injectable({
@@ -28,17 +28,41 @@ export class ReservationService {
   }
 
   // Étape 3 : Récupérer les séances pour un cinéma et un film
-  getSeances(cinemaId: number, filmId: number, nbPersonnes: number): Observable<Seance[]> {
+  getSeances(
+    cinemaId: number,
+    filmId: number,
+    nbPersonnes: number
+  ): Observable<Seance[]> {
     return this.http.get<Seance[]>(
       `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films/${filmId}/seances`,
       { params: { nbPersonnes: nbPersonnes.toString() } }
     );
   }
 
-// Étape 4 : Récupérer les sièges d'une séance
-getSiegesBySeance(seanceId: number): Observable<SiegeWithStatus[]> {
-  return this.http.get<SiegeWithStatus[]>(
-    `${this.apiUrl}/public/reservations/seances/${seanceId}/sieges`
-  );
-}
+  // Étape 4 : Récupérer les sièges d'une séance
+  getSiegesBySeance(seanceId: number): Observable<SiegeWithStatus[]> {
+    return this.http.get<SiegeWithStatus[]>(
+      `${this.apiUrl}/public/reservations/seances/${seanceId}/sieges`
+    );
+  }
+
+   // Étape 5 : Créer une réservation
+  createReservation(reservationData: {
+    utilisateurId: number;
+    seanceId: number;
+    sieges: number[]; // IDs des sièges sélectionnés
+    total: number;
+  }): Observable<Reservation> {
+    return this.http.post<Reservation>(
+      `${this.apiUrl}/reservations`,
+      reservationData
+    );
+  }
+
+  // Étape 6 : Récupérer une réservation par ID
+  getReservationById(reservationId: number): Observable<Reservation> {
+    return this.http.get<Reservation>(
+      `${this.apiUrl}/reservations/${reservationId}`
+    );
+  }
 }

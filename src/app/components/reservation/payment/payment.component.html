@@ -1,1 +1,17 @@
-<p>payment works!</p>
+<div class="payment-container">
+  <h1>Paiement de votre réservation</h1>
+
+  <div class="summary">
+    <p><strong>Film :</strong> {{ reservationData.film.titre }}</p>
+    <p><strong>Cinéma :</strong> {{ reservationData.cinema.nom }}</p>
+    <p><strong>Séance :</strong> {{ reservationData.seance.heure_debut | date: 'short' }}</p>
+    <p><strong>Sièges :</strong> {{ selectedSeatsDisplay }}</p>
+    <p class="total"><strong>Total :</strong> {{ totalPrice | number: '1.2-2' }} €</p>
+  </div>
+
+  <div class="payment-options">
+    <button class="back-btn" (click)="goBack()">⬅️ Retour</button>
+    <button class="card-btn" (click)="payWithCard()">💳 Payer par carte</button>
+    <button class="paypal-btn" (click)="payWithPaypal()">💰 PayPal</button>
+  </div>
+</div>

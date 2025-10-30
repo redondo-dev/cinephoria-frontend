@@ -1,0 +1,137 @@
+.success-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #141414; // fond sombre style Netflix
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  font-family: "Roboto", "Arial", sans-serif;
+  color: #fff;
+
+  .success-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #e50914; // rouge Netflix
+    animation: pop 0.5s ease-in-out;
+  }
+
+  h1 {
+    font-size: 26px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
+  .confirmation-details {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 25px;
+
+    p {
+      margin: 5px 0;
+
+      strong {
+        color: #e50914; // accent rouge pour le numéro
+      }
+    }
+  }
+  .qr-code-container {
+    margin: 2rem auto;
+    text-align: center;
+
+    img {
+      border: 3px solid #e50914; // style Netflix
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h3 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .qr-code {
+    margin-bottom: 25px;
+
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 8px;
+      border: 2px solid #e50914;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      &.home-btn {
+        background-color: #e50914;
+        color: #fff;
+
+        &:hover {
+          background-color: #b00610;
+        }
+      }
+
+      &.reservations-btn {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid #e50914;
+
+        &:hover {
+          background-color: #e50914;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  // Animation pop pour icône
+  @keyframes pop {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    70% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  // Responsive
+  @media (max-width: 480px) {
+    padding: 20px;
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .qr-code img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .actions {
+      flex-direction: column;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

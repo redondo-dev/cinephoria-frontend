@@ -18,11 +18,27 @@
     <p><strong>Total :</strong> {{ totalPrice | number:'1.2-2' }} €</p>
   </div>
 
+  <div class="auth-prompt" *ngIf="!isAuthenticated">
+    <div class="icon">🔐</div>
+    <h3>Connectez-vous pour continuer</h3>
+    <p>Vous devez être connecté pour finaliser votre réservation</p>
+    <div class="auth-buttons">
+      <button class="btn-login" (click)="goToLogin()">
+        J'ai déjà un compte
+      </button>
+      <button class="btn-register" (click)="goToRegister()">
+        Créer un compte
+      </button>
+    </div>
+  </div>
+
   <div class="actions">
     <button class="back-btn" (click)="goBack()">⬅️ Retour</button>
 
-    <button class="validate-btn" (click)="validateReservation()">
-      {{ isAuthenticated ? 'Valider la réservation' : 'Inscrivez-vous pour valider' }}
+    <!-- Si déjà connecté, aller directement au paiement -->
+    <button class="continue-btn" (click)="continueToPayment()" *ngIf="isAuthenticated">
+      Continuer vers le paiement →
     </button>
   </div>
+
 </div>

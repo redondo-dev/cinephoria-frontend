@@ -1,5 +1,6 @@
 import { Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { ADMIN_ROUTES } from './components/admin/admin.routes';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/home/home.component').then((m) => m.HomeComponent),
   },
+
+  // Routes d'administration
+  { path: 'admin', children: ADMIN_ROUTES },
+
   // Route publique - Liste des films
   {
     path: 'films',

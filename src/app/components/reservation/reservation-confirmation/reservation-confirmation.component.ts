@@ -38,7 +38,7 @@ export class ReservationConfirmationComponent {
       .map((s) => `${s.rangee}${s.numero_siege}`)
       .join(', ');
   }
-get seanceDisplay(): string {
+  get seanceDisplay(): string {
     const seance = this.reservationData?.seance;
     if (!seance) return 'Non spécifiée';
 
@@ -54,7 +54,7 @@ get seanceDisplay(): string {
       display += dateObj.toLocaleDateString('fr-FR', {
         weekday: 'long',
         day: 'numeric',
-        month: 'long'
+        month: 'long',
       });
     }
 
@@ -63,7 +63,7 @@ get seanceDisplay(): string {
       if (horaire instanceof Date) {
         display += horaire.toLocaleTimeString('fr-FR', {
           hour: '2-digit',
-          minute: '2-digit'
+          minute: '2-digit',
         });
       } else {
         display += horaire;
@@ -85,10 +85,11 @@ get seanceDisplay(): string {
       this.router.navigate(['/auth/login']);
       return;
     }
-      console.log('✅ Validation de la réservation:', {
+
+    console.log('Validation de la réservation:', {
       seance_id: this.reservationData.seance?.id,
-      sieges: this.selectedSeats.map(s => s.id),
-      total: this.totalPrice
+      sieges: this.selectedSeats.map((s) => s.id),
+      total: this.totalPrice,
     });
     alert(' Réservation confirmée avec succès !');
     // Nettoyer le sessionStorage
@@ -101,9 +102,40 @@ get seanceDisplay(): string {
   /** Retour à la sélection */
   goBack() {
     this.router.navigate([
-      '/reservation/seats', this.reservationData.seance?.id ||this.reservationData.seanceId]);
+      '/reservation/seats',
+      this.reservationData.seance?.id || this.reservationData.seanceId,
+    ]);
   }
 
- 
-}
+  goToLogin(): void {
+    // Sauvegarder l'URL de retour
+    if (!this.reservationData) {
+      console.error('reservationData manquant !');
 
+      this.reservationData = {
+        seance: { id: this.reservationData?.seanceId },
+        sieges: this.selectedSeats || [],
+        total: this.totalPrice || 0,
+      };
+    }
+    sessionStorage.setItem(
+      'reservationIncomplete',
+      JSON.stringify(this.reservationData)
+    );
+    sessionStorage.setItem('redirectAfterLogin', '/reservation/payment');
+    this.router.navigate(['/auth/login']);
+  }
+
+  goToRegister(): void {
+    sessionStorage.setItem(
+      'reservationIncomplete',
+      JSON.stringify(this.reservationData)
+    );
+    sessionStorage.setItem('redirectAfterLogin', '/reservation/payment');
+    this.router.navigate(['/auth/register']);
+  }
+
+  continueToPayment(): void {
+    this.router.navigate(['/reservation/payment']);
+  }
+}

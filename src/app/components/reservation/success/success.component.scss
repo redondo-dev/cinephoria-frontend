@@ -1,137 +1,301 @@
 .success-container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #141414; // fond sombre style Netflix
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.loading-state, .error-state {
   text-align: center;
-  font-family: "Roboto", "Arial", sans-serif;
-  color: #fff;
+  padding: 3rem;
+}
 
-  .success-icon {
-    font-size: 60px;
-    margin-bottom: 20px;
-    color: #e50914; // rouge Netflix
-    animation: pop 0.5s ease-in-out;
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.success-content {
+  text-align: center;
+}
+
+.success-animation {
+  margin: 2rem 0;
+}
+
+.checkmark-circle {
+  width: 100px;
+  height: 100px;
+  background: #4caf50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  animation: scaleIn 0.5s ease-out;
+}
+
+.checkmark {
+  color: white;
+  font-size: 3rem;
+  animation: checkmark 0.5s ease-out 0.3s both;
+}
+
+.success-title {
+  font-size: 2.5rem;
+  color: #4caf50;
+  margin: 1rem 0;
+}
+
+.success-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.reservation-number {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: #f5f5f5;
+  border-radius: 10px;
+  margin: 2rem 0;
+}
+
+.reservation-number .label {
+  color: #666;
+  margin-right: 0.5rem;
+}
+
+.reservation-number .number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.reservation-details {
+  margin: 3rem 0;
+  text-align: left;
+}
+
+.reservation-details h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.detail-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row .icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.detail-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.detail-value {
+  font-weight: 500;
+  color: #333;
+}
+
+.detail-row.total {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #333;
+}
+
+.detail-row.total .detail-value {
+  font-size: 1.3rem;
+  color: #4caf50;
+}
+
+.actions {
+  margin: 3rem 0;
+}
+
+.actions h3 {
+  margin-bottom: 1.5rem;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.action-btn.primary {
+  background: #1976d2;
+  color: white;
+}
+
+.action-btn.secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.important-info {
+  background: #fff3cd;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.important-info h4 {
+  margin-bottom: 1rem;
+}
+
+.important-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.important-info li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.important-info li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.nav-btn {
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-btn.outline {
+  background: white;
+  border: 2px solid #1976d2;
+  color: #1976d2;
+}
+
+.nav-btn.filled {
+  background: #1976d2;
+  border: none;
+  color: white;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.thank-you {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 10px;
+}
+
+.thank-you p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
   }
 
-  h1 {
-    font-size: 26px;
-    color: #ffffff;
-    margin-bottom: 15px;
-    font-weight: 500;
+  .form-row {
+    grid-template-columns: 1fr;
   }
 
-  .confirmation-details {
-    font-size: 16px;
-    color: #ccc;
-    margin-bottom: 25px;
-
-    p {
-      margin: 5px 0;
-
-      strong {
-        color: #e50914; // accent rouge pour le numéro
-      }
-    }
-  }
-  .qr-code-container {
-    margin: 2rem auto;
-    text-align: center;
-
-    img {
-      border: 3px solid #e50914; // style Netflix
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    h3 {
-      color: #fff;
-      margin-bottom: 1rem;
-    }
+  .action-buttons {
+    grid-template-columns: 1fr;
   }
 
-  .qr-code {
-    margin-bottom: 25px;
-
-    img {
-      width: 150px;
-      height: 150px;
-      border-radius: 8px;
-      border: 2px solid #e50914;
-    }
+  .navigation-buttons {
+    flex-direction: column;
   }
 
-  .actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-
-    button {
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.2s ease;
-
-      &.home-btn {
-        background-color: #e50914;
-        color: #fff;
-
-        &:hover {
-          background-color: #b00610;
-        }
-      }
-
-      &.reservations-btn {
-        background-color: transparent;
-        color: #fff;
-        border: 2px solid #e50914;
-
-        &:hover {
-          background-color: #e50914;
-          color: #fff;
-        }
-      }
-    }
-  }
-
-  // Animation pop pour icône
-  @keyframes pop {
-    0% {
-      transform: scale(0);
-      opacity: 0;
-    }
-    70% {
-      transform: scale(1.2);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  // Responsive
-  @media (max-width: 480px) {
-    padding: 20px;
-
-    h1 {
-      font-size: 22px;
-    }
-
-    .qr-code img {
-      width: 120px;
-      height: 120px;
-    }
-
-    .actions {
-      flex-direction: column;
-      button {
-        width: 100%;
-      }
-    }
+  .success-title {
+    font-size: 2rem;
   }
 }

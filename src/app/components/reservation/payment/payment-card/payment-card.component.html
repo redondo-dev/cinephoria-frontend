@@ -1,0 +1,130 @@
+
+<div class="payment-card-container">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">
+      ← Retour
+    </button>
+    <h1>Paiement par carte bancaire</h1>
+  </div>
+
+  <div class="content">
+    <!-- Résumé de la commande -->
+    <div class="order-summary">
+      <h2>Récapitulatif</h2>
+      <div class="summary-item">
+        <span>Film:</span>
+        <span>{{ reservationData?.film?.titre }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Cinéma:</span>
+        <span>{{ reservationData?.cinema?.nom }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Sièges:</span>
+        <!-- <span>{{ selectedSeats.map(s => s.rangee + s.numero_siege).join(', ') }}</span> -->
+      </div>
+      <div class="summary-item total">
+        <span>Total à payer:</span>
+        <span class="price">{{ totalPrice | number: '1.2-2' }} €</span>
+      </div>
+    </div>
+
+    <!-- Formulaire de paiement -->
+    <div class="payment-form-container">
+      <h2>Informations de paiement</h2>
+
+      <form [formGroup]="cardForm" (ngSubmit)="submitPayment()">
+        <!-- Numéro de carte -->
+        <div class="form-group">
+          <label for="cardNumber">Numéro de carte *</label>
+          <input
+            type="text"
+            id="cardNumber"
+            formControlName="cardNumber"
+            placeholder="1234 5678 9012 3456"
+            maxlength="19"
+            [class.error]="hasError('cardNumber')"
+            (input)="formatCardNumber($event)"
+          />
+          <span class="error-message" *ngIf="hasError('cardNumber')">
+            {{ getErrorMessage('cardNumber') }}
+          </span>
+        </div>
+
+        <!-- Titulaire de la carte -->
+        <div class="form-group">
+          <label for="cardHolder">Titulaire de la carte *</label>
+          <input
+            type="text"
+            id="cardHolder"
+            formControlName="cardHolder"
+            placeholder="JEAN DUPONT"
+            [class.error]="hasError('cardHolder')"
+          />
+          <span class="error-message" *ngIf="hasError('cardHolder')">
+            {{ getErrorMessage('cardHolder') }}
+          </span>
+        </div>
+
+        <!-- Date d'expiration et CVV -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiryDate">Date d'expiration *</label>
+            <input
+              type="text"
+              id="expiryDate"
+              formControlName="expiryDate"
+              placeholder="MM/YY"
+              maxlength="5"
+              [class.error]="hasError('expiryDate')"
+              (input)="formatExpiryDate($event)"
+            />
+            <span class="error-message" *ngIf="hasError('expiryDate')">
+              {{ getErrorMessage('expiryDate') }}
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="cvv">CVV *</label>
+            <input
+              type="text"
+              id="cvv"
+              formControlName="cvv"
+              placeholder="123"
+              maxlength="3"
+              [class.error]="hasError('cvv')"
+            />
+            <span class="error-message" *ngIf="hasError('cvv')">
+              {{ getErrorMessage('cvv') }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Icônes de cartes acceptées -->
+        <div class="accepted-cards">
+          <span>💳 Visa</span>
+          <span>💳 Mastercard</span>
+          <span>💳 American Express</span>
+        </div>
+
+        <!-- Bouton de validation -->
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="isProcessing || cardForm.invalid"
+        >
+          <span *ngIf="!isProcessing">
+            Payer {{ totalPrice | number: '1.2-2' }} €
+          </span>
+          <span *ngIf="isProcessing">
+            Traitement en cours...
+          </span>
+        </button>
+      </form>
+
+      <div class="security-info">
+        🔒 Paiement sécurisé - Vos données sont cryptées
+      </div>
+    </div>
+  </div>
+</div>

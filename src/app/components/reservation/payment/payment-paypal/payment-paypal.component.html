@@ -1,0 +1,96 @@
+<div class="payment-paypal-container">
+  <div class="header">
+    <button class="back-btn" (click)="goBack()" [disabled]="isProcessing">
+      ← Retour
+    </button>
+    <h1>Paiement via PayPal</h1>
+  </div>
+
+  <div class="content">
+    <!-- Résumé de la commande -->
+    <div class="order-summary">
+      <h2>Récapitulatif</h2>
+      <div class="summary-item">
+        <span>Film:</span>
+        <span>{{ reservationData?.film?.titre }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Cinéma:</span>
+        <span>{{ reservationData?.cinema?.nom }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Sièges:</span>
+        <span>{{ selectedSeatsDisplay }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total à payer:</span>
+        <span class="price">{{ totalPrice | number: '1.2-2' }} €</span>
+      </div>
+    </div>
+
+    <!-- Formulaire PayPal -->
+    <div class="paypal-form-container">
+      <!-- Étape 1: Saisie email -->
+      <div *ngIf="step === 'email'" class="paypal-step">
+        <div class="paypal-logo">
+          <h2>💰 PayPal</h2>
+          <p>Paiement sécurisé avec votre compte PayPal</p>
+        </div>
+
+        <div class="form-group">
+          <label for="paypalEmail">Email PayPal *</label>
+          <input
+            type="email"
+            id="paypalEmail"
+            [(ngModel)]="paypalEmail"
+            (input)="updateEmail($event)"
+            placeholder="votre-email@exemple.com"
+            [disabled]="isProcessing"
+          />
+        </div>
+
+        <button
+          type="button"
+          class="paypal-btn"
+          (click)="submitPayment()"
+          [disabled]="!paypalEmail || isProcessing"
+        >
+          Continuer avec PayPal
+        </button>
+
+        <div class="info-box">
+          <p>ℹ️ Vous serez redirigé vers PayPal pour finaliser le paiement</p>
+        </div>
+      </div>
+
+      <!-- Étape 2: Traitement -->
+      <div *ngIf="step === 'processing'" class="paypal-step processing">
+        <div class="loader">
+          <div class="spinner"></div>
+        </div>
+        <h3>Connexion à PayPal...</h3>
+        <p>Veuillez patienter</p>
+      </div>
+
+      <!-- Étape 3: Redirection -->
+      <div *ngIf="step === 'redirecting'" class="paypal-step processing">
+        <div class="loader">
+          <div class="spinner"></div>
+        </div>
+        <h3>Validation du paiement...</h3>
+        <p>Finalisation de votre réservation</p>
+      </div>
+
+      <!-- Avantages PayPal -->
+      <div *ngIf="step === 'email'" class="paypal-advantages">
+        <h3>Pourquoi choisir PayPal ?</h3>
+        <ul>
+          <li>✅ Paiement 100% sécurisé</li>
+          <li>✅ Protection des achats</li>
+          <li>✅ Vos données bancaires restent confidentielles</li>
+          <li>✅ Paiement en quelques clics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

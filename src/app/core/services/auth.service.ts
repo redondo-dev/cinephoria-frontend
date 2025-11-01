@@ -4,8 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-
-
 export interface User {
   name: string;
   email: string;
@@ -13,7 +11,7 @@ export interface User {
 
 export interface AuthResponse {
   token: string;
-  user: { id: string; email: string; name: string };
+  user: { id: string; email: string; name: string; role: string };
 }
 
 export interface RegisterRequest {
@@ -34,7 +32,7 @@ export interface RegisterResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://cinephoria-9y7y.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken()
   );

@@ -18,6 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       });
     }
+console.log('Envoi du token:', token, 'pour la requête:', req.url);
 
     return next.handle(req);
   }

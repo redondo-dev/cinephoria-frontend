@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initialiser le formulaire réactif
+   * Initialiser le formulaire de login
    */
   private initializeForm(): void {
     this.loginForm = this.formBuilder.group({
@@ -80,16 +80,25 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.loginForm.enable();
           this.successMessage = `Bienvenue ${response.user.name}!`;
-          const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-          sessionStorage.removeItem('redirectAfterLogin'); // nettoyage
 
-          if (redirectUrl) {
-            this.router.navigateByUrl(redirectUrl);
+          /**
+           * Redirection après login en fonction du rôle
+           */
+          if (response.user.role === 'ADMIN') {
+            this.router.navigate(['/admin/dashboard']);
+          } else if (response.user.role === 'EMPLOYE') {
+            this.router.navigate(['/employe/dashboard']);
           } else {
-            this.router.navigate(['/']);
+            const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+            sessionStorage.removeItem('redirectAfterLogin');
+
+            if (redirectUrl) {
+              this.router.navigateByUrl(redirectUrl);
+            } else {
+              this.router.navigate(['/']);
+            }
           }
         },
-
         error: (error) => {
           this.isLoading = false;
           this.loginForm.enable();
@@ -146,4 +155,3 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
-

@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports : [RouterLink, FormsModule, CommonModule],
   templateUrl: './employes-list.component.html',
-  styleUrls: ['./employes-list.component.css'],
+  styleUrls: ['./employes-list.component.scss'],
 })
 export class EmployesListComponent implements OnInit {
   private adminService = inject(AdminService);

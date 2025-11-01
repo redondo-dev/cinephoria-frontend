@@ -14,7 +14,7 @@ import { AdminService, Employe } from '../../../services/admin.service';
   imports: [CommonModule, ReactiveFormsModule],
   standalone: true,
   templateUrl: './employe-form.component.html',
-  styleUrls: ['./employe-form.component.css'],
+  styleUrls: ['./employe-form.component.scss'],
 })
 export class EmployeFormComponent implements OnInit {
   private fb = inject(FormBuilder);

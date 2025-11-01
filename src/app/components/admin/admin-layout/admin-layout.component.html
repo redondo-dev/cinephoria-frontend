@@ -1,0 +1,43 @@
+<div class="admin-container">
+  <nav class="admin-sidebar">
+    <div class="sidebar-header">
+      <h2>Administration</h2>
+    </div>
+    <ul class="nav-menu">
+      <li>
+        <a routerLink="/admin/dashboard" routerLinkActive="active">
+          <span class="icon">📊</span>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/films" routerLinkActive="active">
+          <span class="icon">🎬</span>
+          Films
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/seances" routerLinkActive="active">
+          <span class="icon">🎫</span>
+          Séances
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/salles" routerLinkActive="active">
+          <span class="icon">🏛️</span>
+          Salles
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/employes" routerLinkActive="active">
+          <span class="icon">👥</span>
+          Employés
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+
+  </main>
+</div>

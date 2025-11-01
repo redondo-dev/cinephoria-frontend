@@ -1,0 +1,75 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1>{{ isEditMode ? 'Modifier le film' : 'Créer un film' }}</h1>
+    <button (click)="goBack()" class="btn btn-secondary">← Retour</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Chargement...</div>
+
+  <form *ngIf="!loading" [formGroup]="filmForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="titre">Titre *</label>
+      <input id="titre" type="text" formControlName="titre" class="form-control"
+             [class.error]="filmForm.get('titre')?.invalid && filmForm.get('titre')?.touched">
+      <span *ngIf="filmForm.get('titre')?.invalid && filmForm.get('titre')?.touched" class="error-text">
+        Le titre est requis
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea id="description" formControlName="description" rows="4"
+                class="form-control" [class.error]="filmForm.get('description')?.invalid && filmForm.get('description')?.touched"></textarea>
+      <span *ngIf="filmForm.get('description')?.invalid && filmForm.get('description')?.touched" class="error-text">
+        La description est requise
+      </span>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="duree">Durée (minutes) *</label>
+        <input id="duree" type="number" formControlName="duree" class="form-control"
+               [class.error]="filmForm.get('duree')?.invalid && filmForm.get('duree')?.touched">
+        <span *ngIf="filmForm.get('duree')?.invalid && filmForm.get('duree')?.touched" class="error-text">
+          La durée doit être supérieure à 0
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="genre">Genre *</label>
+        <select id="genre" formControlName="genre" class="form-control"
+                [class.error]="filmForm.get('genre')?.invalid && filmForm.get('genre')?.touched">
+          <option value="">Sélectionnez un genre</option>
+          <option *ngFor="let g of ['Action','Comédie','Drame','Science-Fiction','Horreur','Thriller','Romance','Animation','Aventure','Fantastique']" [value]="g">
+            {{ g }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="datesSortie">Date de sortie *</label>
+      <input id="datesSortie" type="date" formControlName="datesSortie" class="form-control"
+             [class.error]="filmForm.get('datesSortie')?.invalid && filmForm.get('datesSortie')?.touched">
+    </div>
+
+    <div class="form-group">
+      <label for="affiche">URL de l'affiche</label>
+      <input id="affiche" type="url" formControlName="affiche" class="form-control" placeholder="https://exemple.com/affiche.jpg">
+    </div>
+
+    <div class="form-group">
+      <label for="bandeAnnonce">URL de la bande-annonce</label>
+      <input id="bandeAnnonce" type="url" formControlName="bandeAnnonce" class="form-control" placeholder="https://youtube.com/...">
+    </div>
+
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <div class="form-actions">
+      <button type="button" (click)="goBack()" class="btn btn-secondary">Annuler</button>
+      <button type="submit" [disabled]="filmForm.invalid || submitting" class="btn btn-primary">
+        {{ submitting ? 'Enregistrement...' : (isEditMode ? 'Modifier' : 'Créer') }}
+      </button>
+    </div>
+  </form>
+</div>

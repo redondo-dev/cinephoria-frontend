@@ -1,0 +1,50 @@
+<div class="dashboard">
+  <h1>Dashboard</h1>
+  <p class="subtitle">Statistiques des réservations sur les 7 derniers jours</p>
+
+  @if (periodInfo) {
+    <div class="period-info">
+      📅 Période: du {{ periodInfo.from }} au {{ periodInfo.to }}
+    </div>
+  }
+
+  <div class="stats-container">
+    @if (loading) {
+      <div class="loading">Chargement des statistiques...</div>
+    } @else if (error) {
+      <div class="error">{{ error }}</div>
+    } @else {
+      @if (stats.length === 0) {
+        <div class="no-data">Aucune réservation sur cette période</div>
+      } @else {
+        <div class="stats-grid">
+          @for (stat of stats; track stat.film) {
+            <div class="stat-card">
+              <h3>{{ stat.film }}</h3>
+              <div class="stat-value">{{ stat.totalReservations }}</div>
+              <div class="stat-label">places réservées</div>
+            </div>
+          }
+        </div>
+
+        <div class="chart-container">
+          <h2>Graphique des réservations</h2>
+          <div class="bar-chart">
+            @for (stat of stats; track stat.film) {
+              <div class="bar-item">
+                <div class="bar-label">{{ truncate(stat.film, 20) }}</div>
+                <div class="bar-wrapper">
+                  <div
+                    class="bar-fill"
+                    [style.width.%]="getBarWidth(stat.totalReservations)">
+                    {{ stat.totalReservations }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

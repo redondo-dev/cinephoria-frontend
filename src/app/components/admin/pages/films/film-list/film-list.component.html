@@ -1,0 +1,54 @@
+<div class="page-header">
+  <h1>Gestion des Films</h1>
+  <a routerLink="/admin/films/create" class="btn btn-primary">
+    + Créer un film
+  </a>
+</div>
+
+<!-- Loading -->
+<div *ngIf="loading" class="loading">
+  Chargement des films...
+</div>
+
+<!-- Error -->
+<div *ngIf="!loading && error" class="error-message">
+  {{ error }}
+</div>
+
+<!-- Films grid -->
+<div *ngIf="!loading && !error && films.length > 0" class="films-grid">
+  <div *ngFor="let film of films; trackBy: trackById" class="film-card">
+    <!-- Affiche -->
+    <img *ngIf="film.affiche; else noPoster" [src]="film.affiche" [alt]="film.titre" class="film-poster">
+    <ng-template #noPoster>
+      <div class="film-poster-placeholder">🎬</div>
+    </ng-template>
+
+    <div class="film-content">
+      <h3>{{ film.titre }}</h3>
+      <p class="film-genre">{{ film.genre }}</p>
+      <p class="film-description">{{ film.description }}</p>
+      <div class="film-meta">
+        <span>⏱️ {{ film.duree }} min</span>
+        <span>📅 {{ formatDate(film.datesSortie) }}</span>
+      </div>
+      <div class="film-actions">
+        <a [routerLink]="['/admin/films/edit', film.id]" class="btn btn-sm btn-secondary">
+          Modifier
+        </a>
+        <button (click)="deleteFilm(film)" class="btn btn-sm btn-danger">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Empty state -->
+<div *ngIf="!loading && !error && films.length === 0" class="empty-state">
+  <p>Aucun film enregistré</p>
+  <a routerLink="/admin/films/create" class="btn btn-primary">
+    Créer le premier film
+  </a>
+</div>
+

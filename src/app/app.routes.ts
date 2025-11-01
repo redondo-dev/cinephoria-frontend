@@ -5,7 +5,7 @@ import { ADMIN_ROUTES } from './components/admin/admin.routes';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '/home',
     pathMatch: 'full',
   },
   {

@@ -1,0 +1,97 @@
+<div class="page-header">
+      <h1>Gestion des Employés</h1>
+      <a routerLink="/admin/employes/create" class="btn btn-primary">
+        + Créer un employé
+      </a>
+    </div>
+
+    @if (loading) {
+      <div class="loading">Chargement des employés...</div>
+    } @else if (error) {
+      <div class="error-message">{{ error }}</div>
+    } @else {
+      <div class="employes-table-container">
+        <table class="employes-table">
+          <thead>
+            <tr>
+              <th>Login</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (employes.length === 0) {
+              <tr>
+                <td colspan="5" class="empty-row">
+                  <div class="empty-state">
+                    <p>Aucun employé enregistré</p>
+                    <a routerLink="/admin/employes/create" class="btn btn-primary">
+                      Créer le premier employé
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            } @else {
+              @for (employe of employes; track employe.id) {
+                <tr>
+                  <td><strong>{{ employe.username }}</strong></td>
+                  <td>{{ employe.nom }}</td>
+                  <td>{{ employe.prenom }}</td>
+                  <td>{{ employe.email }}</td>
+                  <td class="actions-cell">
+                    <button (click)="openResetPasswordModal(employe)" class="btn btn-sm btn-warning">
+                      🔑 Réinitialiser
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- Modal de réinitialisation de mot de passe -->
+    <!-- @if (showResetModal) {
+      <div class="modal-overlay" (click)="closeResetModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h2>Réinitialiser le mot de passe</h2>
+            <button (click)="closeResetModal()" class="close-btn">×</button>
+          </div>
+          <div class="modal-body">
+            <p>Employé: <strong>{{ selectedEmploye?.nom }} {{ selectedEmploye?.prenom }}</strong></p>
+            <p>Login: <strong>{{ selectedEmploye?.login }}</strong></p>
+
+            <div class="form-group">
+              <label for="newPassword">Nouveau mot de passe</label>
+              <input
+                type="password"
+                id="newPassword"
+                [(ngModel)]="newPassword"
+                class="form-control"
+                placeholder="Entrez le nouveau mot de passe">
+            </div>
+
+            @if (resetError) {
+              <div class="error-message">{{ resetError }}</div>
+            }
+            @if (resetSuccess) {
+              <div class="success-message">{{ resetSuccess }}</div>
+            }
+          </div>
+          <div class="modal-footer">
+            <button (click)="closeResetModal()" class="btn btn-secondary">
+              Annuler
+            </button>
+            <button
+              (click)="resetPassword()"
+              [disabled]="!newPassword || resetting"
+              class="btn btn-primary">
+              {{ resetting ? 'Réinitialisation...' : 'Réinitialiser' }}
+            </button>
+          </div>
+        </div>
+      </div> -->

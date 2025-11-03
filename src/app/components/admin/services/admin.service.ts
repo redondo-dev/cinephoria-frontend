@@ -26,6 +26,7 @@ export interface Film {
 export interface ReservationStats {
   film: string; // Correspond à "film"
   totalReservations: number;
+  date:string;
 }
 
 export interface DashboardResponse {

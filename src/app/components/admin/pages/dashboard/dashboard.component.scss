@@ -1,0 +1,77 @@
+@use "sass:color";
+
+$netflix-red: #e50914;
+$background-dark: #141414;
+$text-light: #ffffff;
+
+.dashboard-container {
+  background-color: $background-dark;
+  color: $text-light;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  max-width: 900px;
+  margin: 2rem auto;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.dashboard-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: $netflix-red;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-period {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: color.adjust($text-light, $lightness: -10%);
+}
+
+.chart-wrapper {
+  background-color: color.adjust($background-dark, $lightness: 5%);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $text-light;
+  min-height: 300px;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid $netflix-red;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+.hidden {
+  display: none !important;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

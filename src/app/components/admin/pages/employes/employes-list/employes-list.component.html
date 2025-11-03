@@ -44,6 +44,22 @@
                     <button (click)="openResetPasswordModal(employe)" class="btn btn-sm btn-warning">
                       🔑 Réinitialiser
                     </button>
+
+
+                <button
+                  (click)="onEditEmploye(employe.id)"
+                  class="btn btn-sm btn-info"
+                  title="Modifier l'employé">
+                  ✏️ Modifier
+                </button>
+
+                <!-- Bouton Supprimer -->
+                <button
+                  (click)="onDeleteEmploye(employe.id)"
+                  class="btn btn-sm btn-danger"
+                  title="Supprimer l'employé">
+                  🗑️ Supprimer
+                </button>
                   </td>
                 </tr>
               }
@@ -54,16 +70,17 @@
     }
 
     <!-- Modal de réinitialisation de mot de passe -->
-    <!-- @if (showResetModal) {
+    @if (showResetModal){
       <div class="modal-overlay" (click)="closeResetModal()">
         <div class="modal-content" (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h2>Réinitialiser le mot de passe</h2>
             <button (click)="closeResetModal()" class="close-btn">×</button>
           </div>
+
           <div class="modal-body">
             <p>Employé: <strong>{{ selectedEmploye?.nom }} {{ selectedEmploye?.prenom }}</strong></p>
-            <p>Login: <strong>{{ selectedEmploye?.login }}</strong></p>
+            <p>Login: <strong>{{ selectedEmploye?.username}}</strong></p>
 
             <div class="form-group">
               <label for="newPassword">Nouveau mot de passe</label>
@@ -94,4 +111,13 @@
             </button>
           </div>
         </div>
-      </div> -->
+      </div>
+<!-- Modal de création / édition d'employé -->
+<app-employe-form
+  *ngIf="showFormModal"
+  [employeToEdit]="employeToEdit"
+  (close)="showFormModal = false"
+  (refresh)="loadEmployes()"
+></app-employe-form>
+
+    }

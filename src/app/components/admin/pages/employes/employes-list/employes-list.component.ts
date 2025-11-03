@@ -1,19 +1,21 @@
 // src/app/admin/pages/employes/employes-list/employes-list.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AdminService, Employe } from '../../../services/admin.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { EmployeFormComponent } from '../employe-form/employe-form.component';
 
 @Component({
   selector: 'app-employes-list',
   standalone: true,
-  imports : [RouterLink, FormsModule, CommonModule],
+  imports: [RouterLink, FormsModule, CommonModule,EmployeFormComponent],
   templateUrl: './employes-list.component.html',
   styleUrls: ['./employes-list.component.scss'],
 })
 export class EmployesListComponent implements OnInit {
   private adminService = inject(AdminService);
+  private router = inject(Router);
 
   employes: Employe[] = [];
   loading = true;
@@ -25,6 +27,10 @@ export class EmployesListComponent implements OnInit {
   resetting = false;
   resetError: string | null = null;
   resetSuccess: string | null = null;
+
+  showFormModal = false; // Ajout modal création/édition
+  employeToEdit: Employe | undefined;
+
 
   ngOnInit() {
     this.loadEmployes();
@@ -87,5 +93,31 @@ export class EmployesListComponent implements OnInit {
           console.error(err);
         },
       });
+  }
+  openCreateModal() {
+  this.showFormModal = true;
+  this.employeToEdit = undefined;
+}
+openEditModal(employe: Employe) {
+  this.showFormModal = true;
+  this.employeToEdit = employe;
+}
+  onEditEmploye(id?: number): void {
+    if (!id) return;
+    this.router.navigate(['/admin/employes/edit', id]);
+  }
+
+  onDeleteEmploye(id?: number): void {
+    if (!id) return;
+    if (confirm('Voulez-vous vraiment supprimer cet employé ?')) {
+      this.adminService.deleteEmploye(id).subscribe({
+        next: () => {
+          this.employes = this.employes.filter((e) => e.id !== id);
+        },
+        error: (err) => {
+          console.error('Erreur suppression employé:', err);
+        },
+      });
+    }
   }
 }

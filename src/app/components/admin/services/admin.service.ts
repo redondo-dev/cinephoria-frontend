@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import { Data } from '@angular/router';
 
 export interface Employe {
   id?: number;
@@ -17,16 +18,15 @@ export interface Film {
   titre: string;
   description: string;
   duree: number;
-  genre: string;
-  datesSortie: string;
+  genre_id: string;
+  genre:string;
   affiche?: string;
-  bandeAnnonce?: string;
 }
 
 export interface ReservationStats {
   film: string; // Correspond à "film"
   totalReservations: number;
-  date:string;
+  date: string;
 }
 
 export interface DashboardResponse {
@@ -34,7 +34,28 @@ export interface DashboardResponse {
   to: string;
   stats: ReservationStats[];
 }
+// Dans admin.service.ts, mettez à jour l'interface Seance :
 
+export interface Seance {
+  id: number;
+  film_id: number;
+  salle_id: number;
+  date_seance: string;
+  date_heure_debut: string;
+  date_heure_fin: string;
+  prix: number;
+  placesDisponibles?: number;
+  // Champs enrichis par l'API
+  film?: string;
+  salle?: string;
+  prixMoyen?: number;
+}
+export interface Salle {
+  id?: string;
+  nom: string;
+  nombrePlaces: number;
+  qualiteProjection?: 'Standard' | '4K' | 'IMAX' | 'Dolby Atmos';
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -49,7 +70,6 @@ export class AdminService {
       .post<Employe>(`${this.apiUrl}/employes`, employe)
       .pipe(catchError(this.handleError));
   }
-
 
   resetPasswordEmploye(id: string, newPassword: string): Observable<void> {
     return this.http.post<void>(
@@ -108,7 +128,7 @@ export class AdminService {
     return throwError(() => new Error(message));
   }
 
-// === FILMS ===
+  // === FILMS ===
   getFilms(): Observable<Film[]> {
     return this.http.get<Film[]>(`${this.apiUrl}/films`);
   }
@@ -127,5 +147,55 @@ export class AdminService {
 
   deleteFilm(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/films/${id}`);
+  }
+
+  //CRUD Seances
+
+  getSeances(): Observable<Seance[]> {
+    return this.http
+      .get<{ data: Seance[] }>(`${this.apiUrl}/seances`)
+      .pipe(map((res: { data: Seance[] }) => res.data || []));
+  }
+
+  getSeance(id: string): Observable<Seance> {
+    return this.http.get<Seance>(`${this.apiUrl}/seances/${id}`);
+  }
+
+  createSeance(seance: Seance): Observable<Seance> {
+    return this.http.post<Seance>(`${this.apiUrl}/seances`, seance);
+  }
+
+  updateSeance(id: string, seance: Seance): Observable<Seance> {
+    return this.http.put<Seance>(`${this.apiUrl}/seances/${id}`, seance);
+  }
+
+  deleteSeance(id: number | string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/seances/${id}`);
+  }
+
+  //Crud salles
+
+  getSalles(): Observable<Salle[]> {
+    return this.http
+      .get<{ data: Salle[] }>(`${this.apiUrl}/salles`)
+      .pipe(map((res: { data: Salle[] }) => res.data || []));
+  }
+
+  getSalle(id: string): Observable<Salle> {
+    return this.http.get<Salle>(`${this.apiUrl}/salles/${id}`);
+  }
+
+  createSalle(salle: Salle): Observable<Salle> {
+    return this.http.post<Salle>(`${this.apiUrl}/salles`, salle);
+  }
+
+  updateSalle(id: string, salle: Salle): Observable<Salle> {
+    return this.http
+      .patch<Salle>(`${this.apiUrl}/salles/${id}`, salle)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteSalle(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/salles/${id}`);
   }
 }

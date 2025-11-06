@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -8,7 +15,7 @@ import {
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService, Employe } from '../../../services/admin.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-employe-form',
   standalone: true,
@@ -21,6 +28,7 @@ export class EmployeFormComponent implements OnInit {
   private adminService = inject(AdminService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private toastr = inject(ToastrService);
 
   employeForm!: FormGroup;
   submitting = false;
@@ -57,7 +65,7 @@ export class EmployeFormComponent implements OnInit {
       prenom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.minLength(6)]], // facultatif si édition
+      password: ['', [Validators.minLength(6)]],
     });
   }
 
@@ -72,70 +80,37 @@ export class EmployeFormComponent implements OnInit {
     });
   }
 
-//Met à jour le formulaire avec les données de l’employé
+  //Met à jour le formulaire avec les données de l’employé
   patchForm(data: Employe) {
     this.employeForm.patchValue({
       nom: data.nom,
       prenom: data.prenom,
       email: data.email,
       username: data.username,
-      password: '', // ne jamais afficher le hash
+      password: '', 
     });
   }
 
   /** Soumission du formulaire */
-  onSubmit() {
-    if (this.employeForm.invalid) {
-      this.employeForm.markAllAsTouched();
-      return;
-    }
+  onSubmit(): void {
+    if (this.employeForm.invalid) return;
 
-    this.submitting = true;
-    this.error = null;
+    const employeData = this.employeForm.value;
 
-    const employeData: Employe = this.employeForm.value;
+    console.log('Données envoyées :', employeData); // 👈 Vérifie ici dans la console
 
-    // --- 🔹 Cas 1 : édition par route (edit/:id) ---
-    if (this.employeId) {
-      this.adminService.updateEmploye(this.employeId, employeData).subscribe({
-        next: () => {
-          this.router.navigate(['/admin/employes']);
-        },
-        error: (err) => {
-          this.error = "Erreur lors de la mise à jour de l'employé.";
-          this.submitting = false;
-          console.error(err);
-        },
-      });
+    this.adminService.createEmploye(employeData).subscribe({
+      next: (res: any) => {
+        console.log('Employé créé', res);
+        this.toastr.success(res.message, 'Employé ajouté avec succès');
+         this.router.navigate(['/admin/employes']);
+      },
+      error: (err) => {
+        console.error('Erreur API AdminService :', err);
+        this.toastr.error(err.message || 'Erreur lors de l’ajout');
 
-    // --- 🔹 Cas 2 : modal (via @Input) ---
-    } else if (this.employeToEdit) {
-      this.adminService.updateEmploye(this.employeToEdit.id!, employeData).subscribe({
-        next: () => {
-          this.refresh.emit();
-          this.close.emit();
-        },
-        error: (err) => {
-          this.error = "Erreur lors de la mise à jour de l'employé.";
-          this.submitting = false;
-          console.error(err);
-        },
-      });
-
-    // --- 🔹 Cas 3 : création ---
-    } else {
-      this.adminService.createEmploye(employeData).subscribe({
-        next: () => {
-          this.router.navigate(['/admin/employes']);
-        },
-        error: (err) => {
-          this.error =
-            "Erreur lors de la création de l'employé. Le login existe peut-être déjà.";
-          this.submitting = false;
-          console.error(err);
-        },
-      });
-    }
+      },
+    });
   }
 
   /** Retour à la liste */

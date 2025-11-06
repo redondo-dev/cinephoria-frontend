@@ -30,7 +30,7 @@
       <p class="film-description">{{ film.description }}</p>
       <div class="film-meta">
         <span>⏱️ {{ film.duree }} min</span>
-        <span>📅 {{ formatDate(film.datesSortie) }}</span>
+        <!-- <span>📅 {{ formatDate(film.datesSortie) }}</span> -->
       </div>
       <div class="film-actions">
         <a [routerLink]="['/admin/films/edit', film.id]" class="btn btn-sm btn-secondary">

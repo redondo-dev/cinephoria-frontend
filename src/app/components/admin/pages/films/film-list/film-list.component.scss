@@ -1,6 +1,6 @@
 /* Couleurs principales */
 $primary-color: #e50914; // Rouge Netflix
-$bg-color: #141414;      // Fond sombre
+$bg-color: #141414; // Fond sombre
 $text-color: #fff;
 $secondary-color: #333;
 
@@ -50,12 +50,12 @@ $secondary-color: #333;
   background-color: $secondary-color;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
   }
 
   img.film-poster {
@@ -128,7 +128,7 @@ $secondary-color: #333;
           background-color: #e50914;
           color: #fff;
           &:hover {
-            background-color: darken(#e50914, 10%);
+            background-color: adjust-color(#e50914, $lightness: -10%);
           }
         }
       }

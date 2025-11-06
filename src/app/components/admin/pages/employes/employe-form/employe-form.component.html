@@ -1,104 +1,79 @@
- <div class="form-container">
-      <div class="form-header">
-        <h1>Créer un compte employé</h1>
-        <button (click)="goBack()" class="btn btn-secondary">← Retour</button>
+<div class="form-container">
+  <div class="form-header">
+    <h1>Créer un compte employé</h1>
+    <button (click)="goBack()" class="btn btn-secondary">← Retour</button>
+  </div>
+
+  <form [formGroup]="employeForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nom">Nom *</label>
+        <input type="text" id="nom" formControlName="nom" class="form-control" placeholder="Dupont"
+          [class.error]="employeForm.get('nom')?.invalid && employeForm.get('nom')?.touched">
+        @if (employeForm.get('nom')?.invalid && employeForm.get('nom')?.touched) {
+        <span class="error-text">Le nom est requis</span>
+        }
       </div>
 
-      <form [formGroup]="employeForm" (ngSubmit)="onSubmit()" class="form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nom">Nom *</label>
-            <input
-              type="text"
-              id="nom"
-              formControlName="nom"
-              class="form-control"
-              placeholder="Dupont"
-              [class.error]="employeForm.get('nom')?.invalid && employeForm.get('nom')?.touched">
-            @if (employeForm.get('nom')?.invalid && employeForm.get('nom')?.touched) {
-              <span class="error-text">Le nom est requis</span>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="prenom">Prénom *</label>
-            <input
-              type="text"
-              id="prenom"
-              formControlName="prenom"
-              class="form-control"
-              placeholder="Jean"
-              [class.error]="employeForm.get('prenom')?.invalid && employeForm.get('prenom')?.touched">
-            @if (employeForm.get('prenom')?.invalid && employeForm.get('prenom')?.touched) {
-              <span class="error-text">Le prénom est requis</span>
-            }
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email *</label>
-          <input
-            type="email"
-            id="email"
-            formControlName="email"
-            class="form-control"
-            placeholder="jean.dupont@cinema.fr"
-            [class.error]="employeForm.get('email')?.invalid && employeForm.get('email')?.touched">
-          @if (employeForm.get('email')?.invalid && employeForm.get('email')?.touched) {
-            <span class="error-text">Email invalide</span>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="login">Login *</label>
-          <input
-            type="text"
-            id="login"
-            formControlName="login"
-            class="form-control"
-            placeholder="jdupont"
-            [class.error]="employeForm.get('login')?.invalid && employeForm.get('login')?.touched">
-          @if (employeForm.get('login')?.invalid && employeForm.get('login')?.touched) {
-            <span class="error-text">Le login est requis (min. 3 caractères)</span>
-          }
-          <small class="helper-text">Ce login sera utilisé pour se connecter</small>
-        </div>
-
-        <div class="form-group">
-          <label for="motDePasse">Mot de passe *</label>
-          <input
-            type="password"
-            id="motDePasse"
-            formControlName="motDePasse"
-            class="form-control"
-            placeholder="••••••••"
-            [class.error]="employeForm.get('motDePasse')?.invalid && employeForm.get('motDePasse')?.touched">
-          @if (employeForm.get('motDePasse')?.invalid && employeForm.get('motDePasse')?.touched) {
-            <span class="error-text">Le mot de passe doit contenir au moins 6 caractères</span>
-          }
-          <small class="helper-text">Minimum 6 caractères</small>
-        </div>
-
-        <div class="info-box">
-          <div class="info-icon">ℹ️</div>
-          <div class="info-content">
-            <strong>Important :</strong> Les employés pourront utiliser leur login et mot de passe
-            pour se connecter au système. Vous pourrez réinitialiser leur mot de passe
-            à tout moment depuis la liste des employés.
-          </div>
-        </div>
-
-        @if (error) {
-          <div class="error-message">{{ error }}</div>
+      <div class="form-group">
+        <label for="prenom">Prénom *</label>
+        <input type="text" id="prenom" formControlName="prenom" class="form-control" placeholder="Jean"
+          [class.error]="employeForm.get('prenom')?.invalid && employeForm.get('prenom')?.touched">
+        @if (employeForm.get('prenom')?.invalid && employeForm.get('prenom')?.touched) {
+        <span class="error-text">Le prénom est requis</span>
         }
-
-        <div class="form-actions">
-          <button type="button" (click)="goBack()" class="btn btn-secondary">
-            Annuler
-          </button>
-          <button type="submit" [disabled]="employeForm.invalid || submitting" class="btn btn-primary">
-            {{ submitting ? 'Création...' : 'Créer l\'employé' }}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input type="email" id="email" formControlName="email" class="form-control" placeholder="jean.dupont@cinema.fr"
+        [class.error]="employeForm.get('email')?.invalid && employeForm.get('email')?.touched">
+      @if (employeForm.get('email')?.invalid && employeForm.get('email')?.touched) {
+      <span class="error-text">Email invalide</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="login">Login *</label>
+      <input type="text" id="login" formControlName="username" class="form-control" placeholder="jdupont"
+        [class.error]="employeForm.get('login')?.invalid && employeForm.get('login')?.touched">
+      @if (employeForm.get('login')?.invalid && employeForm.get('login')?.touched) {
+      <span class="error-text">Le login est requis (min. 3 caractères)</span>
+      }
+      <small class="helper-text">Ce login sera utilisé pour se connecter</small>
+    </div>
+
+    <div class="form-group">
+      <label for="motDePasse">Mot de passe *</label>
+      <input type="password" id="motDePasse" formControlName="password" class="form-control" placeholder="••••••••"
+        [class.error]="employeForm.get('motDePasse')?.invalid && employeForm.get('motDePasse')?.touched">
+      @if (employeForm.get('motDePasse')?.invalid && employeForm.get('motDePasse')?.touched) {
+      <span class="error-text">Le mot de passe doit contenir au moins 6 caractères</span>
+      }
+      <small class="helper-text">Minimum 6 caractères</small>
+    </div>
+
+    <div class="info-box">
+      <div class="info-icon">ℹ️</div>
+      <div class="info-content">
+        <strong>Important :</strong> Les employés pourront utiliser leur login et mot de passe
+        pour se connecter au système. Vous pourrez réinitialiser leur mot de passe
+        à tout moment depuis la liste des employés.
+      </div>
+    </div>
+
+    @if (error) {
+    <div class="error-message">{{ error }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" (click)="goBack()" class="btn btn-secondary">
+        Annuler
+      </button>
+      <button type="submit" [disabled]="employeForm.invalid || submitting" class="btn btn-primary">
+        {{ submitting ? 'Création...' : 'Créer l\'employé' }}
+      </button>
+    </div>
+  </form>
+</div>

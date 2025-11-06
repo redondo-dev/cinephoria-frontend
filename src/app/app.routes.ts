@@ -1,6 +1,6 @@
 import { Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
-import { ADMIN_ROUTES } from './components/admin/admin.routes';
+import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
 
 export const routes: Routes = [
   {
@@ -76,9 +76,9 @@ export const routes: Routes = [
       {
         path: 'sieges/:seanceId',
         loadComponent: () =>
-          import('./components/reservation/seat-selection/seat-selection.component').then(
-            (m) => m.SeatSelectionComponent
-          ),
+          import(
+            './components/reservation/seat-selection/seat-selection.component'
+          ).then((m) => m.SeatSelectionComponent),
       },
 
       {
@@ -89,38 +89,37 @@ export const routes: Routes = [
           ).then((m) => m.ReservationConfirmationComponent),
       },
 
-   {
+      {
         path: 'payment',
         canActivate: [AuthGuard],
         loadComponent: () =>
-          import(
-            './components/reservation/payment/payment.component'
-          ).then((m) => m.PaymentComponent),
+          import('./components/reservation/payment/payment.component').then(
+            (m) => m.PaymentComponent
+          ),
       },
 
       {
         path: 'payment/card',
         loadComponent: () =>
-          import('./components/reservation/payment/payment-card/payment-card.component').then(
-            (m) => m.PaymentCardComponent
-          ),
+          import(
+            './components/reservation/payment/payment-card/payment-card.component'
+          ).then((m) => m.PaymentCardComponent),
       },
       {
         path: 'payment/paypal',
         loadComponent: () =>
-          import('./components/reservation/payment/payment-paypal/payment-paypal.component').then(
-            (m) => m.PaymentPaypalComponent
-          ),
+          import(
+            './components/reservation/payment/payment-paypal/payment-paypal.component'
+          ).then((m) => m.PaymentPaypalComponent),
       },
 
-   {
+      {
         path: 'success/:id',
         loadComponent: () =>
-          import(
-            './components/reservation/success/success.component'
-          ).then((m) => m.ReservationSuccessComponent),
+          import('./components/reservation/success/success.component').then(
+            (m) => m.ReservationSuccessComponent
+          ),
       },
-
     ],
   },
 ];

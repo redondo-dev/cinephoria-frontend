@@ -6,6 +6,8 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { routes } from './app.routes';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 // Import des interceptors
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
@@ -22,5 +24,12 @@ export const appConfig: ApplicationConfig = {
     // Déclaration explicite des interceptors
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+
+    //
+    provideAnimations(),
+    provideToastr({
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
   ],
 };

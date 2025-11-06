@@ -1,0 +1,128 @@
+
+    <div class="form-container">
+      <div class="form-header">
+        <h1>{{ isEditMode ? 'Modifier la séance' : 'Créer une séance' }}</h1>
+        <button (click)="goBack()" class="btn btn-secondary">← Retour</button>
+      </div>
+
+      @if (loading) {
+        <div class="loading">Chargement...</div>
+      } @else {
+        <form [formGroup]="seanceForm" (ngSubmit)="onSubmit()" class="form">
+          <div class="form-group">
+            <label for="filmId">Film *</label>
+            <select
+              id="filmId"
+              formControlName="filmId"
+              class="form-control"
+              [class.error]="seanceForm.get('filmId')?.invalid && seanceForm.get('filmId')?.touched">
+              <option value="">Sélectionnez un film</option>
+              @for (film of films; track film.id) {
+                <option [value]="film.id">{{ film.titre }} ({{ film.duree }} min)</option>
+              }
+            </select>
+            @if (seanceForm.get('filmId')?.invalid && seanceForm.get('filmId')?.touched) {
+              <span class="error-text">Le film est requis</span>
+            }
+            @if (films.length === 0) {
+              <small class="helper-text warning">⚠️ Aucun film disponible. Créez d'abord des films.</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="salleId">Salle *</label>
+            <select
+              id="salleId"
+              formControlName="salleId"
+              class="form-control"
+              (change)="onSalleChange()"
+              [class.error]="seanceForm.get('salleId')?.invalid && seanceForm.get('salleId')?.touched">
+              <option value="">Sélectionnez une salle</option>
+              @for (salle of salles; track salle.id) {
+                <option [value]="salle.id">
+                  {{ salle.nom }} - {{ salle.nombrePlaces }} places ({{ salle.qualiteProjection }})
+                </option>
+              }
+            </select>
+            @if (seanceForm.get('salleId')?.invalid && seanceForm.get('salleId')?.touched) {
+              <span class="error-text">La salle est requise</span>
+            }
+            @if (salles.length === 0) {
+              <small class="helper-text warning">⚠️ Aucune salle disponible. Créez d'abord des salles.</small>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Date *</label>
+              <input
+                type="date"
+                id="date"
+                formControlName="date"
+                class="form-control"
+                [class.error]="seanceForm.get('date')?.invalid && seanceForm.get('date')?.touched">
+              @if (seanceForm.get('date')?.invalid && seanceForm.get('date')?.touched) {
+                <span class="error-text">La date est requise</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="heure">Heure *</label>
+              <input
+                type="time"
+                id="heure"
+                formControlName="heure"
+                class="form-control"
+                [class.error]="seanceForm.get('heure')?.invalid && seanceForm.get('heure')?.touched">
+              @if (seanceForm.get('heure')?.invalid && seanceForm.get('heure')?.touched) {
+                <span class="error-text">L'heure est requise</span>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prix">Prix (€) *</label>
+            <input
+              type="number"
+              id="prix"
+              formControlName="prix"
+              step="0.50"
+              class="form-control"
+              placeholder="Ex: 9.50"
+              [class.error]="seanceForm.get('prix')?.invalid && seanceForm.get('prix')?.touched">
+            @if (seanceForm.get('prix')?.invalid && seanceForm.get('prix')?.touched) {
+              <span class="error-text">Le prix doit être supérieur à 0</span>
+            }
+          </div>
+
+          @if (selectedSalle) {
+            <div class="info-box">
+              <div class="info-icon">ℹ️</div>
+              <div class="info-content">
+                <strong>Salle sélectionnée :</strong> {{ selectedSalle.nom }}<br>
+                <strong>Capacité :</strong> {{ selectedSalle.nombrePlaces }} places<br>
+                <strong>Qualité :</strong> {{ selectedSalle.qualiteProjection }}
+              </div>
+            </div>
+          }
+
+          @if (error) {
+            <div class="error-message">{{ error }}</div>
+          }
+
+          <div class="form-actions">
+            <button type="button" (click)="goBack()" class="btn btn-secondary">
+              Annuler
+            </button>
+            <button
+              type="submit"
+              [disabled]="seanceForm.invalid || submitting || films.length === 0 || salles.length === 0"
+              class="btn btn-primary">
+              {{ submitting ? 'Enregistrement...' : (isEditMode ? 'Modifier' : 'Créer') }}
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+
+

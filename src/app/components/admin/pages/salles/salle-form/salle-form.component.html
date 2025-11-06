@@ -1,0 +1,83 @@
+
+<div class="form-container">
+      <div class="form-header">
+        <h1>{{ isEditMode ? 'Modifier la salle' : 'Créer une salle' }}</h1>
+        <button (click)="goBack()" class="btn btn-secondary">← Retour</button>
+      </div>
+
+      @if (loading) {
+        <div class="loading">Chargement...</div>
+      } @else {
+        <form [formGroup]="salleForm" (ngSubmit)="onSubmit()" class="form">
+          <div class="form-group">
+            <label for="nom">Nom de la salle *</label>
+            <input
+              type="text"
+              id="nom"
+              formControlName="nom"
+              class="form-control"
+              placeholder="Ex: Salle 1"
+              [class.error]="salleForm.get('nom')?.invalid && salleForm.get('nom')?.touched">
+            @if (salleForm.get('nom')?.invalid && salleForm.get('nom')?.touched) {
+              <span class="error-text">Le nom est requis</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="nombrePlaces">Nombre de places *</label>
+            <input
+              type="number"
+              id="nombrePlaces"
+              formControlName="nombrePlaces"
+              class="form-control"
+              placeholder="Ex: 150"
+              min="1"
+              [class.error]="salleForm.get('nombrePlaces')?.invalid && salleForm.get('nombrePlaces')?.touched">
+            @if (salleForm.get('nombrePlaces')?.invalid && salleForm.get('nombrePlaces')?.touched) {
+              <span class="error-text">Le nombre de places doit être supérieur à 0</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="qualiteProjection">Qualité de projection *</label>
+            <select
+              id="qualiteProjection"
+              formControlName="qualiteProjection"
+              class="form-control"
+              [class.error]="salleForm.get('qualiteProjection')?.invalid && salleForm.get('qualiteProjection')?.touched">
+              <option value="">Sélectionnez une qualité</option>
+              <option value="Standard">Standard</option>
+              <option value="4K">4K</option>
+              <option value="IMAX">IMAX</option>
+              <option value="Dolby Atmos">Dolby Atmos</option>
+            </select>
+            @if (salleForm.get('qualiteProjection')?.invalid && salleForm.get('qualiteProjection')?.touched) {
+              <span class="error-text">La qualité de projection est requise</span>
+            }
+          </div>
+
+          <div class="quality-info">
+            <h3>À propos des qualités de projection :</h3>
+            <ul>
+              <li><strong>Standard :</strong> Projection classique en Full HD</li>
+              <li><strong>4K :</strong> Ultra haute définition avec 4 fois plus de pixels</li>
+              <li><strong>IMAX :</strong> Grand écran avec son immersif</li>
+              <li><strong>Dolby Atmos :</strong> Son 3D avec objets audio positionnés</li>
+            </ul>
+          </div>
+
+          @if (error) {
+            <div class="error-message">{{ error }}</div>
+          }
+
+          <div class="form-actions">
+            <button type="button" (click)="goBack()" class="btn btn-secondary">
+              Annuler
+            </button>
+            <button type="submit" [disabled]="salleForm.invalid || submitting" class="btn btn-primary">
+              {{ submitting ? 'Enregistrement...' : (isEditMode ? 'Modifier' : 'Créer') }}
+            </button>
+          </div>
+        </form>
+      }
+    </div>

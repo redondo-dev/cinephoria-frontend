@@ -1,0 +1,204 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #cf454c; // rouge Netflix
+  margin: 0;
+  font-weight: 700;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #b3b3b3;
+}
+
+.error-message {
+  background: #331111;
+  color: #ff4c4c;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.salles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.salle-card {
+  background: #141414;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.salle-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+}
+
+.salle-icon {
+  background: linear-gradient(135deg, #e50914 0%, #b81d24 100%);
+  color: white;
+  font-size: 4rem;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.salle-content {
+  padding: 1.5rem;
+}
+
+.salle-content h3 {
+  margin: 0 0 1rem 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.salle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.938rem;
+  color: #b3b3b3;
+}
+
+.info-icon {
+  font-size: 1.25rem;
+  color: #e50914;
+}
+
+.info-label {
+  color: #b3b3b3;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #fff;
+  font-weight: 600;
+}
+
+.quality-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.813rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.quality-badge.quality-standard {
+  background: #333;
+  color: #b3b3b3;
+}
+
+.quality-badge.quality-4k {
+  background: #e50914;
+  color: #fff;
+}
+
+.quality-badge.quality-imax {
+  background: #b81d24;
+  color: #fff;
+}
+
+.quality-badge.quality-dolby {
+  background: #6c1fa1;
+  color: #fff;
+}
+
+.salle-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+  font-weight: 500;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #e50914;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #b81d24;
+}
+
+.btn-secondary {
+  background: #333;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #555;
+}
+
+.btn-danger {
+  background: #ff4c4c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c0392b;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.813rem;
+  flex: 1;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #1c1c1c;
+  border-radius: 8px;
+}
+
+.empty-state p {
+  color: #b3b3b3;
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .salles-grid {
+    grid-template-columns: 1fr;
+  }
+}

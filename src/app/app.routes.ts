@@ -121,5 +121,13 @@ export const routes: Routes = [
           ),
       },
     ],
+
+
   },
+{
+    path: 'intranet',
+    loadChildren: () =>
+      import('./components/employes/routes/employes.routes').then((m) => m.EMPLOYE_ROUTES),
+  },
+
 ];

@@ -1,6 +1,7 @@
 import { Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
+import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
 
 export const routes: Routes = [
   {
@@ -121,13 +122,15 @@ export const routes: Routes = [
           ),
       },
     ],
-
-
   },
-{
+
+  //routes pour employe/ inranet
+  {
     path: 'intranet',
-    loadChildren: () =>
-      import('./components/employes/routes/employes.routes').then((m) => m.EMPLOYE_ROUTES),
+    loadComponent: () =>
+      import(
+        './components/employes/pages/employes-dashboard/employes-dashboard.component'
+      ).then((m) => m.EmployesDashboardComponent),
+    children: EMPLOYE_ROUTES,
   },
-
 ];

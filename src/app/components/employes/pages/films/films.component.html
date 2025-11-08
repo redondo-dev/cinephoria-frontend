@@ -1,0 +1,44 @@
+   <div class="films-container">
+      <h2>Gestion des Films</h2>
+
+      <button (click)="showForm = !showForm">
+        {{ showForm ? 'Annuler' : 'Ajouter un film' }}
+      </button>
+
+      <form *ngIf="showForm" (ngSubmit)="saveFilm()" class="film-form">
+        <input [(ngModel)]="currentFilm.titre" name="titre" placeholder="Titre" required>
+        <input [(ngModel)]="currentFilm.duree" name="duree" type="number" placeholder="Durée (min)" required>
+        <input [(ngModel)]="currentFilm.genre_id" name="genre" placeholder="Genre" required>
+        <textarea [(ngModel)]="currentFilm.description" name="synopsis" placeholder="Synopsis" required></textarea>
+        <input [(ngModel)]="currentFilm.affiche" name="affiche" placeholder="URL Affiche">
+        <input [(ngModel)]="currentFilm.date_ajout" name="datesSortie" type="date" required>
+
+        <button type="submit">{{ currentFilm.id ? 'Modifier' : 'Créer' }}</button>
+      </form>
+
+      <table *ngIf="films.length > 0">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Réalisateur</th>
+            <th>Durée</th>
+            <th>Genre</th>
+            <th>Date de sortie</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let film of films">
+            <td>{{ film.titre }}</td>
+            <!-- <td>{{ film.realisateur }}</td> -->
+            <td>{{ film.duree }} min</td>
+            <td>{{ film.genre_id }}</td>
+            <td>{{ film.date_ajout | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <button (click)="editFilm(film)">Modifier</button>
+              <button (click)="deleteFilm(film.id!)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>

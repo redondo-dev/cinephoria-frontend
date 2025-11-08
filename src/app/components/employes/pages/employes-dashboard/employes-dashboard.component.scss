@@ -1,0 +1,269 @@
+// Variables Netflix
+$netflix-red: #e50914;
+$netflix-black: #141414;
+$netflix-dark-gray: #1f1f1f;
+$netflix-gray: #2f2f2f;
+$netflix-light-gray: #808080;
+$netflix-white: #ffffff;
+
+.dashboard {
+  min-height: 100vh;
+  background-color: $netflix-black;
+  color: $netflix-white;
+
+  h1 {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      transparent 100%
+    );
+    padding: 2.5rem 3rem 2rem;
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .dashboard-nav {
+    display: flex;
+    gap: 0;
+    background: linear-gradient(
+      to bottom,
+      $netflix-dark-gray,
+      lighten($netflix-dark-gray, 2%)
+    );
+    border-bottom: 3px solid $netflix-black;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    a {
+      position: relative;
+      padding: 1.25rem 2.5rem;
+      color: $netflix-light-gray;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+      bottom: -3px;
+
+      // Effet hover
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.05),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      &:hover {
+        color: $netflix-white;
+        background-color: rgba(255, 255, 255, 0.03);
+
+        &::before {
+          opacity: 1;
+        }
+      }
+
+      // État actif
+      &.active {
+        color: $netflix-white;
+        border-bottom-color: $netflix-red;
+        background-color: rgba(229, 9, 20, 0.1);
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -3px;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            $netflix-red 20%,
+            $netflix-red 80%,
+            transparent
+          );
+          animation: slideIn 0.3s ease-out;
+        }
+      }
+
+      // Effet de focus pour accessibilité
+      &:focus-visible {
+        outline: 2px solid $netflix-red;
+        outline-offset: -2px;
+      }
+    }
+  }
+
+  .dashboard-content {
+    padding: 2.5rem 3rem;
+    max-width: 1920px;
+    margin: 0 auto;
+    animation: fadeIn 0.4s ease-out;
+  }
+}
+
+// Animation d'entrée
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+// Responsive
+@media (max-width: 1280px) {
+  .dashboard {
+    h1 {
+      padding: 2rem 2.5rem 1.75rem;
+      font-size: 2rem;
+    }
+
+    .dashboard-nav {
+      a {
+        padding: 1.125rem 2rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    .dashboard-content {
+      padding: 2rem 2.5rem;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard {
+    h1 {
+      padding: 1.75rem 2rem 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .dashboard-nav {
+      a {
+        padding: 1rem 1.75rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .dashboard-content {
+      padding: 1.75rem 2rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    h1 {
+      padding: 1.5rem 1.5rem 1.25rem;
+      font-size: 1.5rem;
+      letter-spacing: -0.25px;
+    }
+
+    .dashboard-nav {
+      padding: 0;
+      gap: 0.5rem;
+
+      a {
+        padding: 1rem 1.5rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+
+        &::after {
+          height: 2px;
+        }
+      }
+    }
+
+    .dashboard-content {
+      padding: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    h1 {
+      padding: 1.25rem 1rem;
+      font-size: 1.25rem;
+    }
+
+    .dashboard-nav {
+      a {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.25px;
+      }
+    }
+
+    .dashboard-content {
+      padding: 1rem;
+    }
+  }
+}
+
+// Mode sombre amélioré (si besoin)
+@media (prefers-color-scheme: dark) {
+  .dashboard {
+    .dashboard-nav {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+// Impression (optionnel)
+@media print {
+  .dashboard {
+    h1 {
+      background: none;
+      padding: 1rem;
+      border-bottom: 2px solid #000;
+    }
+
+    .dashboard-nav {
+      display: none;
+    }
+
+    .dashboard-content {
+      padding: 1rem;
+    }
+  }
+}

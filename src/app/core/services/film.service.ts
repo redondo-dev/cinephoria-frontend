@@ -1,18 +1,38 @@
-import { environment} from './../../../environments/.environment';
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+export interface Genre {
+  id: number;
+  nom: string;
+}
 
 export interface Film {
   id: string;
   titre: string;
   affiche: string;
   note_moyenne?: number;
-  genre?: string[];
+  genre?: Genre;
   duree: number;
   dateAjout: string;
   description: string;
-  année: number;
+  annee: number;
+}
+
+export interface FilmsResponse {
+  films: Film[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
+
+export interface FilmFilters {
+  genre?: string;
+  search?: string;
+  minRating?: number;
+  maxRating?: number;
+  year?: number;
 }
 
 @Injectable({
@@ -34,20 +54,39 @@ export class FilmService {
   /**
    * Récupère tous les films avec pagination et filtres
    */
+  // getAllFilms(
+  //   page = 1,
+  //   limit = 20,
+  //   filters?: any
+  // ): Observable<{ films: Film[]; total: number }> {
+  //   let params = new HttpParams()
+  //     .set('page', page.toString())
+  //     .set('limit', limit.toString());
+
+  //   if (filters?.genre) {
+  //     params = params.set('genre', filters.genre);
+  //   }
+  //   if (filters?.search) {
+  //     params = params.set('search', filters.search);
+  //   }
+
+  //   return this.http.get<{ films: Film[]; total: number }>(this.apiUrl, {
+  //     params,
+  //   });
+  // }
+
+  // Récupère les films les mieux notés
   getAllFilms(
-    page = 1,
-    limit = 20,
+    page: number,
+    limit: number,
     filters?: any
   ): Observable<{ films: Film[]; total: number }> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
+    let params = new HttpParams().set('page', page).set('limit', limit);
 
-    if (filters?.genre) {
-      params = params.set('genre', filters.genre);
-    }
-    if (filters?.search) {
-      params = params.set('search', filters.search);
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        if (filters[key]) params = params.set(key, filters[key]);
+      });
     }
 
     return this.http.get<{ films: Film[]; total: number }>(this.apiUrl, {
@@ -55,10 +94,65 @@ export class FilmService {
     });
   }
 
-  /**
-   * Récupère un film par son ID
-   */
-  getFilmById(id: string): Observable<Film> {
+  getFilmById(id: number): Observable<Film> {
     return this.http.get<Film>(`${this.apiUrl}/${id}`);
+  }
+
+  getTopRatedFilms(limit = 10): Observable<Film[]> {
+    const params = new HttpParams()
+      .set('sort', 'rating')
+      .set('order', 'desc')
+      .set('limit', limit.toString());
+
+    return this.http.get<Film[]>(this.apiUrl, { params });
+  }
+
+  //Récupère les dernières sorties
+
+  getLatestFilms(limit = 10): Observable<Film[]> {
+    const params = new HttpParams()
+      .set('sort', 'dateAjout')
+      .set('order', 'desc')
+      .set('limit', limit.toString());
+
+    return this.http.get<Film[]>(this.apiUrl, { params });
+  }
+  //Récupère des films similaires
+  getSimilarFilms(filmId: string, limit = 6): Observable<Film[]> {
+    return this.http.get<Film[]>(`${this.apiUrl}/${filmId}/similar`, {
+      params: new HttpParams().set('limit', limit.toString()),
+    });
+  }
+  //Récupère tous les genres disponibles
+  getGenres(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/genres`);
+  }
+
+  // Ajouter un film aux favoris (API)
+  addToFavorites(filmId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${filmId}/favorite`, {});
+  }
+
+  //Retirer un film des favoris (API)
+
+  removeFromFavorites(filmId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${filmId}/favorite`);
+  }
+
+  // Noter un film
+
+  rateFilm(filmId: string, rating: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${filmId}/rate`, { rating });
+  }
+
+  //Ajouter un commentaire
+  addComment(filmId: string, comment: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${filmId}/comments`, { comment });
+  }
+
+  //Récupérer les commentaires d'un film
+
+  getComments(filmId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${filmId}/comments`);
   }
 }

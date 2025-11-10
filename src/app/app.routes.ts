@@ -23,9 +23,9 @@ export const routes: Routes = [
     path: 'films',
     data: { title: 'Cinephoria - Tous les films' },
     loadComponent: () =>
-      import('./components/films-list-component/films-list-component').then(
-        (m) => m.FilmsListComponent
-      ),
+      import(
+        './components/films/films-list-component/films-list-component'
+      ).then((m) => m.FilmsListComponent),
   },
 
   // Route publique - Détail d'un film
@@ -33,9 +33,9 @@ export const routes: Routes = [
     path: 'films/:id',
     data: { title: 'Cinephoria - Détail du film' },
     loadComponent: () =>
-      import('./components/film-detail-component/film-detail-component').then(
-        (m) => m.FilmDetailComponentComponent
-      ),
+      import(
+        './components/films/film-detail-component/film-detail-component'
+      ).then((m) => m.FilmDetailComponent),
   },
   // Routes d'authentification
 
@@ -133,4 +133,16 @@ export const routes: Routes = [
       ).then((m) => m.EmployesDashboardComponent),
     children: EMPLOYE_ROUTES,
   },
+
+
+{
+path: 'contact',
+    loadComponent: () =>
+      import('./components/contact/contact.component').then(m => m.ContactComponent),
+    title: 'Contact - Cinéphoria'
+
+}
+
+
+
 ];

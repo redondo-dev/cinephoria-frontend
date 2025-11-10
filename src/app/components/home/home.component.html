@@ -59,7 +59,7 @@
           <h3 class="film-title">{{ film.titre }}</h3>
 
           <div class="film-meta">
-            <span class="genre">{{ film.genre?.join(', ') || 'Genre non disponible' }}</span>
+            <span class="genre">{{ film.genre?.nom || 'Genre non disponible' }}</span>
             <span class="duration">⏱ {{ formatDuration(film.duree) }}</span>
           </div>
 

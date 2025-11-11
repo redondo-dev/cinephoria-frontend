@@ -125,10 +125,13 @@ export const routes: Routes = [
 
 
   },
-{
-    path: 'intranet',
-    loadChildren: () =>
-      import('./components/employes/routes/employes.routes').then((m) => m.EMPLOYE_ROUTES),
+
+
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./components/contact/contact.component').then(m => m.ContactComponent),
+    title: 'Contact - Cinéphoria'
   },
 
 ];

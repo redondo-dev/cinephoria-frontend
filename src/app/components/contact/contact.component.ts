@@ -29,14 +29,18 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({
-      username: [''],
-      title: ['', [Validators.required, Validators.minLength(3)]],
+      nom: [''],
+      email: ['', [Validators.required, Validators.email]],
+      titre: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
-  get title() {
-    return this.contactForm.get('title');
+  get titre() {
+    return this.contactForm.get('titre');
+  }
+  get email() {
+    return this.contactForm.get('email');
   }
 
   get description() {

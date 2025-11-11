@@ -1,4 +1,3 @@
-
 <!-- src/app/features/contact/contact.component.html -->
 <div class="contact-page">
   <div class="contact-container">
@@ -34,5 +33,14 @@
         Envoyer
       </button>
     </form>
+    <!-- Bannière de succès -->
+    <div *ngIf="showSuccess" class="success-banner">
+      ✅ Votre message a bien été envoyé !
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="error-banner">
+      ⚠️ {{ errorMessage }}
+    </div>
   </div>
 </div>

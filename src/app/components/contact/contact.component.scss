@@ -65,7 +65,7 @@
       margin: 0;
       font-size: 32px;
       font-weight: 700;
-      color: #d55656;
+      color: #df5454 !important;
       letter-spacing: 0.2px;
       text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
     }
@@ -202,6 +202,26 @@
   .form-control:focus + label,
   .form-control:focus ~ .hint {
     transform: translateY(-2px);
+  }
+
+  .success-banner {
+    background-color: #4caf50; // vert
+    color: white;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .error-banner {
+    background-color: #f44336; // rouge
+    color: white;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
   }
 
   /* Responsive */

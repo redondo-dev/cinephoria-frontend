@@ -18,6 +18,10 @@ export interface Film {
   dateAjout: string;
   description: string;
   annee: number;
+   age_min?: number;
+  coup_coeur?: boolean;
+  cinema?: string;
+  seances?: any[]; 
 }
 
 export interface FilmsResponse {
@@ -132,7 +136,21 @@ export class FilmService {
   addToFavorites(filmId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${filmId}/favorite`, {});
   }
+   // Récupère tous les cinémas
+  getCinemas(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.apiUrl}/api/cinemas`);
+  }
 
+  //  Récupère les dates disponibles pour les séances
+  getAvailableDates(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.apiUrl}/api/seances/dates`);
+  }
+
+  // Récupère les films coup de coeur
+  getFavoriteFilms(): Observable<Film[]> {
+    const params = new HttpParams().set('coup_coeur', 'true');
+    return this.http.get<Film[]>(this.apiUrl, { params });
+  }
   //Retirer un film des favoris (API)
 
   removeFromFavorites(filmId: string): Observable<any> {

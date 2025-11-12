@@ -2,9 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FilmService, Film } from '../../../core/services/film.service';
-import { SeancesListComponent } from '../seances-list-component/seances-list.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {
+  SeancesListComponent,
+  Seance,
+} from '../../seances/seances-list-component/seances-list.component';
 
 @Component({
   selector: 'app-film-detail',
@@ -14,8 +17,8 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./film-detail-component.scss'],
 })
 export class FilmDetailComponent implements OnInit, OnDestroy {
-  filmId!: string;
   film: Film | null = null;
+  filmId!: string;
   similarFilms: Film[] = [];
   isLoading = false;
   errorMessage: string | null = null;
@@ -54,7 +57,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const filmIdNum = +this.filmId; // ✅ conversion en nombre
+    const filmIdNum = +this.filmId;
     this.isLoading = true;
     this.errorMessage = null;
 
@@ -95,6 +98,69 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   *  Formater les séances pour le composant SeancesListComponent
+   */
+  formatSeancesForDisplay(): Seance[] {
+    if (!this.film?.seances || this.film.seances.length === 0) {
+      return [];
+    }
+
+    return this.film.seances.map((seance: any) => ({
+      id: seance.id.toString(),
+      date: seance.date_seance,
+      heure_debut: this.extractTime(seance.dateHeureDebut),
+      heure_fin: this.extractTime(seance.dateHeureFin),
+      qualite: (seance.salle?.qualite_projection || 'Standard') as
+        | 'Standard'
+        | '3D'
+        | 'IMAX'
+        | 'VIP',
+      prix: this.getPrixByQualite(seance.salle?.qualite_projection),
+      places_disponibles: seance.salle?.capacite || 0,
+      salle: seance.salle?.nom_salle || 'N/A',
+    }));
+  }
+
+  /**
+   *  Extraire l'heure au format HH:MM
+   */
+  private extractTime(dateTime: string | Date): string {
+    if (!dateTime) return '00:00';
+    const date = new Date(dateTime);
+    return date.toTimeString().substring(0, 5);
+  }
+
+  /**
+   * Obtenir le prix selon la qualité
+   */
+  private getPrixByQualite(qualite?: string): number {
+    const prices: Record<string, number> = {
+      Standard: 9.5,
+      '3D': 12.5,
+      IMAX: 15.0,
+      VIP: 18.0,
+    };
+    return prices[qualite || 'Standard'] || 9.5;
+  }
+   /**
+   * Réserver une place
+   */
+  bookTicket(): void {
+    if (this.film) {
+      // Si le film a des séances, rediriger vers la première séance
+      if (this.film.seances && this.film.seances.length > 0) {
+        const firstSeance = this.film.seances[0];
+        this.router.navigate(['/reservation/sieges', firstSeance.id]);
+      } else {
+        // Sinon, rediriger vers la page de sélection générale
+        this.router.navigate(['/reservation/selection'], {
+          queryParams: { filmId: this.film.id }
+        });
+      }
+    }
+  }
+
   checkIfFavorite(): void {
     const favorites: string[] = JSON.parse(
       localStorage.getItem('favorites') || '[]'
@@ -123,12 +189,6 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       .catch(() => alert(' Impossible de copier le lien'));
   }
 
-  bookTicket(): void {
-    if (!this.film) return;
-    this.router.navigate(['/reservation'], {
-      queryParams: { filmId: this.filmId },
-    });
-  }
 
   navigateToFilm(filmId: string): void {
     this.router.navigate(['/films', filmId]);

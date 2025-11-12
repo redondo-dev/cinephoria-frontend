@@ -92,18 +92,22 @@
         <div class="genre-tags">
           <span class="genre-tag">{{ film.genre?.nom }}</span>
         </div>
-
         <!-- Synopsis -->
         <div class="film-description-section">
           <h2 class="section-title">Synopsis</h2>
           <p class="film-description-text">{{ film.description }}</p>
         </div>
         <!-- Séances du film -->
-        <div class="film-seances-section" *ngIf="!!film?.seances?.length">
+        <div class="film-seances-section" *ngIf="film && film.seances && film.seances.length > 0">
           <h2 class="section-title">Séances disponibles</h2>
-          <app-seances-list [filmId]="film.id" [seances]="film.seances ||[] ">
+          <app-seances-list [filmId]="film.id" [seances]="formatSeancesForDisplay()">
           </app-seances-list>
         </div>
+        <!-- Message si aucune séance -->
+        <div class="no-seances-message" *ngIf="film && (!film.seances || film.seances.length === 0)">
+          <p>Aucune séance disponible pour le moment.</p>
+        </div>
+
         <!-- Informations additionnelles (si disponibles) -->
         <div class="additional-info" *ngIf="film.description">
           <div class="info-grid">

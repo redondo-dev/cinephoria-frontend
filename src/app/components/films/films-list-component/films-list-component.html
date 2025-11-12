@@ -14,16 +14,12 @@
           placeholder="Rechercher un film..." class="search-input" />
         <span class="search-icon">🔍</span>
       </div>
-<!-- NOUVEAU - Sélecteur de cinéma -->
+      <!--  Sélecteur de cinéma -->
       <div class="filter-group">
-        <select
-          [(ngModel)]="selectedCinema"
-          (change)="onCinemaChange(selectedCinema)"
-          class="filter-select"
-        >
-          <option value="">Tous les cinémas</option>
-          <option *ngFor="let cinema of cinemas" [value]="cinema">
-            {{ cinema }}
+        <select [(ngModel)]="selectedCinema" (change)="onCinemaChange(selectedCinema)" class="filter-select">
+          <option value="null">Tous les cinémas</option>
+          <option *ngFor="let cinema of cinemas" [value]="cinema.id">
+             {{ cinema.nom }} - {{ cinema.ville }}
           </option>
         </select>
       </div>
@@ -41,11 +37,7 @@
 
       <!-- NOUVEAU - Sélecteur de date -->
       <div class="filter-group">
-        <select
-          [(ngModel)]="selectedDate"
-          (change)="onDateChange(selectedDate)"
-          class="filter-select"
-        >
+        <select [(ngModel)]="selectedDate" (change)="onDateChange(selectedDate)" class="filter-select">
           <option value="">Toutes les dates</option>
           <option *ngFor="let date of availableDates" [value]="date">
             {{ formatDate(date) }}
@@ -106,14 +98,14 @@
         <div class="film-poster">
           <img [src]="film.affiche" [alt]="film.titre" class="poster-image" loading="lazy" />
 
-           <!--  Badge Coup de Coeur -->
+          <!--  Badge Coup de Coeur -->
           <div *ngIf="film.coup_coeur" class="badge-coup-coeur">
             ❤️ Coup de cœur
-          <div class="film-overlay">
-            <span class="rating" [ngClass]="getRatingClass(film.note_moyenne??0)">
-              ★ {{ film.note_moyenne?.toFixed(1) }}
-            </span>
-            <!-- Badge Âge Minimum -->
+            <div class="film-overlay">
+              <span class="rating" [ngClass]="getRatingClass(film.note_moyenne??0)">
+                ★ {{ film.note_moyenne?.toFixed(1) }}
+              </span>
+              <!-- Badge Âge Minimum -->
               <span *ngIf="film.age_min" class="badge-age">{{ film.age_min }}+</span>
             </div>
             <button class="btn-play">▶ Voir</button>

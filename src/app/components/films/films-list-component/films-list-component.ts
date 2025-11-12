@@ -1,8 +1,14 @@
+// import { Cinema } from './../../../core/models/reservation.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { FilmService, Film, Genre } from '../../../core/services/film.service';
+import {
+  FilmService,
+  Film,
+  Genre,
+  Cinema,
+} from '../../../core/services/film.service';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -17,6 +23,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   // Données
   films: Film[] = [];
   filteredFilms: Film[] = [];
+  cinemas: Cinema[] = [];
+  selectedCinema: number | null = null;
 
   // Pagination
   currentPage = 1;
@@ -27,11 +35,11 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   // Filtres
   searchTerm = '';
   selectedGenre = '';
-  selectedCinema = '';
+  // selectedCinema = '';
   selectedDate = '';
   sortBy = 'recent'; // recent, rating, title
   genres: string[] = [];
-  cinemas: string[] = [];
+  // cinemas: string[] = [];
   availableDates: string[] = [];
 
   // États
@@ -94,8 +102,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
 
     const filters = {
       genre: this.selectedGenre,
-      cinema:this.selectedCinema,
-      date:this.selectedDate,
+      cinema: this.selectedCinema,
+      date: this.selectedDate,
       search: this.searchTerm,
     };
 
@@ -120,8 +128,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       });
   }
 
-/**
-   * NOUVEAU - Charger la liste des cinémas
+  /**
+   *  Charger la liste des cinémas
    */
   private loadCinemas(): void {
     this.filmService
@@ -129,6 +137,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (cinemas) => {
+          console.log('cinemas reçus =>', cinemas);
           this.cinemas = cinemas;
         },
         error: (error) => {
@@ -138,7 +147,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * NOUVEAU - Charger les dates disponibles
+   *  Charger les dates disponibles
    */
   private loadAvailableDates(): void {
     this.filmService
@@ -146,6 +155,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (dates) => {
+          console.log('Dates reçues:', dates);
           this.availableDates = dates;
         },
         error: (error) => {
@@ -153,7 +163,6 @@ export class FilmsListComponent implements OnInit, OnDestroy {
         },
       });
   }
-
 
   /**
    * Extraire tous les genres uniques
@@ -200,10 +209,10 @@ export class FilmsListComponent implements OnInit, OnDestroy {
         (film) => film.genre?.nom === this.selectedGenre
       );
     }
- //Filtre par cinéma
+    //Filtre par cinéma
     if (this.selectedCinema) {
       filtered = filtered.filter(
-        (film) => film.cinema === this.selectedCinema
+        (film) => film.cinema?.id === this.selectedCinema
       );
     }
 
@@ -249,7 +258,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {
         genre: this.selectedGenre || null,
-         cinema: this.selectedCinema || null,
+        cinema: this.selectedCinema || null,
         date: this.selectedDate || null,
         search: this.searchTerm || null,
         sort: this.sortBy,
@@ -274,11 +283,11 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     this.currentPage = 1;
     this.applyFilters();
   }
-/**
+  /**
    *  Changer de cinéma
    */
-  onCinemaChange(cinema: string): void {
-    this.selectedCinema = cinema;
+  onCinemaChange(cinemaID: number | null): void {
+    this.selectedCinema = cinemaID;
     this.currentPage = 1;
     this.applyFilters();
   }
@@ -305,7 +314,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   resetFilters(): void {
     this.searchTerm = '';
     this.selectedGenre = '';
-     this.selectedCinema = '';
+    this.selectedCinema = null;
     this.selectedDate = '';
     this.sortBy = 'recent';
     this.currentPage = 1;
@@ -395,8 +404,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     return 'rating-low';
   }
 
-/**
-   * NOUVEAU - Formater la date pour affichage
+  /**
+   *  Formater la date pour affichage
    */
   formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -406,9 +415,6 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       month: 'short',
     });
   }
-
-
-
 
   ngOnDestroy(): void {
     this.destroy$.next();

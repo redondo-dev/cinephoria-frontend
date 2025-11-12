@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Cinema {
+  id: number;
+  nom: string;
+  ville: string;
+}
+
 export interface Genre {
   id: number;
   nom: string;
@@ -18,10 +24,10 @@ export interface Film {
   dateAjout: string;
   description: string;
   annee: number;
-   age_min?: number;
+  age_min?: number;
   coup_coeur?: boolean;
-  cinema?: string;
-  seances?: any[]; 
+  cinema?: Cinema;
+  seances?: any[];
 }
 
 export interface FilmsResponse {
@@ -136,13 +142,14 @@ export class FilmService {
   addToFavorites(filmId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${filmId}/favorite`, {});
   }
-   // Récupère tous les cinémas
-  getCinemas(): Observable<string[]> {
-    return this.http.get<string[]>(`${environment.apiUrl}/api/cinemas`);
+  // Récupère tous les cinémas
+  getCinemas(): Observable<Cinema[]> {
+    return this.http.get<Cinema[]>(`${environment.apiUrl}/api/cinemas`);
   }
 
   //  Récupère les dates disponibles pour les séances
   getAvailableDates(): Observable<string[]> {
+    console.log('URL appelée:', `${environment.apiUrl}/api/seances/dates`);
     return this.http.get<string[]>(`${environment.apiUrl}/api/seances/dates`);
   }
 

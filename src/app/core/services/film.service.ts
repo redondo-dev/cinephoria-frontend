@@ -3,6 +3,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Seance {
+  id: number;
+  date_seance: string;
+  dateHeureDebut: string;
+  dateHeureFin: string;
+  salle?: {
+    id: number;
+    nom_salle: string;
+    capacite: number;
+    qualite_projection: string;
+    cinema?: Cinema;
+  };
+}
+
 export interface Cinema {
   id: number;
   nom: string;
@@ -27,7 +41,7 @@ export interface Film {
   age_min?: number;
   coup_coeur?: boolean;
   cinema?: Cinema;
-  seances?: any[];
+  seances?: Seance[];
 }
 
 export interface FilmsResponse {
@@ -91,14 +105,16 @@ export class FilmService {
     limit: number,
     filters?: any
   ): Observable<{ films: Film[]; total: number }> {
-    let params = new HttpParams().set('page', page).set('limit', limit);
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
 
     if (filters) {
       Object.keys(filters).forEach((key) => {
         if (filters[key]) params = params.set(key, filters[key]);
       });
     }
-
+    console.log("Filtres envoyés à l'API:", filters); // Debug
     return this.http.get<{ films: Film[]; total: number }>(this.apiUrl, {
       params,
     });

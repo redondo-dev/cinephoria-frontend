@@ -1,0 +1,164 @@
+<div class="films-list-container">
+  <!-- Header avec filtres -->
+  <header class="films-header">
+    <div class="header-content">
+      <h1 class="page-title">Tous les films</h1>
+      <p class="page-subtitle">{{ totalFilms }} films disponibles</p>
+    </div>
+
+    <!-- Barre de recherche et filtres -->
+    <div class="filters-bar">
+      <!-- Recherche -->
+      <div class="search-box">
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange($any($event.target).value)"
+          placeholder="Rechercher un film..." class="search-input" />
+        <span class="search-icon">🔍</span>
+      </div>
+      <!--  Sélecteur de cinéma -->
+      <div class="filter-group">
+        <select [ngModel]="selectedCinema" (Change)="onCinemaChange(selectedCinema)" class="filter-select">
+          <option value="">Tous les cinémas</option>
+          <option *ngFor="let cinema of cinemas" [value]="cinema.id">
+            {{ cinema.nom }} - {{ cinema.ville }}
+          </option>
+        </select>
+      </div>
+
+
+      <!-- Sélecteur de genre -->
+      <div class="filter-group">
+        <select [(ngModel)]="selectedGenre" (change)="onGenreChange(selectedGenre)" class="filter-select">
+          <option value="">Tous les genres</option>
+          <option *ngFor="let genre of genres" [value]="genre">
+            {{ genre }}
+          </option>
+        </select>
+      </div>
+
+
+      <div class="filter-group">
+        <select [(ngModel)]="selectedDate" (change)="onDateChange(selectedDate)" class="filter-select">
+          <option value="">Toutes les dates</option>
+          <option *ngFor="let date of availableDates" [value]="date">
+            {{ formatDate(date) }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Tri -->
+      <div class="filter-group">
+        <select [(ngModel)]="sortBy" (change)="onSortChange(sortBy)" class="filter-select">
+          <option value="recent">Plus récents</option>
+          <option value="rating">Mieux notés</option>
+          <option value="title">Titre (A-Z)</option>
+          <option value="year">Année</option>
+        </select>
+      </div>
+
+      <!-- Bouton reset -->
+      <button (click)="resetFilters()" class="btn-reset">
+        ↻ Réinitialiser
+      </button>
+
+      <!-- Toggle vue -->
+      <button (click)="toggleViewMode()" class="btn-view-toggle">
+        {{ viewMode === 'grid' ? '☰' : '⊞' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- État de chargement -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement des films...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <p class="error-message">{{ errorMessage }}</p>
+    <button (click)="loadFilms()" class="btn btn-primary">Réessayer</button>
+  </div>
+
+  <!-- Liste des films -->
+  <div *ngIf="!isLoading && !errorMessage" class="films-content">
+    <!-- Aucun résultat -->
+    <div *ngIf="filteredFilms.length === 0" class="no-results">
+      <div class="no-results-icon">🎬</div>
+      <h3>Aucun film trouvé</h3>
+      <p>Essayez de modifier vos critères de recherche</p>
+      <button (click)="resetFilters()" class="btn btn-primary">
+        Réinitialiser les filtres
+      </button>
+    </div>
+
+    <!-- Grille de films -->
+    <div *ngIf="filteredFilms.length > 0" class="films-grid" [class.list-view]="viewMode === 'list'">
+      <article *ngFor="let film of filteredFilms" class="film-card" (click)="navigateToDetail(film.id)">
+        <!-- Image -->
+        <div class="film-poster">
+          <img [src]="film.affiche" [alt]="film.titre" class="poster-image" loading="lazy" />
+
+          <!--  Badge Coup de Coeur -->
+          <div *ngIf="film.coup_coeur" class="badge-coup-coeur">
+            ❤️ Coup de cœur
+            <div class="film-overlay">
+              <span class="rating" [ngClass]="getRatingClass(film.note_moyenne??0)">
+                ★ {{ film.note_moyenne?.toFixed(1) }}
+              </span>
+              <!-- Badge Âge Minimum -->
+              <span *ngIf="film.age_min" class="badge-age">{{ film.age_min }}+</span>
+            </div>
+            <button class="btn-play">▶ Voir</button>
+          </div>
+        </div>
+
+        <!-- Informations -->
+        <div class="film-info">
+          <h3 class="film-title">{{ film.titre }}</h3>
+
+          <div class="film-meta">
+            <span class="year">{{ film.annee }}</span>
+            <span class="dot">•</span>
+            <span class="duration">{{ formatDuration(film.duree) }}</span>
+          </div>
+
+          <p class="film-genres">{{ getGenresText(film.genre ) }}</p>
+          <span *ngIf="film.genre" class="genre-tag">{{ film.genre.nom }}</span>
+          <p class="film-description" *ngIf="viewMode === 'list'">
+            {{ film.description | slice:0:150 }}...
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button (click)="previousPage()" [disabled]="currentPage === 1" class="pagination-btn">
+        ‹ Précédent
+      </button>
+
+      <div class="pagination-numbers">
+        <button *ngIf="currentPage > 3" (click)="goToPage(1)" class="pagination-number">
+          1
+        </button>
+        <span *ngIf="currentPage > 3" class="pagination-dots">...</span>
+
+        <button *ngFor="let page of getPageNumbers()" (click)="goToPage(page)" [class.active]="page === currentPage"
+          class="pagination-number">
+          {{ page }}
+        </button>
+
+        <span *ngIf="currentPage < totalPages - 2" class="pagination-dots">
+          ...
+        </span>
+        <button *ngIf="currentPage < totalPages - 2" (click)="goToPage(totalPages)" class="pagination-number">
+          {{ totalPages }}
+        </button>
+      </div>
+
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-btn">
+        Suivant ›
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,214 @@
+// Variables Netflix
+$netflix-red: #e50914;
+$netflix-black: #141414;
+$netflix-dark-gray: #1f1f1f;
+$netflix-gray: #2f2f2f;
+$netflix-light-gray: #808080;
+$netflix-white: #ffffff;
+
+.seances-container {
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: $netflix-white;
+  }
+
+  > button {
+    background-color: $netflix-red;
+    color: $netflix-white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+
+    &:hover {
+      background-color: darken($netflix-red, 8%);
+      transform: scale(1.02);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .seance-form {
+    background-color: $netflix-dark-gray;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.25rem;
+
+    select,
+    input {
+      background-color: $netflix-gray;
+      color: $netflix-white;
+      border: 1px solid transparent;
+      padding: 0.875rem 1rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      outline: none;
+      transition: all 0.3s ease;
+      width: 100%;
+
+      &:focus {
+        border-color: $netflix-red;
+        background-color: lighten($netflix-gray, 5%);
+      }
+
+      option {
+        background-color: $netflix-gray;
+        color: $netflix-white;
+      }
+    }
+
+    button[type="submit"] {
+      background-color: $netflix-red;
+      color: $netflix-white;
+      border: none;
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      grid-column: 1 / -1;
+
+      &:hover {
+        background-color: darken($netflix-red, 8%);
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    background-color: $netflix-dark-gray;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border-collapse: collapse;
+
+    thead {
+      background-color: $netflix-gray;
+
+      tr th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: $netflix-white;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: 1rem;
+          color: $netflix-white;
+          vertical-align: middle;
+
+          &:nth-child(4) {
+            color: #46d369;
+            font-weight: 600;
+          }
+
+          button {
+            background-color: transparent;
+            color: $netflix-white;
+            border: 1px solid $netflix-light-gray;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+
+            &:hover {
+              background-color: $netflix-white;
+              color: $netflix-black;
+              border-color: $netflix-white;
+            }
+
+            &:last-child {
+              margin-right: 0;
+              border-color: $netflix-red;
+              color: $netflix-red;
+
+              &:hover {
+                background-color: $netflix-red;
+                color: $netflix-white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .seances-container {
+    .seance-form {
+      grid-template-columns: 1fr;
+    }
+
+    table {
+      font-size: 0.9rem;
+
+      thead tr th,
+      tbody tr td {
+        padding: 0.75rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .seances-container {
+    .seance-form {
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+
+      thead tr th,
+      tbody tr td {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      tbody tr td button {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}

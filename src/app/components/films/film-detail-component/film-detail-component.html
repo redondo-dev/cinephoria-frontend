@@ -1,0 +1,166 @@
+<div class="film-detail-container">
+
+  <!-- État de chargement -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Chargement des détails...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage && !isLoading" class="error-state">
+    <p class="error-message">{{ errorMessage }}</p>
+    <button (click)="goBack()" class="btn btn-primary">
+      Retour à la liste
+    </button>
+  </div>
+
+  <!-- Contenu du film -->
+  <div *ngIf="film && !isLoading && !errorMessage" class="film-content">
+    <!-- Hero Section avec image de fond -->
+    <div class="film-hero" [style.background-image]="'url(' + film.affiche + ')'">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <button (click)="goBack()" class="btn-back">
+          ← Retour
+        </button>
+      </div>
+    </div>
+
+    <!-- Détails principaux -->
+    <div class="film-main">
+      <div class="film-poster-section">
+        <img [src]="film.affiche" [alt]="film.titre" class="film-poster-large" />
+
+        <!-- Actions -->
+        <div class="film-actions">
+          <button (click)="bookTicket()" class="btn btn-primary btn-full">
+            🎟️ Réserver une place
+          </button>
+
+          <button (click)="toggleFavorite()" class="btn btn-secondary btn-full" [class.active]="isFavorite">
+            {{ isFavorite ? '❤️ Dans mes favoris' : '🤍 Ajouter aux favoris' }}
+          </button>
+
+          <button (click)="shareFilm()" class="btn btn-outline btn-full">
+            🔗 Partager
+          </button>
+        </div>
+      </div>
+
+      <div class="film-info-section">
+        <!-- Titre et année -->
+        <div class="film-header">
+          <h1 class="film-title-large">{{ film.titre }}</h1>
+          <span class="film-year-badge">{{ film.annee }}</span>
+        </div>
+
+        <!-- Rating -->
+        <div class="film-rating-section">
+          <div class="rating-score" [ngClass]="getRatingClass(film?.note_moyenne)">
+            <span class="score-number">{{ film.note_moyenne?.toFixed(1) }}</span>
+            <span class="score-max">/10</span>
+          </div>
+
+          <div class="rating-stars">
+            <span *ngFor="let star of getRatingStars(film?.note_moyenne)" class="star" [class.full]="star === 'full'"
+              [class.half]="star === 'half'" [class.empty]="star === 'empty'">
+              ★
+            </span>
+          </div>
+        </div>
+
+        <!-- Métadonnées -->
+        <div class="film-metadata">
+          <div class="metadata-item">
+            <span class="metadata-label">Durée</span>
+            <span class="metadata-value">{{ formatDuration(film.duree) }}</span>
+          </div>
+
+          <div class="metadata-item">
+            <span class="metadata-label">Genres</span>
+            <span class="metadata-value">{{ film.genre?.nom|| 'non specifié' }}</span>
+
+          </div>
+
+          <div class="metadata-item">
+            <span class="metadata-label">Ajouté le</span>
+            <span class="metadata-value">{{ film.dateAjout | date: 'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <!-- Genre tags -->
+        <div class="genre-tags">
+          <span class="genre-tag">{{ film.genre?.nom }}</span>
+        </div>
+        <!-- Synopsis -->
+        <div class="film-description-section">
+          <h2 class="section-title">Synopsis</h2>
+          <p class="film-description-text">{{ film.description }}</p>
+        </div>
+        <!-- Séances du film -->
+        <div class="film-seances-section" *ngIf="film && film.seances && film.seances.length > 0">
+          <h2 class="section-title">Séances disponibles</h2>
+          <app-seances-list [filmId]="film.id" [seances]="formatSeancesForDisplay()">
+          </app-seances-list>
+        </div>
+        <!-- Message si aucune séance -->
+        <div class="no-seances-message" *ngIf="film && (!film.seances || film.seances.length === 0)">
+          <p>Aucune séance disponible pour le moment.</p>
+        </div>
+
+        <!-- Informations additionnelles (si disponibles) -->
+        <div class="additional-info" *ngIf="film.description">
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">🎬 Réalisateur</span>
+              <span class="info-value">À venir</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">🎭 Acteurs</span>
+              <span class="info-value">À venir</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">🌍 Pays</span>
+              <span class="info-value">À venir</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">🗣️ Langue</span>
+              <span class="info-value">Français</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Films similaires -->
+    <div class="similar-films-section" *ngIf="similarFilms.length > 0">
+      <div class="section-container">
+        <h2 class="section-title">Films similaires</h2>
+
+        <div class="similar-films-grid">
+          <article *ngFor="let similarFilm of similarFilms" class="similar-film-card"
+            (click)="navigateToFilm(similarFilm.id)">
+            <div class="similar-film-poster">
+              <img [src]="similarFilm.affiche" [alt]="similarFilm.titre" class="similar-poster-image" loading="lazy" />
+              <div class="similar-overlay">
+                <span class="similar-rating">
+                  ★ {{ similarFilm.note_moyenne }}
+                </span>
+              </div>
+            </div>
+
+            <div class="similar-film-info">
+              <h3 class="similar-film-title">{{ similarFilm.titre }}</h3>
+              <p class="similar-film-meta">
+                {{ similarFilm.annee }} • {{ formatDuration(similarFilm.duree) }}
+              </p>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

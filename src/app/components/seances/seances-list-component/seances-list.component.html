@@ -1,0 +1,101 @@
+<div class="seances-container">
+  <!-- Header -->
+  <div class="seances-header">
+    <h2 class="seances-title">Séances disponibles</h2>
+    <p class="seances-subtitle">
+      Choisissez une date et une heure pour réserver vos places
+    </p>
+  </div>
+
+  <!-- Légende des prix -->
+  <div class="price-legend">
+    <h3 class="legend-title">Tarifs</h3>
+    <div class="legend-items">
+      <div class="legend-item" *ngFor="let item of priceInfo | keyvalue">
+        <span class="quality-badge" [ngClass]="getQualityClass(item.key)">
+          {{ getQualityIcon(item.key) }} {{ item.key }}
+        </span>
+        <span class="price">{{ item.value }}€</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des séances groupées par date -->
+  <div class="seances-list" *ngIf="seancesByDate.length > 0">
+    <div class="date-group" *ngFor="let group of seancesByDate">
+      <!-- Date Header -->
+      <div class="date-header">
+        <h3 class="date-title">{{ group.displayDate }}</h3>
+        <span class="date-subtitle">{{ group.seances.length }} séance(s)</span>
+      </div>
+
+      <!-- Séances de la journée -->
+      <div class="seances-grid">
+        <div
+          class="seance-card"
+          *ngFor="let seance of group.seances"
+          [class.selected]="selectedSeance?.id === seance.id"
+          [class.unavailable]="!isSeanceAvailable(seance)"
+          (click)="selectSeance(seance)"
+        >
+          <!-- Header de la card -->
+          <div class="seance-header">
+            <div class="seance-time">
+              <span class="time-start">{{ formatTime(seance.dateHeureDebut) }}</span>
+              <span class="time-separator">→</span>
+              <span class="time-end">{{ formatTime(seance.dateHeureFin) }}</span>
+            </div>
+
+            <span
+              class="quality-badge"
+              [ngClass]="getQualityClass(seance.qualite)"
+            >
+              {{ getQualityIcon(seance.qualite) }} {{ seance.qualite }}
+            </span>
+          </div>
+
+          <!-- Infos supplémentaires -->
+          <div class="seance-info">
+            <div class="info-row">
+              <span class="info-label">Salle</span>
+              <span class="info-value">{{ seance.salle || 'N/A' }}</span>
+            </div>
+
+            <div class="info-row">
+              <span class="info-label">Prix</span>
+              <span class="info-value price-highlight">
+                {{ priceInfo[seance.qualite] }}€
+              </span>
+            </div>
+
+            <div class="info-row availability-row">
+              <span
+                class="availability-badge"
+                [ngClass]="getAvailabilityClass(seance)"
+              >
+                {{ getAvailabilityText(seance) }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Bouton de réservation -->
+          <button
+            class="btn-book"
+            [disabled]="!isSeanceAvailable(seance)"
+            (click)="bookSeance(seance); $event.stopPropagation()"
+          >
+            <span *ngIf="isSeanceAvailable(seance)">🎫 Réserver</span>
+            <span *ngIf="!isSeanceAvailable(seance)">Complet</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aucune séance disponible -->
+  <div class="no-seances" *ngIf="seancesByDate.length === 0">
+    <div class="no-seances-icon">📅</div>
+    <h3>Aucune séance disponible</h3>
+    <p>Les séances pour ce film seront bientôt disponibles</p>
+  </div>
+</div>

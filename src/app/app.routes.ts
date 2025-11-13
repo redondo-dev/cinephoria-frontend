@@ -1,6 +1,7 @@
 import { Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
+import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
 
 export const routes: Routes = [
   {
@@ -22,9 +23,9 @@ export const routes: Routes = [
     path: 'films',
     data: { title: 'Cinephoria - Tous les films' },
     loadComponent: () =>
-      import('./components/films-list-component/films-list-component').then(
-        (m) => m.FilmsListComponent
-      ),
+      import(
+        './components/films/films-list-component/films-list-component'
+      ).then((m) => m.FilmsListComponent),
   },
 
   // Route publique - Détail d'un film
@@ -32,9 +33,9 @@ export const routes: Routes = [
     path: 'films/:id',
     data: { title: 'Cinephoria - Détail du film' },
     loadComponent: () =>
-      import('./components/film-detail-component/film-detail-component').then(
-        (m) => m.FilmDetailComponentComponent
-      ),
+      import(
+        './components/films/film-detail-component/film-detail-component'
+      ).then((m) => m.FilmDetailComponent),
   },
   // Routes d'authentification
 

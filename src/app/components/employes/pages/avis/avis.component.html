@@ -1,0 +1,42 @@
+<div class="avis-container">
+  <h2>Gestion des Avis</h2>
+
+  <div class="filter-buttons">
+    <button (click)="showAll()" [class.active]="viewMode === 'all'">Tous les avis</button>
+    <button (click)="showPending()" [class.active]="viewMode === 'pending'">En attente</button>
+  </div>
+
+  <table *ngIf="avis.length > 0">
+    <thead>
+      <tr>
+        <th>Film</th>
+        <th>Utilisateur</th>
+        <th>Note</th>
+        <th>Commentaire</th>
+        <th>Date</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let avisItem of avis" [class.pending]="avisItem.statut_avis === 'en_attente'">
+
+        <td>{{ avisItem.filmTitre }}</td>
+        <td>{{ avisItem.userEmail }}</td>
+        <td>{{ avisItem.note }}/5</td>
+        <td>{{ avisItem.contenu }}</td>
+        <td>{{ avisItem.date_avis| date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <span *ngIf="avisItem.statut_avis ==='valide'" class="badge valid">Validé</span>
+          <span *ngIf="avisItem.statut_avis === 'en_attente'" class="badge pending">En attente</span>
+        </td>
+        <td>
+          <button *ngIf="avisItem.statut_avis === 'en_attente'" (click)="validateAvis(avisItem.id!)">Valider</button>
+          <button (click)="deleteAvis(avisItem.id!)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="avis.length === 0">Aucun avis à afficher.</p>
+</div>

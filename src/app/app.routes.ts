@@ -2,7 +2,6 @@ import { Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
 
-
 export const routes: Routes = [
   {
     path: '',
@@ -122,16 +121,24 @@ export const routes: Routes = [
           ),
       },
     ],
-
-
   },
-
 
   {
     path: 'contact',
     loadComponent: () =>
-      import('./components/contact/contact.component').then(m => m.ContactComponent),
-    title: 'Contact - Cinéphoria'
+      import('./components/contact/contact.component').then(
+        (m) => m.ContactComponent
+      ),
+    title: 'Contact - Cinéphoria',
   },
 
+  // routes pour users
+  {
+    path: 'mon-espace',
+    // canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/users/pages/mon-espace/mon-espace.component').then(
+        (m) => m.MonEspaceComponent
+      ),
+  },
 ];

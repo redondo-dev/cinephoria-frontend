@@ -12,7 +12,7 @@ import {
 @Component({
   selector: 'app-film-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule,SeancesListComponent],
+  imports: [CommonModule, RouterModule, SeancesListComponent],
   templateUrl: './film-detail-component.html',
   styleUrls: ['./film-detail-component.scss'],
 })
@@ -102,26 +102,19 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
    *  Formater les séances pour le composant SeancesListComponent
    */
   formatSeancesForDisplay(): Seance[] {
-    if (!this.film?.seances || this.film.seances.length === 0) {
-      return [];
-    }
+    if (!this.film?.seances) return [];
 
-    return this.film.seances.map((seance: any) => ({
+    return this.film.seances.map((seance) => ({
       id: seance.id.toString(),
-      date: seance.date_seance,
-      heure_debut: this.extractTime(seance.dateHeureDebut),
-      heure_fin: this.extractTime(seance.dateHeureFin),
-      qualite: (seance.salle?.qualite_projection || 'Standard') as
-        | 'Standard'
-        | '3D'
-        | 'IMAX'
-        | 'VIP',
+      date_seance: seance.date_seance,
+      dateHeureDebut: seance.dateHeureDebut,
+      dateHeureFin: seance.dateHeureFin,
+      qualite: (seance.salle?.qualite_projection || 'Standard') as 'Standard' | '3D' | 'IMAX' | 'VIP',
       prix: this.getPrixByQualite(seance.salle?.qualite_projection),
       places_disponibles: seance.salle?.capacite || 0,
       salle: seance.salle?.nom_salle || 'N/A',
     }));
   }
-
   /**
    *  Extraire l'heure au format HH:MM
    */
@@ -143,7 +136,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
     };
     return prices[qualite || 'Standard'] || 9.5;
   }
-   /**
+  /**
    * Réserver une place
    */
   bookTicket(): void {
@@ -155,7 +148,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       } else {
         // Sinon, rediriger vers la page de sélection générale
         this.router.navigate(['/reservation/selection'], {
-          queryParams: { filmId: this.film.id }
+          queryParams: { filmId: this.film.id },
         });
       }
     }
@@ -188,7 +181,6 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       .then(() => alert(' Lien copié dans le presse-papier!'))
       .catch(() => alert(' Impossible de copier le lien'));
   }
-
 
   navigateToFilm(filmId: string): void {
     this.router.navigate(['/films', filmId]);

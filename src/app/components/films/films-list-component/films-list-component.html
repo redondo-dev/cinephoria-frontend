@@ -16,10 +16,10 @@
       </div>
       <!--  Sélecteur de cinéma -->
       <div class="filter-group">
-        <select [(ngModel)]="selectedCinema" (change)="onCinemaChange(selectedCinema)" class="filter-select">
-          <option value="null">Tous les cinémas</option>
+        <select [ngModel]="selectedCinema" (Change)="onCinemaChange(selectedCinema)" class="filter-select">
+          <option value="">Tous les cinémas</option>
           <option *ngFor="let cinema of cinemas" [value]="cinema.id">
-             {{ cinema.nom }} - {{ cinema.ville }}
+            {{ cinema.nom }} - {{ cinema.ville }}
           </option>
         </select>
       </div>
@@ -35,7 +35,7 @@
         </select>
       </div>
 
-     
+
       <div class="filter-group">
         <select [(ngModel)]="selectedDate" (change)="onDateChange(selectedDate)" class="filter-select">
           <option value="">Toutes les dates</option>

@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 
 export interface Seance {
   id: string;
-  date: string;
-  heure_debut: string;
-  heure_fin: string;
+  date_seance: string;
+  dateHeureDebut: string;
+  dateHeureFin: string;
   qualite: 'Standard' | '3D' | 'IMAX' | 'VIP';
   prix: number;
   places_disponibles: number;
@@ -27,7 +27,7 @@ interface SeancesByDate {
   styleUrls: ['./seances-list.component.scss'],
 })
 export class SeancesListComponent implements OnInit {
-  @Input() filmId!: number|string;
+  @Input() filmId!: number | string;
   @Input() seances: Seance[] = [];
 
   seancesByDate: SeancesByDate[] = [];
@@ -54,7 +54,7 @@ export class SeancesListComponent implements OnInit {
     const grouped = new Map<string, Seance[]>();
 
     this.seances.forEach((seance) => {
-      const date = seance.date;
+      const date = seance.date_seance;
       if (!grouped.has(date)) {
         grouped.set(date, []);
       }
@@ -66,7 +66,7 @@ export class SeancesListComponent implements OnInit {
         date,
         displayDate: this.formatDate(date),
         seances: seances.sort((a, b) =>
-          a.heure_debut.localeCompare(b.heure_debut)
+          a.dateHeureDebut.localeCompare(b.dateHeureDebut)
         ),
       }))
       .sort((a, b) => a.date.localeCompare(b.date));
@@ -106,9 +106,9 @@ export class SeancesListComponent implements OnInit {
    * Formater l'heure
    */
   formatTime(time: string): string {
-    return time.substring(0, 5); // Format HH:MM
+    const date = new Date(time);
+    return date.toTimeString().substring(0, 5);
   }
-
   /**
    * Obtenir la classe CSS pour la qualité
    */

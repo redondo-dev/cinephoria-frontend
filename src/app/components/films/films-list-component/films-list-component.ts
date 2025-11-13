@@ -12,7 +12,6 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-
 @Component({
   selector: 'app-films-list',
   standalone: true,
@@ -25,7 +24,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   films: Film[] = [];
   filteredFilms: Film[] = [];
   cinemas: Cinema[] = [];
-  selectedCinema: number | null = null;
+  selectedCinema: string = '';
 
   // Pagination
   currentPage = 1;
@@ -185,64 +184,64 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     this.genres = Array.from(genresSet).sort();
   }
 
+  /**
+   * Appliquer les filtres et le tri
+   */
+  applyFilters(): void {
+    if (!this.films || !Array.isArray(this.films)) {
+      this.filteredFilms = [];
+      return;
+    }
 
+    let filtered = [...this.films];
 
-/**
- * Appliquer les filtres et le tri
- */
-applyFilters(): void {
-  if (!this.films || !Array.isArray(this.films)) {
-    this.filteredFilms = [];
-    return;
-  }
-
-  let filtered = [...this.films];
-
-  // Filtre par recherche
-  if (this.searchTerm) {
-    const term = this.searchTerm.toLowerCase();
-    filtered = filtered.filter(
-      (film) =>
-        film.titre.toLowerCase().includes(term) ||
-        film.description.toLowerCase().includes(term) ||
-        (film.genre?.nom && film.genre.nom.toLowerCase().includes(term))
-    );
-  }
-
-  // Filtre par genre
-  if (this.selectedGenre) {
-    filtered = filtered.filter(
-      (film) => film.genre?.nom === this.selectedGenre
-    );
-  }
-
-  //  Filtre par cinéma
-  if (this.selectedCinema) {
-    filtered = filtered.filter((film) => {
-      // Vérifier si le film a des séances dans le cinéma sélectionné
-      return film.seances?.some((seance: any) =>
-        seance.salle?.cinema?.id === this.selectedCinema
+    // Filtre par recherche
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (film) =>
+          film.titre.toLowerCase().includes(term) ||
+          film.description.toLowerCase().includes(term) ||
+          (film.genre?.nom && film.genre.nom.toLowerCase().includes(term))
       );
-    });
-  }
+    }
 
-  //  Filtre par date
-  if (this.selectedDate) {
-    filtered = filtered.filter((film) => {
-      return film.seances?.some((seance: any) => {
-        // Comparer les dates au format YYYY-MM-DD
-        const seanceDate = new Date(seance.date_seance).toISOString().split('T')[0];
-        return seanceDate === this.selectedDate;
+    // Filtre par genre
+    if (this.selectedGenre) {
+      filtered = filtered.filter(
+        (film) => film.genre?.nom === this.selectedGenre
+      );
+    }
+
+    //  Filtre par cinéma
+    if (this.selectedCinema) {
+      const cinemaIdNum = Number(this.selectedCinema);
+      filtered = filtered.filter((film) => {
+        return film.seances?.some(
+          (seance: any) => seance.salle?.cinema?.id === cinemaIdNum
+        );
       });
-    });
+    }
+
+    //  Filtre par date
+    if (this.selectedDate) {
+      filtered = filtered.filter((film) => {
+        return film.seances?.some((seance: any) => {
+          // Comparer les dates au format YYYY-MM-DD
+          const seanceDate = new Date(seance.date_seance)
+            .toISOString()
+            .split('T')[0];
+          return seanceDate === this.selectedDate;
+        });
+      });
+    }
+
+    // Tri
+    filtered = this.sortFilms(filtered);
+
+    this.filteredFilms = filtered;
+    this.updateURL();
   }
-
-  // Tri
-  filtered = this.sortFilms(filtered);
-
-  this.filteredFilms = filtered;
-  this.updateURL();
-}
   /**
    * Trier les films
    */
@@ -301,9 +300,8 @@ applyFilters(): void {
   /**
    *  Changer de cinéma
    */
-  onCinemaChange(cinemaID: number | null): void {
-    this.selectedCinema = cinemaID;
-    this.currentPage = 1;
+  onCinemaChange(cinemaID: string): void {
+    (this.selectedCinema = cinemaID), (this.currentPage = 1);
     this.applyFilters();
   }
 
@@ -329,7 +327,7 @@ applyFilters(): void {
   resetFilters(): void {
     this.searchTerm = '';
     this.selectedGenre = '';
-    this.selectedCinema = null;
+    this.selectedCinema = '';
     this.selectedDate = '';
     this.sortBy = 'recent';
     this.currentPage = 1;

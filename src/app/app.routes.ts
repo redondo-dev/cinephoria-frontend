@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
-// import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
+ import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
 import { AdminGuard } from './core/guards/admin.guard';
 // import { EmployeeGuard } from './core/guards/employee.guard';
 import { ClientGuard } from './core/guards/client.guard';

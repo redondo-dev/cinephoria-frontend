@@ -44,7 +44,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('jwt_token');
+    return !!localStorage.getItem('token');
   }
 
   private getStoredUser(): any {
@@ -63,7 +63,7 @@ export class AuthService {
       .post<AuthResponse>(`${this.apiUrl}/auth/login`, { email, password })
       .pipe(
         tap((response) => {
-          localStorage.setItem('jwt_token', response.token);
+          localStorage.setItem('token', response.token);
           localStorage.setItem('current_user', JSON.stringify(response.user));
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(response.user);
@@ -72,19 +72,22 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
     localStorage.removeItem('current_user');
     localStorage.removeItem('redirect_url');
     this.isAuthenticatedSubject.next(false);
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
   getToken(): string | null {
-    return localStorage.getItem('jwt_token');
+    return localStorage.getItem('token');
   }
 
   isAuthenticated(): boolean {
     return this.hasToken();
+  }
+  getCurrentUser(): any {
+    return this.currentUserSubject.value;
   }
 
   setRedirectUrl(url: string): void {

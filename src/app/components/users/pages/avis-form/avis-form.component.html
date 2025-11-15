@@ -1,0 +1,87 @@
+<p>avis-form works!</p>
+<div class="modal-overlay" (click)="onFermer()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Donnez votre avis sur "{{ film.titre }}"</h3>
+          <button class="btn-close" (click)="onFermer()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="film-preview">
+            <img [src]="film.affiche" [alt]="film.titre" />
+          </div>
+
+          <form [formGroup]="avisForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label>Votre note *</label>
+              <div class="note-selector">
+                @for (star of [1, 2, 3, 4, 5]; track star) {
+                  <button
+                    type="button"
+                    class="star-btn"
+                    [class.selected]="noteSelectionnee() >= star"
+                    (click)="selectionnerNote(star)"
+                  >
+                    {{ noteSelectionnee() >= star ? '⭐' : '☆' }}
+                  </button>
+                }
+                <span class="note-label">{{ noteSelectionnee() }}/5</span>
+              </div>
+              @if (avisForm.get('note')?.touched && avisForm.get('note')?.hasError('required')) {
+                <small class="error">Veuillez sélectionner une note</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="description">Votre commentaire *</label>
+              <textarea
+                id="description"
+                formControlName="description"
+                rows="5"
+                placeholder="Partagez votre expérience avec ce film..."
+                [class.invalid]="avisForm.get('description')?.touched && avisForm.get('description')?.invalid"
+              ></textarea>
+              @if (avisForm.get('description')?.touched && avisForm.get('description')?.hasError('required')) {
+                <small class="error">Le commentaire est obligatoire</small>
+              }
+              @if (avisForm.get('description')?.hasError('minlength')) {
+                <small class="error">Minimum 10 caractères requis</small>
+              }
+              <small class="info">
+                Votre avis sera soumis pour validation avant publication.
+              </small>
+            </div>
+
+            @if (submitting()) {
+              <div class="loading-submit">
+                <p>Envoi en cours...</p>
+              </div>
+            }
+
+            @if (errorMessage()) {
+              <div class="error-message">
+                {{ errorMessage() }}
+              </div>
+            }
+
+            <div class="form-actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onFermer()"
+                [disabled]="submitting()"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="avisForm.invalid || submitting()"
+              >
+                {{ avisExistant() ? 'Modifier mon avis' : 'Publier mon avis' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>

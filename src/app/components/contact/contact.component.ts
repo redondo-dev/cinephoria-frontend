@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 // src/app/features/contact/contact.component.ts
-=======
-//// src/app/compnents/contact/contact.component.ts
-
->>>>>>> origin/feature/film
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -12,11 +7,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-<<<<<<< HEAD
 import { ContactService } from './services/contact.service';
-=======
-import { ContactService } from '../../../app/core/services/contact.service';
->>>>>>> origin/feature/film
 
 @Component({
   selector: 'app-contact',
@@ -51,10 +42,6 @@ export class ContactComponent implements OnInit {
   get email() {
     return this.contactForm.get('email');
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/feature/film
   get description() {
     return this.contactForm.get('description');
   }

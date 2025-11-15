@@ -35,8 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getRecentFilms()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (films: Film[]) => {
-          this.recentFilms = films;
+        next: (response:any) => {
+          this.recentFilms = response.films;
           this.isLoading = false;
         },
         error: (error) => {

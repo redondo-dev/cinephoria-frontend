@@ -11,7 +11,7 @@ import { Cinema, Film, Seance } from '../../core/models/reservation.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './reservation.component.html',
-  styleUrls: ['./reservation.component.scss']
+  styleUrls: ['./reservation.component.scss'],
 })
 export class ReservationComponent implements OnInit {
   // Données
@@ -58,7 +58,7 @@ export class ReservationComponent implements OnInit {
         this.errorCinemas = 'Erreur lors du chargement des cinémas';
         this.loadingCinemas = false;
         console.error('Erreur cinémas:', error);
-      }
+      },
     });
   }
 
@@ -83,6 +83,7 @@ export class ReservationComponent implements OnInit {
 
     this.reservationService.getFilmsByCinema(cinemaId).subscribe({
       next: (films) => {
+        console.log('✅ Films reçus pour cinéma', cinemaId, ':', films);
         this.films = films;
         this.loadingFilms = false;
       },
@@ -90,7 +91,7 @@ export class ReservationComponent implements OnInit {
         this.errorFilms = 'Erreur lors du chargement des films';
         this.loadingFilms = false;
         console.error('Erreur films:', error);
-      }
+      },
     });
   }
 
@@ -113,33 +114,39 @@ export class ReservationComponent implements OnInit {
     this.loadingSeances = true;
     this.errorSeances = '';
 
-    this.reservationService.getSeances(cinemaId, filmId, this.nombrePersonnes).subscribe({
-      next: (seances) => {
-        this.seances = seances;
-        this.loadingSeances = false;
-      },
-      error: (error) => {
-        this.errorSeances = 'Erreur lors du chargement des séances';
-        this.loadingSeances = false;
-        console.error('Erreur séances:', error);
-      }
-    });
+    this.reservationService
+      .getSeances(cinemaId, filmId, this.nombrePersonnes)
+      .subscribe({
+        next: (seances) => {
+          console.log('Séances reçues:', seances);
+          this.seances = seances;
+          this.loadingSeances = false;
+        },
+        error: (error) => {
+          this.errorSeances = 'Erreur lors du chargement des séances';
+          this.loadingSeances = false;
+          console.error('Erreur séances:', error);
+        },
+      });
   }
 
- selectSeance(seance: Seance): void {
-  this.selectedSeance = seance;
+  selectSeance(seance: Seance): void {
+    this.selectedSeance = seance;
 
-  // Sauvegarder les infos dans sessionStorage pour les récupérer sur la page sièges
-  sessionStorage.setItem('reservationData', JSON.stringify({
-    cinema: this.selectedCinema,
-    film: this.selectedFilm,
-    seance: seance,
-    nombrePersonnes: this.nombrePersonnes
-  }));
+    // Sauvegarder les infos dans sessionStorage pour les récupérer sur la page sièges
+    sessionStorage.setItem(
+      'reservationData',
+      JSON.stringify({
+        cinema: this.selectedCinema,
+        film: this.selectedFilm,
+        seance: seance,
+        nombrePersonnes: this.nombrePersonnes,
+      })
+    );
 
-  // Navigation vers la sélection de sièges
-  this.router.navigate(['/reservation/sieges', seance.id]);
-}
+    // Navigation vers la sélection de sièges
+    this.router.navigate(['/reservation/sieges', seance.id]);
+  }
 
   isSeanceSelected(seance: Seance): boolean {
     return this.selectedSeance?.id === seance.id;

@@ -29,11 +29,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           // Erreur de connexion au serveur
           console.error('Erreur de connexion. Serveur indisponible.', error);
         }
-
-        if (error.status === 401) {
-          // Non autorisé - token expiré ou invalide
-          this.authService.logout();
-          this.router.navigate(['/login']);
+        
+     if (error.status === 401) {
+          // Ne déconnecter QUE si on n'est PAS sur la page de login
+          if (!request.url.includes('/auth/login') &&
+              !request.url.includes('/auth/register')) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }
         }
 
         if (error.status === 403) {

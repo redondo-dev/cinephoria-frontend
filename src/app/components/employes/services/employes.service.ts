@@ -47,6 +47,16 @@ export interface Salle {
     | 'Dolby Atmos'
     | 'ScreenX'; // Types étendus
 }
+// Interface Tarif Seance
+export interface Tarif {
+  id?: number;
+  nom_tarif: string;
+  type_tarif?: string;
+  prix_unitaire: number;
+  description?: string;
+  created_at?: string;
+  updated_at?: string;
+}
 
 // Interface Avis
 export interface Avis {
@@ -72,13 +82,15 @@ export class FilmsService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Film[]> {
-      return this.http.get<{ data: Film[] }>(this.apiUrl)
-      .pipe(map(response => response.data));
+    return this.http
+      .get<{ data: Film[] }>(this.apiUrl)
+      .pipe(map((response) => response.data));
   }
 
   getById(id: number): Observable<Film> {
-     return this.http.get<{ data: Film }>(`${this.apiUrl}/${id}`)
-      .pipe(map(response => response.data));
+    return this.http
+      .get<{ data: Film }>(`${this.apiUrl}/${id}`)
+      .pipe(map((response) => response.data));
   }
 
   create(film: Film): Observable<Film> {
@@ -104,13 +116,15 @@ export class SeancesService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Seance[]> {
-    return this.http.get<{ data: Seance[] }>(this.apiUrl)
-      .pipe(map(response => response.data));
+    return this.http
+      .get<{ data: Seance[] }>(this.apiUrl)
+      .pipe(map((response) => response.data));
   }
 
   getById(id: number): Observable<Seance> {
-  return this.http.get<{ data: Seance }>(`${this.apiUrl}/${id}`)
-      .pipe(map(response => response.data));
+    return this.http
+      .get<{ data: Seance }>(`${this.apiUrl}/${id}`)
+      .pipe(map((response) => response.data));
   }
 
   create(seance: Seance): Observable<Seance> {
@@ -135,14 +149,15 @@ export class SallesService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Salle[]> {
-   return this.http.get<{ data: Salle[] }>(this.apiUrl)
-      .pipe(map(response => response.data));
+    return this.http
+      .get<{ data: Salle[] }>(this.apiUrl)
+      .pipe(map((response) => response.data));
   }
 
   getById(id: number): Observable<Salle> {
-   return this.http.get<{ data: Salle }>(`${this.apiUrl}/${id}`)
-      .pipe(map(response => response.data));
-
+    return this.http
+      .get<{ data: Salle }>(`${this.apiUrl}/${id}`)
+      .pipe(map((response) => response.data));
   }
 
   create(salle: Salle): Observable<Salle> {
@@ -157,6 +172,44 @@ export class SallesService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
+
+//Tarif Service
+
+@Injectable({
+  providedIn: 'root',
+})
+export class TarifsService {
+  private apiUrl = `${API_BASE_URL}/tarifs`;
+
+  constructor(private http: HttpClient) {}
+
+  // Récupérer tous les tarifs disponibles
+  getAll(): Observable<Tarif[]> {
+    return this.http
+      .get<{ data: Tarif[] }>(this.apiUrl)
+      .pipe(map((response) => response.data));
+  }
+
+  getById(id: number): Observable<Tarif> {
+    return this.http
+      .get<{ data: Tarif }>(`${this.apiUrl}/${id}`)
+      .pipe(map((response) => response.data));
+  }
+
+  create(tarif: Tarif): Observable<Tarif> {
+    return this.http
+      .post<{ data: Tarif }>(this.apiUrl, tarif)
+      .pipe(map((response) => response.data));
+  }
+  update(id: number, tarif: Tarif): Observable<Tarif> {
+    return this.http
+      .put<{ data: Tarif }>(`${this.apiUrl}/${id}`, tarif)
+      .pipe(map((response) => response.data));
+  }
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}
 // avis service
 @Injectable({
   providedIn: 'root',
@@ -167,17 +220,15 @@ export class AvisService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Avis[]> {
-  return this.http.get<{ data: Avis[] }>(this.apiUrl)
-    .pipe(
-      map(response => response.data) // on extrait uniquement le tableau d'avis
+    return this.http.get<{ data: Avis[] }>(this.apiUrl).pipe(
+      map((response) => response.data) // on extrait uniquement le tableau d'avis
     );
   }
 
   getPending(): Observable<Avis[]> {
-    return this.http.get<{data:Avis[]}>(`${this.apiUrl}/en-attente`)
-     .pipe(
-      map(response => response.data)
-     );
+    return this.http
+      .get<{ data: Avis[] }>(`${this.apiUrl}/en-attente`)
+      .pipe(map((response) => response.data));
   }
 
   validate(id: number): Observable<Avis> {

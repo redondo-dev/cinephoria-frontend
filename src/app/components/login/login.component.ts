@@ -87,7 +87,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (response.user.role === 'ADMIN') {
             this.router.navigate(['/admin/dashboard']);
           } else if (response.user.role === 'EMPLOYE') {
-            this.router.navigate(['/employe/dashboard']);
+            this.router.navigate(['/intranet']);
+          } else if (response.user.role === 'CLIENT') {
+            this.router.navigate(['/mon-espace']);
           } else {
             const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
             sessionStorage.removeItem('redirectAfterLogin');

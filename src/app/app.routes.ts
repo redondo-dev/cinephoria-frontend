@@ -141,17 +141,19 @@ export const routes: Routes = [
       ),
     title: 'Contact - Cinéphoria',
   },
+
   //routes employes
 
   {
     path: 'intranet',
     canActivate: [AuthGuard, RoleGuard],
-     data: { roles: ['EMPLOYE'] },
+    data: { roles: ['EMPLOYE'] },
     loadComponent: () =>
       import(
         './components/employes/pages/employes-dashboard/employes-dashboard.component'
       ).then((m) => m.EmployesDashboardComponent),
     title: 'Intranet employé - Cinéphoria',
+    children: EMPLOYE_ROUTES,
   },
 
   // routes pour users

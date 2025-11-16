@@ -1,7 +1,8 @@
+import { EmployesDashboardComponent } from './components/employes/pages/employes-dashboard/employes-dashboard.component';
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
- import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
+import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
 import { AdminGuard } from './core/guards/admin.guard';
 // import { EmployeeGuard } from './core/guards/employee.guard';
 import { ClientGuard } from './core/guards/client.guard';
@@ -131,7 +132,7 @@ export const routes: Routes = [
       },
     ],
   },
-
+  // routes contact
   {
     path: 'contact',
     loadComponent: () =>
@@ -139,6 +140,18 @@ export const routes: Routes = [
         (m) => m.ContactComponent
       ),
     title: 'Contact - Cinéphoria',
+  },
+  //routes employes
+
+  {
+    path: 'intranet',
+    canActivate: [AuthGuard, RoleGuard],
+     data: { roles: ['EMPLOYE'] },
+    loadComponent: () =>
+      import(
+        './components/employes/pages/employes-dashboard/employes-dashboard.component'
+      ).then((m) => m.EmployesDashboardComponent),
+    title: 'Intranet employé - Cinéphoria',
   },
 
   // routes pour users

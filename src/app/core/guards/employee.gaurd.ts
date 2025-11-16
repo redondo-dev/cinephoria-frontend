@@ -9,20 +9,16 @@ export const EmployeeGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return authService.currentUser$.pipe(
-    map(user => {
+    map((user) => {
       // Employé OU Admin peuvent accéder
       if (user && (user.role === 'EMPLOYE' || user.role === 'ADMIN')) {
         return true;
       }
 
       router.navigate(['/login'], {
-        queryParams: { returnUrl: state.url }
+        queryParams: { returnUrl: state.url },
       });
       return false;
     })
   );
 };
-
-
-
-

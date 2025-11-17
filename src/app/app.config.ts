@@ -1,17 +1,17 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-  HTTP_INTERCEPTORS,
+  provideHttpClient, withInterceptors 
+
 } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { errorInterceptor } from './core/interceptors/http-error.interceptor';
 
-// Import des interceptors
-import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,17 +19,19 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
 
     // Fournit HttpClient avec prise en charge des interceptors DI
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(
+      withInterceptors([
+        authInterceptor,    // ✅ Auth en premier (ajoute le token)
+        errorInterceptor    // ✅ Error en second (gère les erreurs)
+      ]))
 
-    // Déclaration explicite des interceptors
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-
-    //
-    provideAnimations(),
-    provideToastr({
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-    }),
-  ],
+  ]
 };
+    // //
+    // provideAnimations(),
+    // provideToastr({
+    //   positionClass: 'toast-bottom-right',
+    //   preventDuplicates: true,
+    // }),
+//   ],
+// };

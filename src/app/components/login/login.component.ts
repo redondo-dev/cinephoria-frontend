@@ -73,34 +73,34 @@ export class LoginComponent implements OnInit, OnDestroy {
     const credentials = this.loginForm.value;
 
     this.authService
-      .login(credentials.email, credentials.password)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          this.loginForm.enable();
-          this.successMessage = `Bienvenue ${response.user.name}!`;
+       .login({
+      email: credentials.email,
+      password: credentials.password
+    })
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.loginForm.enable();
+        this.successMessage = `Bienvenue ${response.user.nom}!`;
 
-          /**
-           * Redirection après login en fonction du rôle
-           */
-          if (response.user.role === 'ADMIN') {
-            this.router.navigate(['/admin/dashboard']);
-          } else if (response.user.role === 'EMPLOYE') {
-            this.router.navigate(['/intranet']);
-          } else if (response.user.role === 'CLIENT') {
-            this.router.navigate(['/mon-espace']);
-          } else {
-            const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-            sessionStorage.removeItem('redirectAfterLogin');
+        /** Redirection selon le rôle **/
+        if (response.user.role === 'ADMIN') {
+          this.router.navigate(['/admin/dashboard']);
 
-            if (redirectUrl) {
-              this.router.navigateByUrl(redirectUrl);
-            } else {
-              this.router.navigate(['/']);
-            }
-          }
-        },
+        } else if (response.user.role === 'EMPLOYE') {
+          this.router.navigate(['/intranet']);
+
+        } else if (response.user.role === 'CLIENT') {
+          this.router.navigate(['/mon-espace']);
+
+        } else {
+          const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+          sessionStorage.removeItem('redirectAfterLogin');
+          this.router.navigateByUrl(redirectUrl || '/');
+        }
+      },
+          
         error: (error) => {
           this.isLoading = false;
           this.loginForm.enable();

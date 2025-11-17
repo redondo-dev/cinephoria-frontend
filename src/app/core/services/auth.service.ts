@@ -1,104 +1,105 @@
-import { Injectable } from '@angular/core';
+// src/app/core/services/auth.service.ts
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
-export interface User {
-  name: string;
+interface User {
+  id: number;
   email: string;
+  prenom: string;
+  nom: string;
+  role: string;
 }
 
-export interface AuthResponse {
+interface LoginResponse {
   token: string;
-  user: { id: string; email: string; name: string; role: string };
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  username: string;
-}
-
-export interface RegisterResponse {
-  success: boolean;
-  message: string;
-  userId?: string;
+  user: User;
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
-    this.hasToken()
-  );
-  private currentUserSubject = new BehaviorSubject<any>(this.getStoredUser());
+  private currentUser = signal<User | null>(null);
+  private apiUrl = `${environment.apiUrl}/auth`;
 
-  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-  currentUser$ = this.currentUserSubject.asObservable();
-
-  constructor(private http: HttpClient, private router: Router) {}
-
-  private hasToken(): boolean {
-    return !!localStorage.getItem('token');
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
+    this.loadUserFromStorage();
   }
 
-  private getStoredUser(): any {
-    const user = localStorage.getItem('current_user');
-    return user ? JSON.parse(user) : null;
-  }
-  // Nouvelle méthode pour l'inscription
-  register(data: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(
-      `${this.apiUrl}/auth/register`,
-      data
-    );
-  }
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/auth/login`, { email, password })
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('current_user', JSON.stringify(response.user));
-          this.isAuthenticatedSubject.next(true);
-          this.currentUserSubject.next(response.user);
-        })
-      );
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('current_user');
-    localStorage.removeItem('redirect_url');
-    this.isAuthenticatedSubject.next(false);
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/auth/login']);
-  }
+  // ✅ Ajouter cette méthode
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    console.log('🔑 [AUTH SERVICE] getToken appelé, token:', token ? '✅ Présent' : '❌ Absent');
+    return token;
   }
 
   isAuthenticated(): boolean {
-    return this.hasToken();
-  }
-  getCurrentUser(): any {
-    return this.currentUserSubject.value;
+    const token = this.getToken();
+    const user = this.currentUser();
+
+    const isAuth = !!token && !!user;
+    console.log('🔍 [AUTH SERVICE] isAuthenticated:', isAuth, '(token:', !!token, ', user:', !!user, ')');
+
+    return isAuth;
   }
 
-  setRedirectUrl(url: string): void {
-    localStorage.setItem('redirect_url', url);
+  getCurrentUser(): User | null {
+    return this.currentUser();
   }
 
-  getRedirectUrl(): string | null {
-    return localStorage.getItem('redirect_url');
+  login(credentials: { email: string; password: string }): Observable<LoginResponse> {
+    console.log('📤 [AUTH SERVICE] Tentative de login:', credentials.email);
+
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response: LoginResponse) => {
+        console.log('✅ [AUTH SERVICE] Login réussi:', response);
+
+        // Sauvegarder le token et l'utilisateur
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+
+        this.currentUser.set(response.user);
+
+        // Vérification immédiate
+        console.log('💾 [AUTH SERVICE] Token sauvegardé:', localStorage.getItem('token'));
+        console.log('👤 [AUTH SERVICE] User sauvegardé:', localStorage.getItem('user'));
+      })
+    );
   }
 
-  clearRedirectUrl(): void {
-    localStorage.removeItem('redirect_url');
+  logout(): void {
+    console.log('🚪 [AUTH SERVICE] Logout...');
+
+    this.currentUser.set(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    console.log('🗑️ [AUTH SERVICE] LocalStorage nettoyé');
+  }
+
+  private loadUserFromStorage(): void {
+    const token = this.getToken();
+    const userStr = localStorage.getItem('user');
+
+    console.log('🔄 [AUTH SERVICE] Chargement depuis localStorage - Token:', !!token, 'User:', !!userStr);
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        this.currentUser.set(user);
+        console.log('✅ [AUTH SERVICE] User chargé:', user);
+      } catch (error) {
+        console.error('❌ [AUTH SERVICE] Erreur parsing user:', error);
+        this.logout();
+      }
+    } else {
+      console.log('⚠️ [AUTH SERVICE] Pas de données en localStorage');
+    }
   }
 }

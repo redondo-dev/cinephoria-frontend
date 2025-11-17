@@ -1,7 +1,7 @@
 // src/app/utilisateur/commandes/commandes.component.ts
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersService } from '../../../users/services/users.service';
+import { UsersService } from '../../../../core/services/users.service';
 import { Commande, Film } from '../../../../core/models/commande.model';
 import { AvisFormComponent } from '../avis-form/avis-form.component';
 

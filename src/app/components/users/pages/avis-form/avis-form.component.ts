@@ -1,4 +1,4 @@
-// src/app/utilisateur/avis-form/avis-form.component.ts
+// src/app/components/users/avis-form/avis-form.component.ts
 import {
   Component,
   Input,
@@ -15,7 +15,11 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AvisService } from '../../services/users.service';
+import {
+  AvisService,
+  CreateAvisDto,
+  UpdateAvisDto,
+} from '../../../../core/services/avis.service';
 import { Film, Avis } from '../../../../core/models/commande.model';
 
 @Component({
@@ -59,7 +63,7 @@ export class AvisFormComponent implements OnInit {
           this.noteSelectionnee.set(avis.note);
           this.avisForm.patchValue({
             note: avis.note,
-            description: avis.description,
+            description: avis.contenu,
           });
         }
       },
@@ -78,29 +82,57 @@ export class AvisFormComponent implements OnInit {
     this.submitting.set(true);
     this.errorMessage.set(null);
 
-    const avisData: Avis = {
-      filmId: this.film.id,
-      note: this.avisForm.value.note,
-      description: this.avisForm.value.description,
-    };
+    // Mapper les champs du formulaire vers le DTO backend
+    const formValue = this.avisForm.value;
 
-    const request$ = this.avisExistant()
-      ? this.avisService.modifierAvis(this.avisExistant()!.id!, avisData)
-      : this.avisService.creerAvis(avisData);
+    if (this.avisExistant()) {
+      // Modification d'un avis existant
+      const updateData: UpdateAvisDto = {
+        note: formValue.note,
+        contenu: formValue.description, // description (form) -> contenu (backend)
+      };
 
-    request$.subscribe({
-      next: () => {
-        this.submitting.set(false);
-        this.avisEnvoye.emit();
-      },
-      error: (err) => {
-        this.submitting.set(false);
-        this.errorMessage.set(
-          "Une erreur est survenue lors de l'envoi de votre avis"
-        );
-        console.error(err);
-      },
-    });
+      this.avisService
+        .modifierAvis(this.avisExistant()!.id!, updateData)
+        .subscribe({
+          next: (response) => {
+            this.submitting.set(false);
+            console.log('✅', response.message);
+            this.avisEnvoye.emit();
+          },
+          error: (err) => {
+            this.submitting.set(false);
+            this.errorMessage.set(
+              err.error?.message ||
+                'Une erreur est survenue lors de la modification de votre avis'
+            );
+            console.error(' Erreur modification:', err);
+          },
+        });
+    } else {
+      // Création d'un nouvel avis
+      const createData: CreateAvisDto = {
+        film_id: this.film.id,
+        note: formValue.note,
+        contenu: formValue.description, // description (form) -> contenu (backend)
+      };
+
+      this.avisService.creerAvis(createData).subscribe({
+        next: (response) => {
+          this.submitting.set(false);
+          console.log('✅', response.message);
+          this.avisEnvoye.emit();
+        },
+        error: (err) => {
+          this.submitting.set(false);
+          this.errorMessage.set(
+            err.error?.message ||
+              "Une erreur est survenue lors de l'envoi de votre avis"
+          );
+          console.error(' Erreur création:', err);
+        },
+      });
+    }
   }
 
   onFermer(): void {

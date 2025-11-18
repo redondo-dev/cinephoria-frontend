@@ -5,22 +5,41 @@ import { Observable } from 'rxjs';
 import { Commande } from '../models/commande.model';
 import { Film } from '../models/commande.model';
 import { environment } from '../../../environments/environment';
+import { map, tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/user`;
+  private apiUrl = `${environment.apiUrl}/api/user`;
 
   /**
    * Récupère toutes les commandes/réservations de l'utilisateur
    * GET /user/commandes
    */
-  getMesCommandes(): Observable<Commande[]> {
-    return this.http.get<Commande[]>(`${this.apiUrl}/commandes`);
-  }
+getMesCommandes(): Observable<Commande[]> {
+    console.log('🔍 [USERS SERVICE] URL appelée:', `${this.apiUrl}/commandes`);
 
+    return this.http.get<any>(`${this.apiUrl}/commandes`).pipe(
+      tap(response => {
+        console.log('📦 [USERS SERVICE] Réponse complète:', response);
+        console.log('📊 [USERS SERVICE] Données brutes:', response.data);
+        console.log('🔢 [USERS SERVICE] Type de données:', typeof response.data);
+      }),
+      map((response) => {
+        // CORRECTION : "data" au lieu de "date"
+        const commandes = response.data || [];
+        console.log('✅ [USERS SERVICE] Commandes extraites:', commandes);
+        return commandes;
+      }),
+      catchError(error => {
+        console.error('❌ [USERS SERVICE] Erreur:', error);
+        return of([]); // Retourne un tableau vide en cas d'erreur
+      })
+    );
+  }
   /**
    * Récupère une commande spécifique par ID
    * GET /user/commandes/:id

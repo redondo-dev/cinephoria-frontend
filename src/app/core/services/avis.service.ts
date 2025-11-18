@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class AvisService {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/user/avis`; // ⚠️ Changé pour /user/avis
+  private apiUrl = `${environment.apiUrl}/api/user/avis`;
 
   /**
    * Crée un nouvel avis
@@ -18,10 +18,7 @@ export class AvisService {
    * Body: { film_id, note, contenu }
    */
   creerAvis(avis: CreateAvisDto): Observable<{ message: string; avis: Avis }> {
-    return this.http.post<{ message: string; avis: Avis }>(
-      this.apiUrl,
-      avis
-    );
+    return this.http.post<{ message: string; avis: Avis }>(this.apiUrl, avis);
   }
 
   /**
@@ -38,9 +35,7 @@ export class AvisService {
    * Retourne null si aucun avis n'existe
    */
   getAvisUtilisateur(filmId: number): Observable<Avis | null> {
-    return this.http.get<Avis | null>(
-      `${this.apiUrl}/film/${filmId}` // ⚠️ Changé le chemin
-    );
+    return this.http.get<Avis | null>(`${this.apiUrl}/film/${filmId}`);
   }
 
   /**

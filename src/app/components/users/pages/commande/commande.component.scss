@@ -1,40 +1,53 @@
+// commande.component.scss - Style Netflix
+.commandes-container {
+  background: #141414;
+  min-height: 100vh;
+  padding: 3rem 4%;
+  color: #fff;
 
- .commandes-container {
-      padding: 2rem;
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #e5e5e5;
+  }
+
+  // Loading & States
+  .loading,
+  .error-message,
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+
+    p {
+      font-size: 1.2rem;
+      color: #b3b3b3;
     }
+  }
 
-    h2 {
-      color: #333;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
+  .error-message {
+    background: rgba(229, 9, 20, 0.1);
+    border: 1px solid #e50914;
+    border-radius: 4px;
+
+    p {
+      color: #e50914;
     }
+  }
 
-    .loading, .empty-state {
-      text-align: center;
-      padding: 3rem;
-      color: #666;
-    }
+  // Commande Card
+  .commande-card {
+    background: linear-gradient(145deg, #1f1f1f 0%, #2a2a2a 100%);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 
-    .error-message {
-      background: #fee;
-      border: 1px solid #fcc;
-      color: #c33;
-      padding: 1rem;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-    }
-
-    .commande-card {
-      background: white;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-      overflow: hidden;
-      transition: box-shadow 0.3s;
-    }
-
-    .commande-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      border-color: rgba(229, 9, 20, 0.5);
     }
 
     .commande-header {
@@ -42,148 +55,252 @@
       justify-content: space-between;
       align-items: center;
       padding: 1.5rem;
-      background: #f8f9fa;
-      border-bottom: 1px solid #e0e0e0;
+      background: rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      .commande-info {
+        h3 {
+          font-size: 1.4rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem 0;
+          color: #fff;
+        }
+
+        .date {
+          font-size: 0.95rem;
+          color: #b3b3b3;
+        }
+      }
+
+      .commande-status {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .badge {
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+          font-size: 0.875rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+
+          &.badge-confirmee {
+            background: #46d369;
+            color: #000;
+          }
+
+          &.badge-en-attente {
+            background: #ffa726;
+            color: #000;
+          }
+
+          &.badge-annulee {
+            background: #e50914;
+            color: #fff;
+          }
+        }
+
+        .montant {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #e50914;
+        }
+      }
     }
 
-    .commande-info h3 {
-      margin: 0 0 0.5rem 0;
-      color: #333;
-      font-size: 1.2rem;
+    // Reservation Details
+    .reservation-details {
+      padding: 1.5rem;
+
+      .film-info {
+        display: flex;
+        gap: 1.5rem;
+
+        .film-affiche {
+          width: 140px;
+          height: 210px;
+          object-fit: cover;
+          border-radius: 4px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+
+        .film-details {
+          flex: 1;
+
+          h4 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+            color: #fff;
+          }
+
+          .seance-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            color: #b3b3b3;
+
+            .icon {
+              font-size: 1.2rem;
+            }
+          }
+        }
+
+        // Billets List
+        .billets-list {
+          margin-top: 2rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+          h5 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #e5e5e5;
+          }
+
+          .billet-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            border-left: 3px solid #e50914;
+
+            .billet-info {
+              display: flex;
+              gap: 1.5rem;
+              align-items: center;
+
+              .siege-number {
+                font-size: 0.95rem;
+                color: #fff;
+
+                strong {
+                  color: #e50914;
+                }
+              }
+
+              .billet-statut {
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.8rem;
+                font-weight: 600;
+
+                &.statut-valide {
+                  background: rgba(70, 211, 105, 0.2);
+                  color: #46d369;
+                  border: 1px solid #46d369;
+                }
+
+                &.statut-utilise {
+                  background: rgba(255, 167, 38, 0.2);
+                  color: #ffa726;
+                  border: 1px solid #ffa726;
+                }
+
+                &.statut-annule {
+                  background: rgba(229, 9, 20, 0.2);
+                  color: #e50914;
+                  border: 1px solid #e50914;
+                }
+              }
+            }
+
+            .billet-prix {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+              gap: 0.25rem;
+
+              .tarif-type {
+                font-size: 0.85rem;
+                color: #b3b3b3;
+              }
+
+              .prix {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #fff;
+              }
+            }
+          }
+        }
+
+        // Bouton Noter
+        .action-avis {
+          margin-top: 1.5rem;
+
+          .btn-noter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            .icon {
+              font-size: 1.2rem;
+            }
+
+            &:hover {
+              background: #f40612;
+              transform: scale(1.05);
+              box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+            }
+
+            &:active {
+              transform: scale(0.98);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .commandes-container {
+    padding: 2rem 3%;
+
+    h2 {
+      font-size: 1.8rem;
     }
 
-    .date {
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    .commande-status {
-      text-align: right;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .badge-en_attente {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .badge-confirmee {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .badge-annulee {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .montant {
-      display: block;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .billets-list {
-      padding: 1rem;
-    }
-
-    .billet-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .billet-item:last-child {
-      border-bottom: none;
-    }
-
-    .film-info {
-      display: flex;
-      gap: 1rem;
-      flex: 1;
-    }
-
-    .film-affiche {
-      width: 80px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .film-details h4 {
-      margin: 0 0 0.5rem 0;
-      color: #333;
-      font-size: 1.1rem;
-    }
-
-    .seance-info {
-      margin: 0.3rem 0;
-      color: #666;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .icon {
-      font-size: 1rem;
-    }
-
-    .action-avis {
-      margin-left: 1rem;
-    }
-
-    .btn-noter {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.3s;
-    }
-
-    .btn-noter:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-
-    @media (max-width: 768px) {
+    .commande-card {
       .commande-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
       }
 
-      .billet-item {
+      .reservation-details .film-info {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
 
-      .action-avis {
-        margin-left: 0;
-        width: 100%;
-      }
-
-      .btn-noter {
-        width: 100%;
-        justify-content: center;
+        .film-affiche {
+          width: 100%;
+          height: auto;
+          max-width: 200px;
+          margin: 0 auto;
+        }
       }
     }
+  }
+}

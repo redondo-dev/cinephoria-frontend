@@ -1,87 +1,100 @@
-<p>avis-form works!</p>
+<!-- avis-form.component.html -->
 <div class="modal-overlay" (click)="onFermer()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-          <h3>Donnez votre avis sur "{{ film.titre }}"</h3>
-          <button class="btn-close" (click)="onFermer()">&times;</button>
-        </div>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Donnez votre avis sur "{{ film.titre }}"</h3>
+      <button class="btn-close" (click)="onFermer()">&times;</button>
+    </div>
 
-        <div class="modal-body">
-          <div class="film-preview">
-            <img [src]="film.affiche" [alt]="film.titre" />
-          </div>
-
-          <form [formGroup]="avisForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <label>Votre note *</label>
-              <div class="note-selector">
-                @for (star of [1, 2, 3, 4, 5]; track star) {
-                  <button
-                    type="button"
-                    class="star-btn"
-                    [class.selected]="noteSelectionnee() >= star"
-                    (click)="selectionnerNote(star)"
-                  >
-                    {{ noteSelectionnee() >= star ? '⭐' : '☆' }}
-                  </button>
-                }
-                <span class="note-label">{{ noteSelectionnee() }}/5</span>
-              </div>
-              @if (avisForm.get('note')?.touched && avisForm.get('note')?.hasError('required')) {
-                <small class="error">Veuillez sélectionner une note</small>
-              }
-            </div>
-
-            <div class="form-group">
-              <label for="description">Votre commentaire *</label>
-              <textarea
-                id="description"
-                formControlName="description"
-                rows="5"
-                placeholder="Partagez votre expérience avec ce film..."
-                [class.invalid]="avisForm.get('description')?.touched && avisForm.get('description')?.invalid"
-              ></textarea>
-              @if (avisForm.get('description')?.touched && avisForm.get('description')?.hasError('required')) {
-                <small class="error">Le commentaire est obligatoire</small>
-              }
-              @if (avisForm.get('description')?.hasError('minlength')) {
-                <small class="error">Minimum 10 caractères requis</small>
-              }
-              <small class="info">
-                Votre avis sera soumis pour validation avant publication.
-              </small>
-            </div>
-
-            @if (submitting()) {
-              <div class="loading-submit">
-                <p>Envoi en cours...</p>
-              </div>
-            }
-
-            @if (errorMessage()) {
-              <div class="error-message">
-                {{ errorMessage() }}
-              </div>
-            }
-
-            <div class="form-actions">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="onFermer()"
-                [disabled]="submitting()"
-              >
-                Annuler
-              </button>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                [disabled]="avisForm.invalid || submitting()"
-              >
-                {{ avisExistant() ? 'Modifier mon avis' : 'Publier mon avis' }}
-              </button>
-            </div>
-          </form>
+    <div class="modal-body">
+      <div class="film-preview">
+        <img [src]="film.affiche" [alt]="film.titre" class="film-affiche" />
+        <div class="film-info">
+          <h4>{{ film.titre }}</h4>
+          <p *ngIf="film.date_derniere_seance">Année: {{ film.date_derniere_seance }}</p>
         </div>
       </div>
+
+      <form [formGroup]="avisForm" (ngSubmit)="onSubmit()">
+        <!-- Section Note -->
+        <div class="form-group">
+          <label>Votre note *</label>
+          <div class="note-selector">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+            <button type="button" class="star-btn" [class.active]="noteSelectionnee() >= star"
+              (click)="selectionnerNote(star)">
+              {{ noteSelectionnee() >= star ? '⭐' : '☆' }}
+            </button>
+            }
+            <span class="note-label">{{ noteSelectionnee() }}/5</span>
+          </div>
+          @if (avisForm.get('note')?.touched && avisForm.get('note')?.invalid) {
+          <small class="error-text">
+            @if (avisForm.get('note')?.hasError('required')) {
+            Veuillez sélectionner une note
+            }
+            @if (avisForm.get('note')?.hasError('min')) {
+            La note doit être au moins 1
+            }
+            @if (avisForm.get('note')?.hasError('max')) {
+            La note ne peut pas dépasser 5
+            }
+          </small>
+          }
+        </div>
+
+        <!-- Section Commentaire -->
+        <div class="form-group">
+          <label for="contenu">Votre commentaire *</label>
+          <textarea id="contenu" formControlName="contenu" rows="5"
+            placeholder="Partagez votre expérience avec ce film (minimum 10 caractères)..."
+            [class.error]="avisForm.get('contenu')?.touched && avisForm.get('contenu')?.invalid"></textarea>
+          @if (avisForm.get('contenu')?.touched && avisForm.get('contenu')?.invalid) {
+          <small class="error-text">
+            @if (avisForm.get('contenu')?.hasError('required')) {
+            Le commentaire est obligatoire
+            }
+            @if (avisForm.get('contenu')?.hasError('minlength')) {
+            Le commentaire doit contenir au moins 10 caractères
+            }
+          </small>
+          }
+          <small class="help-text">
+            Votre avis sera soumis pour validation avant publication.
+          </small>
+        </div>
+
+        <!-- Message d'information pour avis existant -->
+        @if (avisExistant()) {
+        <div class="info-message">
+          ⚠️ Vous avez déjà donné un avis pour ce film. Vous pouvez le modifier.
+        </div>
+        }
+
+        <!-- Loading -->
+        @if (submitting()) {
+        <div class="loading-state">
+          <p>Envoi en cours...</p>
+        </div>
+        }
+
+        <!-- Erreur -->
+        @if (errorMessage()) {
+        <div class="error-message">
+          {{ errorMessage() }}
+        </div>
+        }
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="onFermer()" [disabled]="submitting()">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="avisForm.invalid || submitting()">
+            {{ avisExistant() ? 'Modifier mon avis' : 'Publier mon avis' }}
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
+</div>

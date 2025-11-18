@@ -1,83 +1,92 @@
+<!-- commande.component.html -->
 <div class="commandes-container">
-      <h2>Mes Commandes</h2>
+  <h2>Mes Réservations</h2>
 
-      @if (loading()) {
-        <div class="loading">
-          <p>Chargement de vos commandes...</p>
-        </div>
-      }
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <p>Chargement de vos réservations...</p>
+  </div>
 
-      @if (error()) {
-        <div class="error-message">
-          <p>{{ error() }}</p>
-        </div>
-      }
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
 
-      @if (!loading() && commandes().length === 0) {
-        <div class="empty-state">
-          <p>Vous n'avez pas encore de commande.</p>
-        </div>
-      }
+  <!-- Empty State -->
+  <div *ngIf="!loading && commandes.length === 0 && !error" class="empty-state">
+    <p>Aucune commande trouvée</p>
+  </div>
 
-      @for (commande of commandes(); track commande.id) {
-        <div class="commande-card">
-          <div class="commande-header">
-            <div class="commande-info">
-              <h3>Commande #{{ commande.numero }}</h3>
-              <span class="date">{{ commande.dateCommande | date: 'dd/MM/yyyy à HH:mm' }}</span>
-            </div>
-            <div class="commande-status">
-              <span [class]="'badge badge-' + commande.statut.toLowerCase()">
-                {{ getStatutLabel(commande.statut) }}
-              </span>
-              <span class="montant">{{ commande.montantTotal | currency: 'EUR' }}</span>
-            </div>
-          </div>
-
-          <div class="billets-list">
-            @for (billet of commande.billets; track billet.id) {
-              <div class="billet-item">
-                <div class="film-info">
-                  <img
-                    [src]="billet.seance.film.affiche"
-                    [alt]="billet.seance.film.titre"
-                    class="film-affiche"
-                  />
-                  <div class="film-details">
-                    <h4>{{ billet.seance.film.titre }}</h4>
-                    <p class="seance-info">
-                      <span class="icon">📅</span>
-                      {{ billet.seance.dateHeure | date: 'EEEE dd MMMM yyyy à HH:mm' }}
-                    </p>
-                    <p class="seance-info">
-                      <span class="icon">🎬</span>
-                      Salle {{ billet.seance.salle }} - Siège {{ billet.numeroSiege }}
-                    </p>
-                  </div>
-                </div>
-
-                @if (isSeancePassee(billet.seance.dateHeure)) {
-                  <div class="action-avis">
-                    <button
-                      class="btn-noter"
-                      (click)="ouvrirFormulaireAvis(billet.seance.film)"
-                    >
-                      <span class="icon">⭐</span>
-                      Noter ce film
-                    </button>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        </div>
-      }
-
-      @if (filmSelectionne()) {
-        <app-avis-form
-          [film]="filmSelectionne()!"
-          (fermer)="fermerFormulaireAvis()"
-          (avisEnvoye)="onAvisEnvoye()"
-        />
-      }
+  <!-- Liste des commandes -->
+  <div *ngFor="let commande of commandes" class="commande-card">
+    <div class="commande-header">
+      <div class="commande-info">
+        <h3>Réservation #{{ commande.id }}</h3>
+        <span class="date">{{ commande.date_creation | date: 'dd/MM/yyyy à HH:mm' }}</span>
+      </div>
+      <div class="commande-status">
+        <span [class]="'badge badge-' + commande.statut_reservation.replace('_', '-')">
+          {{ getStatutLabel(commande.statut_reservation) }}
+        </span>
+        <span class="montant">
+          {{ calculateTotal(commande) | currency: 'EUR' }}
+        </span>
+      </div>
     </div>
+
+    <div class="reservation-details">
+      <div *ngIf="commande.seance" class="film-info">
+        <div *ngIf="commande.seance.film">
+          <img [src]="commande.seance.film.affiche" [alt]="commande.seance.film.titre" class="film-affiche" />
+          <div class="film-details">
+            <h4>{{ commande.seance.film.titre }}</h4>
+            <p class="seance-info">
+              <span class="icon">📅</span>
+              {{ commande.seance.date_heure_debut | date: 'EEEE dd MMMM yyyy à HH:mm' }}
+            </p>
+            <p *ngIf="commande.seance.salle" class="seance-info">
+              <span class="icon">🎬</span>
+              Salle {{ commande.seance.salle.nom_salle }}
+            </p>
+            <p class="seance-info">
+              <span class="icon">🎫</span>
+              {{ commande.nb_places }} place(s) • {{ commande.prix_unitaire | currency: 'EUR' }}/place
+            </p>
+          </div>
+        </div>
+
+        <!-- Billets -->
+        <div *ngIf="commande.billets && commande.billets.length > 0" class="billets-list">
+          <h5>Détails des billets :</h5>
+          <div *ngFor="let billet of commande.billets" class="billet-item">
+            <div class="billet-info">
+              <span class="siege-number">
+                <strong>Siège :</strong> {{ billet.siege?.numero_siege || billet.siege_id }}
+              </span>
+              <span class="billet-statut" [class]="'statut-' + billet.statut_billet">
+                {{ getBilletStatutLabel(billet.statut_billet) }}
+              </span>
+            </div>
+            <div class="billet-prix">
+              <span class="tarif-type">{{ billet.tarif?.nom_tarif || 'Normal' }}</span>
+              <span class="prix">{{ billet.prix_final | currency: 'EUR' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bouton Noter (si séance passée) -->
+        <div *ngIf="commande.seance.date_heure_debut && isSeancePassee(commande.seance.date_heure_debut)"
+          class="action-avis">
+          <button class="btn-noter" (click)="ouvrirFormulaireAvis(commande.seance.film!)">
+            <span class="icon">⭐</span>
+            Noter ce film
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Avis -->
+  <app-avis-form *ngIf="filmSelectionne" [film]="filmSelectionne" (fermer)="fermerFormulaireAvis()"
+    (avisEnvoye)="onAvisEnvoye()" />
+</div>

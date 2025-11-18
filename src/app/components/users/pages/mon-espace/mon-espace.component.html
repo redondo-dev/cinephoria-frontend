@@ -1,11 +1,59 @@
+<!-- mon-espace.component.html -->
+<div class="mon-espace-container">
+  <header class="page-header">
+    <h1>Mon Espace</h1>
+    <p class="subtitle">Gérez vos commandes et vos avis</p>
+  </header>
 
- <div class="mon-espace-container">
-      <header class="page-header">
-        <h1>Mon Espace</h1>
-        <p class="subtitle">Gérez vos commandes et vos avis</p>
-      </header>
+  <div class="content-sections">
 
-      <div class="content">
-       <app-commande></app-commande>
+    <!-- Section Commandes -->
+    <section class="section">
+      <h2>Mes Réservations</h2>
+      <app-commandes></app-commandes>
+    </section>
+
+    <!-- Section Avis -->
+    <section class="section">
+      <h2>Mes Avis</h2>
+
+      <!-- Loading -->
+      <div *ngIf="loadingAvis" class="loading">
+        <p>Chargement de vos avis...</p>
       </div>
-    </div>
+
+      <!-- Aucun avis -->
+      <div *ngIf="!loadingAvis && !hasAvis" class="no-avis">
+        <p>Vous n'avez pas encore donné d'avis.</p>
+        <small>Les avis que vous donnerez apparaîtront ici.</small>
+      </div>
+
+      <!-- Liste des avis -->
+      <div *ngIf="!loadingAvis && hasAvis" class="avis-list">
+        <p class="avis-count">Vous avez donné {{ mesAvis.length }} avis</p>
+
+        <div *ngFor="let avis of mesAvis" class="avis-card">
+          <div class="avis-header">
+            <h4>{{ avis.film?.titre || 'Film inconnu' }}</h4>
+            <div class="note">
+              <span class="stars">{{ generateStars(avis.note) }}</span>
+              <span class="note-value">{{ avis.note }}/5</span>
+            </div>
+          </div>
+
+          <p class="avis-contenu">{{ avis.contenu }}</p>
+
+          <div class="avis-footer">
+            <span class="date">
+              Posté le {{ avis.date_avis| date: 'dd/MM/yyyy' }}
+            </span>
+            <span class="statut" [class]="'statut-' + avis.statut_avis">
+              {{ getStatutLabel(avis.statut_avis!) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

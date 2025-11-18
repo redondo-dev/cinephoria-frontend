@@ -1,29 +1,361 @@
+// mon-espace.component.scss
 .mon-espace-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
+  background: linear-gradient(135deg, #141414 0%, #1a1a1a 100%);
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 0;
+}
 
-    .page-header {
-      margin-bottom: 2rem;
-      border-bottom: 2px solid #e0e0e0;
-      padding-bottom: 1rem;
-    }
+.page-header {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)),
+    url("https://images.unsplash.com/photo-1662338035221-8c94f599f410?q=80&w=1228&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-position: center;
+  padding: 80px 40px 40px;
+  position: relative;
+  margin-bottom: 0;
 
-    .page-header h1 {
-      color: #333;
-      margin: 0 0 0.5rem 0;
-      font-size: 2rem;
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(transparent, #141414);
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 0 0 12px 0;
+    background: linear-gradient(45deg, #e50914, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(229, 9, 20, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: #d2d2d2;
+    margin: 0;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.content-sections {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 60px;
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 24px;
+      background: #e50914;
+      margin-right: 12px;
+      border-radius: 2px;
+    }
+  }
+}
+
+// Style pour le composant commandes intégré
+app-commandes {
+  display: block;
+  background: rgba(45, 45, 45, 0.6);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+// Styles pour la section avis
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+
+  p {
+    color: #d2d2d2;
+    font-size: 1.1rem;
+
+    &::after {
+      content: "...";
+      animation: dots 1.5s steps(4, end) infinite;
+    }
+  }
+}
+
+@keyframes dots {
+  0%,
+  20% {
+    color: rgba(210, 210, 210, 0);
+  }
+  40% {
+    color: rgba(210, 210, 210, 0.5);
+  }
+  60%,
+  100% {
+    color: rgba(210, 210, 210, 1);
+  }
+}
+
+.no-avis {
+  text-align: center;
+  padding: 80px 40px;
+  background: rgba(30, 30, 30, 0.7);
+  border-radius: 12px;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+
+  p {
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  small {
+    color: #8c8c8c;
+    font-size: 1rem;
+  }
+}
+
+.avis-list {
+  .avis-count {
+    color: #8c8c8c;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    font-style: italic;
+    padding-left: 16px;
+  }
+}
+
+.avis-card {
+  background: linear-gradient(
+    145deg,
+    rgba(45, 45, 45, 0.8),
+    rgba(30, 30, 30, 0.9)
+  );
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #e50914, #ff6b6b);
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(229, 9, 20, 0.2);
+    border-color: rgba(229, 9, 20, 0.3);
+  }
+}
+
+.avis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+
+  h4 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+    flex: 1;
+    margin-right: 20px;
+  }
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .stars {
+    color: #ffd700;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  .note-value {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 1.1rem;
+  }
+}
+
+.avis-contenu {
+  color: #e5e5e5;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border-left: 3px solid #e50914;
+}
+
+.avis-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .date {
+    color: #8c8c8c;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+}
+
+.statut {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+
+  &.statut-en_attente,
+  &.statut-attente {
+    background: linear-gradient(45deg, #ffa726, #ff9800);
+    color: #000000;
+  }
+
+  &.statut-approuve,
+  &.statut-approuvé,
+  &.statut-valide {
+    background: linear-gradient(45deg, #4caf50, #66bb6a);
+    color: #ffffff;
+  }
+
+  &.statut-rejete,
+  &.statut-rejeté,
+  &.statut-refuse {
+    background: linear-gradient(45deg, #f44336, #ef5350);
+    color: #ffffff;
+  }
+
+  &:not([class*="statut-"]) {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .page-header {
+    padding: 60px 20px 30px;
+
+    h1 {
+      font-size: 2.5rem;
     }
 
     .subtitle {
-      color: #666;
-      margin: 0;
       font-size: 1rem;
     }
+  }
 
-    .content {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  .content-sections {
+    padding: 20px;
+  }
+
+  .section h2 {
+    font-size: 1.5rem;
+  }
+
+  .avis-header {
+    flex-direction: column;
+    gap: 12px;
+
+    h4 {
+      margin-right: 0;
     }
+  }
+
+  .avis-footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .note {
+    align-self: flex-start;
+  }
+}
+
+// Animation d'entrée
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section {
+  animation: fadeInUp 0.6s ease-out;
+
+  &:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  &:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+}
+
+// Scrollbar personnalisée
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff6b6b;
+}

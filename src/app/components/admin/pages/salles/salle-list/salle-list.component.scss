@@ -1,9 +1,16 @@
+// .container {
+//   background-image: url("https://images.unsplash.com/photo-1604975701397-6365ccbd028a?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+// }
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  color: #fff;
+  color: #eae2e2;
 }
 
 h1 {
@@ -37,7 +44,7 @@ h1 {
   background: #141414;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
@@ -45,7 +52,7 @@ h1 {
 
 .salle-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
 .salle-icon {

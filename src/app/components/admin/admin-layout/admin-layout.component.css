@@ -1,81 +1,127 @@
- .admin-container {
-      display: flex;
-      min-height: 100vh;
-      background-color: #f5f5f5;
-    }
+/* ============
+   LAYOUT GLOBAL
+   ============ */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background: #141414; /* noir Netflix */
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
 
-    .admin-sidebar {
-      width: 250px;
-      background-color: #2c3e50;
-      color: white;
-      padding: 0;
-      position: fixed;
-      height: 100vh;
-      overflow-y: auto;
-    }
+/* ============
+   SIDEBAR
+   ============ */
+.admin-sidebar {
+  width: 250px;
 
-    .sidebar-header {
-      padding: 1.5rem;
-      background-color: #1a252f;
-      border-bottom: 1px solid #34495e;
-    }
+  border-right: 1px solid #222;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  background: linear-gradient(
+    180deg,
+    rgba(229, 9, 20, 0.85),   /* Rouge Netflix lumineux */
+    rgba(30, 30, 30, 0.9)     /* Noir gris, pas trop sombre */
+    );
+    color: #fff;
+  transition: width 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 
-    .sidebar-header h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
+}
 
-    .nav-menu {
-      list-style: none;
-      padding: 1rem 0;
-      margin: 0;
-    }
+/* Header de la sidebar */
+.sidebar-header {
+  padding: 1.5rem;
+  background: #111;
+  border-bottom: 1px solid #222;
 
-    .nav-menu li a {
-      display: flex;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      color: #ecf0f1;
-      text-decoration: none;
-      transition: all 0.3s;
-      gap: 0.75rem;
-    }
+  h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #e50914; /* rouge Netflix */
+    letter-spacing: 1px;
+  }
+}
 
-    .nav-menu li a:hover {
-      background-color: #34495e;
-    }
+/* ============
+   MENU
+   ============ */
+.nav-menu {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+}
 
-    .nav-menu li a.active {
-      background-color: #3498db;
-      border-left: 4px solid #2980b9;
-    }
+.nav-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #b3b3b3;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border-left: 4px solid transparent;
+}
 
-    .icon {
-      font-size: 1.25rem;
-    }
+.nav-menu li a:hover {
+  background: #1a1a1a;
+  color: #fff;
+  border-left: 4px solid #e50914;
+}
 
-    .admin-content {
-      flex: 1;
-      margin-left: 250px;
-      padding: 2rem;
-    }
+/* Actif */
+.nav-menu li a.active {
+  background: #1a1a1a;
+  color: #fff;
+  border-left: 4px solid #e50914;
+}
 
-    @media (max-width: 768px) {
-      .admin-sidebar {
-        width: 60px;
-      }
+.icon {
+  font-size: 1.3rem;
+  color: #e50914;
+}
 
-      .admin-content {
-        margin-left: 60px;
-      }
+/* ============
+   CONTENU
+   ============ */
+.admin-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 2rem;
 
-      .sidebar-header h2,
-      .nav-menu li a span:not(.icon) {
-        display: none;
-      }
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.55)
+    ),
+    url("https://images.unsplash.com/photo-1608889175123-8ab0a28cb0b5?q=80&w=1920&auto=format")
+      center/cover no-repeat;
 
-      .nav-menu li a {
-        justify-content: center;
-      }
-    }
+  background-attachment: fixed;
+  min-height: 100vh;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.6);
+}
+
+/* ============
+   RESPONSIVE
+   ============ */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 70px;
+  }
+
+  .admin-content {
+    margin-left: 70px;
+  }
+
+  .sidebar-header h2,
+  .nav-menu li a span:not(.icon) {
+    display: none;
+  }
+
+  .nav-menu li a {
+    justify-content: center;
+  }
+}

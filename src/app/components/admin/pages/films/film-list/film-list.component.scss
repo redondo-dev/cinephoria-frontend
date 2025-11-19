@@ -4,14 +4,33 @@ $bg-color: #141414; // Fond sombre
 $text-color: #fff;
 $secondary-color: #333;
 
+/* ---------- BACKGROUND IMAGE CINEMA ---------- */
+
+:host {
+  display: block;
+  min-height: 100vh;
+
+  /* Image cinéma en background */
+  background:
+    linear-gradient(
+    rgba(0, 0, 0, 0.45),   
+      rgba(0, 0, 0, 0.45)
+    ),
+    url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=1920&auto=format")
+    center/cover no-repeat;
+
+  background-attachment: fixed;
+}
+
 /* Container général */
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
   h1 {
-    color: $text-color;
+    color: black;
     font-size: 2rem;
     font-weight: 700;
   }

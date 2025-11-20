@@ -63,7 +63,8 @@ export interface FilmFilters {
   providedIn: 'root',
 })
 export class FilmService {
-  private apiUrl = `${environment.apiUrl}/api/films`;
+  private baseUrl = environment.apiUrl;
+  private apiUrl = `${this.baseUrl}/api/films`;
 
   constructor(private http: HttpClient) {}
 
@@ -160,13 +161,16 @@ export class FilmService {
   }
   // Récupère tous les cinémas
   getCinemas(): Observable<Cinema[]> {
-    return this.http.get<Cinema[]>(`${environment.apiUrl}/api/cinemas`);
+    const url = `${this.baseUrl}/api/cinemas`;
+    console.log('🎯 URL cinémas:', url);
+    return this.http.get<Cinema[]>(url);
   }
 
   //  Récupère les dates disponibles pour les séances
   getAvailableDates(): Observable<string[]> {
-    console.log('URL appelée:', `${environment.apiUrl}/api/seances/dates`);
-    return this.http.get<string[]>(`${environment.apiUrl}/api/seances/dates`);
+    const url = `${this.baseUrl}/api/seances/dates`;
+    console.log('🎯 URL dates séances:', url);
+    return this.http.get<string[]>(url);
   }
 
   // Récupère les films coup de coeur

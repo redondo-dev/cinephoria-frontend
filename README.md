@@ -242,7 +242,7 @@ L'application communique avec une API REST backend. Configurer l'URL de l'API da
 // src/environments/environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api'
+  apiUrl: 'http://localhost:3000'
 };
 ```
 
@@ -266,3 +266,4 @@ Pour toute question ou problème :
 
 **Version**: 1.0.0  
 **Dernière mise à jour**: 20/11/2025
+

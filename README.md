@@ -245,8 +245,9 @@ export const environment = {
   apiUrl: 'http://localhost:3000'
 };
 ```
-
-
+## Documentations
+- 📖 **Lire la documentation technique** (pour les développeurs)
+- 👥 **Lire le manuel d'utilisation** ([en Markdown](./docs/manuel-utilisation.md) | [en PDF](./docs/manuel_utilisateur_cinephoria.pdf))
 
 ## 📝 Licence
 
@@ -266,4 +267,5 @@ Pour toute question ou problème :
 
 **Version**: 1.0.0  
 **Dernière mise à jour**: 20/11/2025
+
 

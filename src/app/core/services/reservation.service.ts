@@ -4,12 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cinema, Film, Seance, Reservation } from '../models/reservation.model';
 import { SiegeWithStatus } from '../models/siege.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReservationService {
-  private apiUrl = '/api';
+  private apiUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
@@ -46,7 +47,7 @@ export class ReservationService {
     );
   }
 
-   // Étape 5 : Créer une réservation
+  // Étape 5 : Créer une réservation
   createReservation(reservationData: {
     utilisateurId: number;
     seanceId: number;

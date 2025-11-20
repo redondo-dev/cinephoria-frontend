@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { Data } from '@angular/router';
 
 export interface Employe {
@@ -19,7 +20,7 @@ export interface Film {
   description: string;
   duree: number;
   genre_id: string;
-  genre:string;
+  genre: string;
   affiche?: string;
 }
 
@@ -63,7 +64,7 @@ export class AdminService {
   private http = inject(HttpClient);
 
   // URL de base de mon API REST
-  private readonly apiUrl = 'http://localhost:3000/api/admin';
+  private readonly apiUrl = `${environment.apiUrl}/api/admin`;
 
   createEmploye(employe: Employe): Observable<Employe> {
     return this.http

@@ -38,10 +38,10 @@
               @for (seance of seances; track seance.id) {
                 <tr>
                   <td>
-                    <strong>{{ seance.filmTitre || 'Film inconnu' }}</strong>
+                    <strong>{{ seance.film }}</strong>
                   </td>
                   <td>
-                    <span class="badge badge-salle">{{ seance.salleNom || 'Salle inconnue' }}</span>
+                    <span class="badge badge-salle">{{ seance.salle }}</span>
                   </td>
                   <td>
                     <div class="date-time">

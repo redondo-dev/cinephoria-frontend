@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 // Configuration API
-const API_BASE_URL = 'http://localhost:3000/api/employee';
+const API_BASE_URL = `${environment.apiUrl}/api/employee`;
 
 // Interface Film
 export interface Film {

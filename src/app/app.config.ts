@@ -4,6 +4,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { forceUrlInterceptor } from './core/interceptors/force-url.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { errorInterceptor } from './core/interceptors/http-error.interceptor';
 
@@ -14,10 +15,7 @@ export const appConfig: ApplicationConfig = {
 
     // Fournit HttpClient avec prise en charge des interceptors DI
     provideHttpClient(
-      withInterceptors([
-        authInterceptor, // ✅ Auth en premier (ajoute le token)
-        errorInterceptor, // ✅ Error en second (gère les erreurs)
-      ])
+      withInterceptors([forceUrlInterceptor, authInterceptor, errorInterceptor])
     ),
 
     provideAnimations(),

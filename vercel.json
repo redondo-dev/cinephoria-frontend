@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:prod",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": "dist/frontend/browser",
   "framework": "angular",
   "installCommand": "npm install",

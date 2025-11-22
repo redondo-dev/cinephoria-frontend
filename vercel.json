@@ -4,6 +4,11 @@
   "outputDirectory": "dist/frontend/browser",
   "framework": "angular",
   "installCommand": "npm install",
+  "functions": {
+    "dist/frontend/browser/**": {
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",

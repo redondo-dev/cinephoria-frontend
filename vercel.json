@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm install && npm run build -- --configuration production",
+  "buildCommand": "npm run vercel-build ",
   "outputDirectory": "dist/frontend/browser",
   "framework": "angular",
   "env": {

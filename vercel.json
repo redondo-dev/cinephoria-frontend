@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "buildCommand": "npm install && npm run build -- --configuration=production",
+  "buildCommand": "npm run build --configuration=production",
   "outputDirectory": "dist/frontend/browser",
   "framework": "angular",
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/dist/frontend/browser/index.html"
     }
   ]
 }

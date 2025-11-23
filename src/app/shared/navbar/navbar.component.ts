@@ -9,7 +9,7 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   private authService = inject(AuthService);
@@ -29,10 +29,12 @@ export class NavbarComponent {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
   }
 
   closeMenu(): void {
     this.menuOpen = false;
+    document.body.style.overflow = '';
   }
 
   // Méthode de déconnexion avec confirmation

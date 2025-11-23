@@ -1,9 +1,14 @@
 .app-layout {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-    .main-content {
-      flex: 1;
-    }
+.main-content {
+  flex: 1;
+  margin-top: 80px; // Espacement pour la navbar fixe
+
+  @media (max-width: 768px) {
+    margin-top: 70px; // Légèrement moins sur mobile
+  }
+}

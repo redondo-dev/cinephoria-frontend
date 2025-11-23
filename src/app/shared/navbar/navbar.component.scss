@@ -1,31 +1,54 @@
 .navbar {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
-  padding: 1.2rem 0;
-  position: sticky;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+  padding: 1.5rem 0;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(0px);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+
+  &.scrolled {
+    background: rgba(0, 0, 0, 0.95);
+    padding: 0.8rem 0;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.36);
+  }
 }
 
-.navbar:hover,
-.navbar.scrolled {
-  background: rgba(20, 20, 20, 0.9);
-  padding: 0.8rem 0;
+// Espacement pour le contenu sous la navbar
+body {
+  padding-top: 80px;
 }
 
 .navbar-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 4%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .navbar-logo {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  z-index: 1001;
+  margin-right: 25rem;
+
+  @media (max-width: 1024px) {
+    margin-right: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    margin-right: 12rem;
+  }
 }
 
 .logo-link {
@@ -36,229 +59,356 @@
   color: #e50914;
   font-weight: 800;
   font-size: 1.8rem;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   transition: all 0.3s ease;
   text-transform: uppercase;
-}
+  font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-.logo-link:hover {
-  text-shadow: 0 0 8px rgba(229, 9, 20, 0.6);
-  transform: scale(1.02);
+  &:hover {
+    color: #f40612;
+    transform: scale(1.05);
+  }
 }
 
 .logo-icon {
   font-size: 2rem;
-  animation: pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(229, 9, 20, 0.4));
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+.logo-text {
+  background: linear-gradient(45deg, #e50914, #f40612);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+// Menu Burger - Style Netflix
 .menu-toggle {
   display: none;
   flex-direction: column;
   cursor: pointer;
-  gap: 0.5rem;
+  gap: 5px;
   background: none;
   border: none;
-  padding: 0.5rem;
+  padding: 8px;
+  z-index: 1001;
+  position: relative;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+
+  span {
+    width: 28px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: center;
+
+    &:nth-child(1) {
+      transform: translateY(0) rotate(0);
+    }
+    &:nth-child(2) {
+      opacity: 1;
+    }
+    &:nth-child(3) {
+      transform: translateY(0) rotate(0);
+    }
+  }
+
+  &.active {
+    span {
+      background-color: #e50914;
+
+      &:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      &:nth-child(2) {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      &:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    }
+  }
+
+  &:hover span {
+    background-color: #e50914;
+  }
 }
 
-.menu-toggle span {
-  width: 28px;
-  height: 3px;
-  background-color: #ffffff;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(10px, 10px);
-  background-color: #e50914;
-}
-
-.menu-toggle.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(8px, -8px);
-  background-color: #e50914;
-}
-
+// Menu Principal
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 3rem;
+
+  @media (max-width: 1024px) {
+    gap: 2rem;
+  }
 }
 
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 2.5rem;
   margin: 0;
   padding: 0;
+
+  @media (max-width: 1024px) {
+    gap: 2rem;
+  }
+
+  li {
+    position: relative;
+  }
+
+  a {
+    color: #e5e5e5;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #e50914;
+      transition: width 0.3s ease;
+    }
+
+    &:hover,
+    &.active {
+      color: #fff;
+
+      &::after {
+        width: 100%;
+      }
+    }
+
+    &.active {
+      font-weight: 600;
+    }
+  }
 }
 
-.nav-links a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 0.5rem 0;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.nav-links a::before {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0%;
-  height: 2px;
-  background-color: #e50914;
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover::before,
-.nav-links a.active::before {
-  width: 100%;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: #e50914;
-}
-
+// Section Authentification
 .auth-section {
   display: flex;
   align-items: center;
-  gap: 1rem;
-}
+  gap: 1.5rem;
 
-.btn-login {
-  color: #ffffff;
-  text-decoration: none;
-  padding: 0.6rem 1.5rem;
-  border: 1.5px solid #ffffff;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-}
+  .btn-login {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1.5rem;
+    background: #e50914;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    cursor: pointer;
 
-.btn-login::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background-color: #e50914;
-  transition: left 0.3s ease;
-  z-index: -1;
-}
-
-.btn-login:hover {
-  color: #ffffff;
-  border-color: #e50914;
-  left: 0;
-}
-
-.btn-login:hover::before {
-  left: 0;
-}
-.btn-logout {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-
-.btn-logout:hover {
-  background-color: #c0392b;
-}
-/* Responsive - Mobile */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: flex;
+    &:hover {
+      background: #f40612;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+    }
   }
 
-  .navbar-menu {
-    display: none;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background: rgba(20, 20, 20, 0.98);
-    flex-direction: column;
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .user-name {
+      color: #e5e5e5;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .btn-logout {
+      background: transparent;
+      color: #e5e5e5;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+// Responsive - Tablet & Mobile
+@media (max-width: 968px) {
+  .navbar-container {
+    padding: 0 3%;
+  }
+
+  .nav-links {
     gap: 1.5rem;
-    padding: 2rem;
-    max-height: 0;
-    transition: max-height 0.4s ease-out;
-    backdrop-filter: blur(10px);
   }
 
-  .navbar-menu.active {
-    display: flex;
-    animation: slideDown 0.3s ease-out;
+  .auth-section {
+    gap: 1rem;
+  }
+}
 
+// Menu Mobile Fullscreen Netflix Style
+@media (max-width: 768px) {
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh; // Pour les navigateurs mobiles
+    background: linear-gradient(135deg, #141414 0%, #000000 100%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 5%;
+    gap: 0;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden; // Pas de scroll
+    opacity: 0;
+
+    &.active {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 
   .nav-links {
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 0;
     width: 100%;
-  }
+    max-width: 500px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-  .nav-links a {
-    font-size: 1.1rem;
-    padding: 0.75rem 0;
-    display: block;
+    li {
+      width: 100%;
+      opacity: 0;
+      transform: translateX(-30px);
+
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 1rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+      width: 100%;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+
+      &::after {
+        display: none;
+      }
+
+      &:hover {
+        color: #e50914;
+        background: rgba(229, 9, 20, 0.1);
+        padding-left: 1.5rem;
+      }
+
+      &.active {
+        color: #e50914;
+        background: rgba(229, 9, 20, 0.15);
+        font-weight: 700;
+      }
+    }
   }
 
   .auth-section {
-    flex-direction: column;
+    margin-top: 3rem;
     width: 100%;
-    gap: 0.8rem;
-    margin-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1rem;
-  }
+    max-width: 500px;
+    padding: 0;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateX(-30px);
 
-  .btn-login {
-    width: 100%;
-    text-align: center;
-    font-size: 1rem;
-  }
+    .btn-login {
+      width: 100%;
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(229, 9, 20, 0.3);
+    }
 
-  .navbar-container {
-    padding: 0 1.5rem;
-  }
+    .user-section {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
 
-  .navbar {
-    padding: 1rem 0;
+      .user-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-logout {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 600;
+        background: rgba(229, 9, 20, 0.1);
+        border: 1px solid #e50914;
+        border-radius: 6px;
+        color: #e50914;
+
+        &:hover {
+          background: #e50914;
+          color: #fff;
+        }
+      }
+    }
   }
 
   .logo-link {
     font-size: 1.5rem;
-    gap: 0.5rem;
   }
 
   .logo-icon {
@@ -268,19 +418,57 @@
 
 @media (max-width: 480px) {
   .navbar-container {
-    padding: 0 1rem;
-  }
-
-  .logo-link {
-    font-size: 1.3rem;
+    padding: 0 4%;
   }
 
   .logo-text {
-    display: none;
+    font-size: 1.3rem;
   }
 
-  .nav-links a {
-    font-size: 1rem;
+  .nav-links {
+    a {
+      font-size: 1.2rem;
+      padding: 1.2rem 1rem;
+    }
+  }
+
+  .auth-section {
+    .btn-login {
+      font-size: 1rem;
+      padding: 1rem;
+    }
   }
 }
 
+// Animations pour l'ouverture du menu
+.navbar-menu.active .nav-links li {
+  animation: slideInFromLeft 0.5s ease forwards;
+}
+
+.navbar-menu.active .nav-links li:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.navbar-menu.active .nav-links li:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.navbar-menu.active .nav-links li:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.navbar-menu.active .nav-links li:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.navbar-menu.active .auth-section {
+  animation: slideInFromLeft 0.5s ease forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

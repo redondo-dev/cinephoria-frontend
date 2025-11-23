@@ -1,14 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm run vercel-build",
+  "buildCommand": "npm install && npm run build -- --configuration=production",
   "outputDirectory": "dist/frontend/browser",
   "framework": "angular",
-  "installCommand": "npm install",
-  "functions": {
-    "dist/frontend/browser/**": {
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",

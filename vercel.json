@@ -3,6 +3,7 @@
   "buildCommand": "npm run build --configuration=production",
   "outputDirectory": "dist/frontend/browser",
   "framework": "angular",
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/(.*)",

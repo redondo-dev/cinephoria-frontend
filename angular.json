@@ -49,10 +49,17 @@
               "outputHashing": "all",
               "optimization": true,
               "sourceMap": false
+            },
+
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
             }
           },
           "defaultConfiguration": "production"
         },
+
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {

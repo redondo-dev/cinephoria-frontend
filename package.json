@@ -6,7 +6,6 @@
     "@angular-devkit/build-angular": "19.2.18"
   },
   "scripts": {
-    "postinstall": "npx ng version",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

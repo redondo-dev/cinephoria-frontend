@@ -1,24 +1,16 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+
+const PROD_API = 'https://cinephoria-backend-i6be.onrender.com';
+
 export const forceUrlInterceptor: HttpInterceptorFn = (req, next) => {
-  let finalUrl = req.url;
+  let url = req.url;
 
-  // Si l'URL est relative (/api/films)
-  if (req.url.startsWith('/api')) {
-    finalUrl = `${environment.apiUrl}${req.url}`;
+  // Forcer TOUJOURS l'URL de production
+  if (url.includes('localhost') || url.startsWith('/api')) {
+    const path = url.replace(/^https?:\/\/[^/]+/, '');
+    url = `${PROD_API}${path}`;
+    console.log('✅ [FORCE URL] Corrigé:', url);
   }
-  // Si l'URL contient localhost
-  else if (req.url.includes('localhost')) {
-    finalUrl = req.url.replace(/http:\/\/localhost:\d+/, environment.apiUrl);
-  }
-  // Si l'URL ne commence pas par https://cinephoria-backend
-  else if (!req.url.startsWith(environment.apiUrl)) {
-    finalUrl = req.url.replace(/^https?:\/\/[^/]+/, environment.apiUrl);
-  }
-
-  console.log('🔗 [FORCE URL] Original:', req.url);
-  console.log('🔗 [FORCE URL] Final:', finalUrl);
-
-  const correctedReq = req.clone({ url: finalUrl });
-  return next(correctedReq);
+  return next(req.clone({ url }));
 };

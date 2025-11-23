@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "npm install && ng build --configuration=production",
-  "outputDirectory": "dist/frontend/browser",
+  "outputDirectory": "dist/frontend",
   "framework": "angular",
   "cleanUrls": true,
   "rewrites": [

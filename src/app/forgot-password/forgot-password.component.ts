@@ -17,6 +17,7 @@ export class ForgotPasswordComponent {
   submitting = signal(false);
   error = signal('');
   success = signal(false);
+  showModal = signal(true);
 
   onSubmit(): void {
     if (!this.email.trim()) {
@@ -41,6 +42,7 @@ export class ForgotPasswordComponent {
   }
 
   close(): void {
+    this.showModal.set(false);
     this.success.set(false);
     this.email = '';
     this.error.set('');

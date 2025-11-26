@@ -57,9 +57,12 @@
           <input type="checkbox" [disabled]="isLoading" />
           <span>Se souvenir de moi</span>
         </label>
-        <a routerLink="/forgot-password" class="forgot-link">
-          Mot de passe oublié ?
-        </a>
+       <button
+    type="button"
+    class="forgot-link"
+    (click)="openForgotPassword()">
+    Mot de passe oublié ?
+  </button>
       </div>
 
       <!-- Submit Button -->
@@ -85,7 +88,11 @@
         </button>
       </div>
     </form>
-
+@if (showForgotPassword()) {
+  <app-forgot-password
+    (close)="closeForgotPassword()">
+  </app-forgot-password>
+}
     <!-- Sign Up Link -->
     <div class="form-footer">
       <p>

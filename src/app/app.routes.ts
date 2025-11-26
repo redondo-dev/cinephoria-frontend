@@ -4,9 +4,11 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
 import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
 import { AdminGuard } from './core/guards/admin.guard';
-// import { EmployeeGuard } from './core/guards/employee.guard';
 import { ClientGuard } from './core/guards/client.guard';
 import { RoleGuard } from './core/guards/role.guard';
+import { ChangeTempPasswordComponent } from './change-temp-password/change-temp-password.component';
+import { tempPasswordGuard } from './core/guards/temp-password.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -157,6 +159,16 @@ export const routes: Routes = [
   },
 
   // routes pour users
+
+  {
+    path: 'change-password',
+    loadComponent: () =>
+      import('./change-temp-password/change-temp-password.component').then(
+        (m) => m.ChangeTempPasswordComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+
   {
     path: 'mon-espace',
     canActivate: [AuthGuard, RoleGuard],
@@ -166,4 +178,5 @@ export const routes: Routes = [
         (m) => m.MonEspaceComponent
       ),
   },
+  { path: '**', redirectTo: '/home' },
 ];

@@ -13,6 +13,7 @@ export interface User {
   name?: string;
   role: string;
   username?: string;
+  mustChangePassword?: boolean;
 }
 
 export interface LoginResponse {
@@ -35,11 +36,11 @@ export class AuthService {
   private currentUser = signal<User | null>(null);
   private apiUrl = `${environment.apiUrl}/api/auth`;
 
-  // ✅ Observable pour les guards et components qui utilisent currentUser$
+  //  Observable pour les guards et components qui utilisent currentUser$
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  // ✅ Observable pour isAuthenticated$
+  //  Observable pour isAuthenticated$
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
@@ -57,7 +58,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     console.log(
       '🔑 [AUTH SERVICE] getToken appelé, token:',
-      token ? '✅ Présent' : '❌ Absent'
+      token ? ' Présent' : 'Absent'
     );
     return token;
   }
@@ -111,7 +112,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<LoginResponse> {
     console.log('📤 [AUTH SERVICE] Tentative de login:', email);
-  console.log('🔑 [AUTH SERVICE] Password length:', password?.length);
+    console.log('🔑 [AUTH SERVICE] Password length:', password?.length);
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
@@ -155,11 +156,52 @@ export class AuthService {
 
     return this.http.post(`${this.apiUrl}/register`, data).pipe(
       tap((response: any) => {
-        console.log('✅ [AUTH SERVICE] Inscription réussie:', response);
+        console.log('[AUTH SERVICE] Inscription réussie:', response);
       })
     );
   }
 
+  // // ========================================
+  // PASSWORD RESET (US 11)
+  // ========================================
+
+  resetPassword(email: string): Observable<{ message: string }> {
+    console.log(
+      '🔑 [AUTH SERVICE] Demande de réinitialisation mot de passe:',
+      email
+    );
+
+    return this.http
+      .post<{ message: string }>(`${this.apiUrl}/forgot-password-visiteur`, {
+        email,
+      })
+      .pipe(
+        tap((response) => {
+          console.log(
+            '✅ [AUTH SERVICE] Email de réinitialisation envoyé:',
+            response
+          );
+        })
+      );
+  }
+
+  // =============================
+  // CHANGE TEMPORARY PASSWORD
+  //==============================
+  changeTemporaryPassword(
+    email: string,
+    tempPassword: string,
+    newPassword: string
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/reset-password`,
+      {
+        email,
+        tempPassword,
+        newPassword,
+      }
+    );
+  }
   // ========================================
   // LOGOUT
   // ========================================
@@ -177,7 +219,7 @@ export class AuthService {
 
     this.clearRedirectUrl();
 
-    console.log('🗑️ [AUTH SERVICE] LocalStorage nettoyé');
+    console.log(' [AUTH SERVICE] LocalStorage nettoyé');
   }
 
   // ========================================
@@ -189,7 +231,7 @@ export class AuthService {
     const userStr = localStorage.getItem('user');
 
     console.log(
-      '🔄 [AUTH SERVICE] Chargement depuis localStorage - Token:',
+      '[AUTH SERVICE] Chargement depuis localStorage - Token:',
       !!token,
       'User:',
       !!userStr
@@ -208,13 +250,13 @@ export class AuthService {
         this.currentUserSubject.next(user);
         this.isAuthenticatedSubject.next(true);
 
-        console.log('✅ [AUTH SERVICE] User chargé:', user);
+        console.log('[AUTH SERVICE] User chargé:', user);
       } catch (error) {
-        console.error('❌ [AUTH SERVICE] Erreur parsing user:', error);
+        console.error(' [AUTH SERVICE] Erreur parsing user:', error);
         this.logout();
       }
     } else {
-      console.log('⚠️ [AUTH SERVICE] Pas de données en localStorage');
+      console.log(' [AUTH SERVICE] Pas de données en localStorage');
       this.isAuthenticatedSubject.next(false);
     }
   }

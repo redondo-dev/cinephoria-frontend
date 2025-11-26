@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ForgotPasswordComponent } from '../../forgot-password/forgot-password.component';
 import {
   FormBuilder,
   FormGroup,
@@ -14,7 +15,12 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ForgotPasswordComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -24,6 +30,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   showPassword = false;
+  showForgotPassword = signal(false);
+  openForgotPassword(): void {
+    this.showForgotPassword.set(true);
+  }
+
+  closeForgotPassword(): void {
+    this.showForgotPassword.set(false);
+  }
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -82,7 +96,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.successMessage = `Bienvenue ${
             response.user.name || response.user.prenom
           }!`;
-
+          //Vérifier si changement MDP requis
+          if (response.user.mustChangePassword) {
+            this.router.navigate(['/change-password']);
+            return;
+          }
           /** Redirection selon le rôle **/
           if (response.user.role === 'ADMIN') {
             this.router.navigate(['/admin/dashboard']);

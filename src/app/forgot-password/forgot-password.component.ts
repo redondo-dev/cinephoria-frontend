@@ -44,7 +44,9 @@ private authService = inject(AuthService);
   }
 
   close(): void {
-
+this.success.set(false);
+  this.email = '';
+  this.error.set('');
   }
 }
 

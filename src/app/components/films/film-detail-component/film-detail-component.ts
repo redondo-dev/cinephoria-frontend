@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FilmService, Film } from '../../../core/services/film.service';
+import { ReservationService } from '../../../core/services/reservation.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -20,14 +21,17 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
   film: Film | null = null;
   filmId!: string;
   similarFilms: Film[] = [];
+  seancesDisponibles: Seance[] = [];
   isLoading = false;
   errorMessage: string | null = null;
   isFavorite = false;
-
+  cinemaId = 1;
+  nbPersonnes = 1;
   private destroy$ = new Subject<void>();
 
   constructor(
     private filmService: FilmService,
+    private reservationService: ReservationService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -69,6 +73,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
           this.film = film;
           this.isLoading = false;
           this.loadSimilarFilms();
+          this.loadSeancesFromReservationService();
         },
         error: (error) => {
           console.error('Erreur chargement film:', error);
@@ -97,11 +102,32 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
           console.error('Erreur chargement films similaires:', error),
       });
   }
+/**
+   * Charger les séances via ReservationService
+   */
+  loadSeancesFromReservationService(): void {
+    if (!this.filmId) return;
 
+    const filmIdNum = +this.filmId;
+
+    this.reservationService
+      .getSeances(this.cinemaId, filmIdNum, this.nbPersonnes)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (seances) => {
+          console.log('✅ Séances chargées:', seances);
+          this.seancesDisponibles = this.formatSeancesForDisplay(seances);
+        },
+        error: (error) => {
+          console.error('❌ Erreur chargement séances:', error);
+          this.seancesDisponibles = [];
+        },
+      });
+  }
   /**
    *  Formater les séances pour le composant SeancesListComponent
    */
-  formatSeancesForDisplay(): Seance[] {
+  formatSeancesForDisplay(seances: any[]): Seance[] {
     if (!this.film?.seances) return [];
 
     return this.film.seances.map((seance) => ({
@@ -142,8 +168,8 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
   bookTicket(): void {
     if (this.film) {
       // Si le film a des séances, rediriger vers la première séance
-      if (this.film.seances && this.film.seances.length > 0) {
-        const firstSeance = this.film.seances[0];
+      if (this.seancesDisponibles && this.seancesDisponibles.length > 0) {
+        const firstSeance = this.seancesDisponibles[0];
         this.router.navigate(['/reservation/sieges', firstSeance.id]);
       } else {
         // Sinon, rediriger vers la page de sélection générale

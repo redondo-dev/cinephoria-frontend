@@ -100,7 +100,7 @@
         <!-- Séances du film -->
         <div class="film-seances-section" *ngIf="film && film.seances && film.seances.length > 0">
           <h2 class="section-title">Séances disponibles</h2>
-          <app-seances-list [filmId]="film.id" [seances]="formatSeancesForDisplay()">
+          <app-seances-list [filmId]="filmId" [seances]="seancesDisponibles">
           </app-seances-list>
         </div>
         <!-- Message si aucune séance -->
@@ -163,4 +163,5 @@
     </div>
 
   </div>
+
 </div>

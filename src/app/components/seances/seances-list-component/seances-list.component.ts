@@ -44,7 +44,13 @@ export class SeancesListComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.groupSeancesByDate();
+    // this.groupSeancesByDate();
+  }
+
+ ngOnChanges(): void {
+    if (this.seances && this.seances.length > 0) {
+      this.groupSeancesByDate();
+    }
   }
 
   /**

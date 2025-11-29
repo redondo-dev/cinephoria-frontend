@@ -11,6 +11,7 @@ export const forceUrlInterceptor: HttpInterceptorFn = (req, next) => {
     const path = url.replace(/^https?:\/\/[^/]+/, '');
     url = `${PROD_API}${path}`;
     console.log('✅ [FORCE URL] Corrigé:', url);
+    console.log('📦 [FORCE URL] Params conservés:', req.params.toString());
   }
   return next(req.clone({ url }));
 };

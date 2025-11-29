@@ -1,6 +1,6 @@
 // core/services/reservation.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cinema, Film, Seance, Reservation } from '../models/reservation.model';
 import { SiegeWithStatus } from '../models/siege.model';
@@ -34,9 +34,18 @@ export class ReservationService {
     filmId: number,
     nbPersonnes: number
   ): Observable<Seance[]> {
+    const params = new HttpParams().set('nbPersonnes', nbPersonnes.toString());
+
+    console.log('🎬 Appel API séances:', {
+      cinemaId,
+      filmId,
+      nbPersonnes,
+      url: `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films/${filmId}/seances`,
+      params: params.toString(),
+    });
     return this.http.get<Seance[]>(
       `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films/${filmId}/seances`,
-      { params: { nbPersonnes: nbPersonnes.toString() } }
+      { params }
     );
   }
 

@@ -1,43 +1,41 @@
 <div class="admin-container">
-  <nav class="admin-sidebar">
+
+  <!-- Sidebar -->
+  <nav class="admin-sidebar" [class.open]="sidebarOpen">
     <div class="sidebar-header">
       <h2>Administration</h2>
     </div>
     <ul class="nav-menu">
       <li>
         <a routerLink="/admin/dashboard" routerLinkActive="active">
-          <span class="icon">📊</span>
-          Dashboard
+          <span class="icon">📊</span><span>Dashboard</span>
         </a>
       </li>
       <li>
         <a routerLink="/admin/films" routerLinkActive="active">
-          <span class="icon">🎬</span>
-          Films
+          <span class="icon">🎬</span><span>Films</span>
         </a>
       </li>
       <li>
         <a routerLink="/admin/seances" routerLinkActive="active">
-          <span class="icon">🎫</span>
-          Séances
+          <span class="icon">🎫</span><span>Séances</span>
         </a>
       </li>
       <li>
         <a routerLink="/admin/salles" routerLinkActive="active">
-          <span class="icon">🏛️</span>
-          Salles
+          <span class="icon">🏛️</span><span>Salles</span>
         </a>
       </li>
       <li>
         <a routerLink="/admin/employes" routerLinkActive="active">
-          <span class="icon">👥</span>
-          Employés
+          <span class="icon">👥</span><span>Employés</span>
         </a>
       </li>
     </ul>
   </nav>
+
+  <!-- Contenu -->
   <main class="admin-content">
     <router-outlet></router-outlet>
-
   </main>
 </div>

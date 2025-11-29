@@ -8,13 +8,14 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import Chart from 'chart.js/auto';
 import {
   AdminService,
   DashboardResponse,
   ReservationStats,
 } from '../../services/admin.service';
-
+import { SidebarService } from '../../services/sidebar.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -24,6 +25,9 @@ import {
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   private adminService = inject(AdminService);
+  private sidebarService = inject(SidebarService);
+
+  // --- PROPRIÉTÉS DU DASHBOARD ---
   @ViewChild('reservationsChart')
   reservationsChart!: ElementRef<HTMLCanvasElement>;
 
@@ -33,6 +37,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   error: string | null = null;
   chart: Chart | null = null;
   private viewInitialized = false;
+
+  // --- BOUTON BURGER ---
+  toggleSidebar() {
+    this.sidebarService.toggle();
+  }
 
   ngOnInit(): void {
     this.loadStats();

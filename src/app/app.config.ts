@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
 
     // Fournit HttpClient avec prise en charge des interceptors DI
     provideHttpClient(
-      withInterceptors([forceUrlInterceptor, authInterceptor, errorInterceptor])
+      withInterceptors([authInterceptor, forceUrlInterceptor, errorInterceptor])
     ),
 
     provideAnimations(),

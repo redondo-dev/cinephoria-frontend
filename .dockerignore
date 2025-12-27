@@ -1,0 +1,16 @@
+
+# cinephoria-*/. dockerignore
+node_modules
+npm-debug.log
+dist
+.git
+.gitignore
+.env
+.env.*
+*.md
+.vscode
+.idea
+coverage
+.angular
+.cache
+*.log

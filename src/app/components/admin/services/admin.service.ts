@@ -35,7 +35,6 @@ export interface DashboardResponse {
   to: string;
   stats: ReservationStats[];
 }
-// Dans admin.service.ts, mettez à jour l'interface Seance :
 
 export interface Seance {
   id: number;

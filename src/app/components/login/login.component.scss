@@ -49,8 +49,13 @@
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .logo h1 {
@@ -283,6 +288,34 @@
   margin-top: 5px;
 }
 
+.rgpd-group {
+  background: #f8f9ff;
+  border: 1px solid #e0e4f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.rgpd-checkbox {
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.rgpd-checkbox.error {
+  color: #d32f2f;
+}
+
+.rgpd-link {
+  color: #1a73e8;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.rgpd-link:hover {
+  color: #1558b0;
+}
 /* ===== FORM FOOTER TOP ===== */
 .form-footer-top {
   display: flex;
@@ -374,8 +407,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ===== DIVIDER ===== */
@@ -389,7 +426,7 @@
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background-color: var(--border-color);

@@ -1,6 +1,6 @@
 {
   "buildCommand": "npx ng build --configuration=production",
-  "outputDirectory": "dist/frontend/browser",
+  "outputDirectory": "dist/frontend",
   "installCommand": "npm install",
   "framework": null
 }

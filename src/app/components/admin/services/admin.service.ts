@@ -41,8 +41,7 @@ export interface Seance {
   film_id: number;
   salle_id: number;
   date_seance: string;
-  date_heure_debut: string;
-  date_heure_fin: string;
+  dateHeureFin:string,
   prix: number;
   placesDisponibles?: number;
   // Champs enrichis par l'API

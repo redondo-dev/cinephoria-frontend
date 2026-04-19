@@ -32,6 +32,7 @@ export class SeanceFormComponent implements OnInit {
   films: Film[] = [];
   salles: Salle[] = [];
   selectedSalle: Salle | null = null;
+  selectedFilm: Film | null = null;
 
   isEditMode = false;
   seanceId: string | null = null;
@@ -86,7 +87,7 @@ export class SeanceFormComponent implements OnInit {
   loadSeance(id: string) {
     this.adminService.getSeance(id).subscribe({
       next: (seance) => {
-        const dateTime = new Date((seance as any).date_heure_debut);
+        const dateTime = new Date(seance.date_seance);
         this.seanceForm.patchValue({
           filmId: seance.film_id,
           salleId: seance.salle_id,
@@ -110,6 +111,10 @@ export class SeanceFormComponent implements OnInit {
     this.selectedSalle = this.salles.find((s) => s.id === salleId) || null;
   }
 
+  onFilmChange() {
+    const filmId = this.seanceForm.get('filmId')?.value;
+    this.selectedFilm = this.films.find((f) => f.id === filmId) || null;
+  }
   onSubmit() {
     if (this.seanceForm.invalid) {
       Object.keys(this.seanceForm.controls).forEach((key) => {
@@ -122,15 +127,21 @@ export class SeanceFormComponent implements OnInit {
     this.error = null;
 
     const formValue = this.seanceForm.value;
-    const dateHeure = `${formValue.date}T${formValue.heure}:00`;
+    // Date de début
+    const dateDebut = new Date(`${formValue.date}T${formValue.heure}:00`);
 
-    const seanceData={
+    // Date de fin = début + durée du film (en minutes)
+    const dureeMinutes = this.selectedFilm?.duree || 0;
+    const dateFin = new Date(dateDebut.getTime() + dureeMinutes * 60 * 1000);
+
+    const seanceData = {
       film_id: formValue.filmId,
       salle_id: formValue.salleId,
-      date_heure_debut: dateHeure,
+      date_seance: dateDebut.toISOString(),
+      dateHeureFin: dateFin.toISOString(),
       prix: parseFloat(formValue.prix),
       placesDisponibles: this.selectedSalle?.nombrePlaces || 0,
-    } as Seance;;
+    } as Seance;
 
     const request =
       this.isEditMode && this.seanceId

@@ -113,7 +113,8 @@ export class SeanceFormComponent implements OnInit {
 
   onFilmChange() {
     const filmId = this.seanceForm.get('filmId')?.value;
-    this.selectedFilm = this.films.find((f) => f.id === filmId) || null;
+    this.selectedFilm = this.films.find((f) => f.id == filmId) || null;
+    console.log('selectedFilm:', this.selectedFilm);
   }
   onSubmit() {
     if (this.seanceForm.invalid) {
@@ -138,8 +139,8 @@ export class SeanceFormComponent implements OnInit {
     const seanceData = {
       filmId: parseInt(formValue.filmId),
       salleId: parseInt(formValue.salleId),
-      date_seance:  formValue.date,
-       dateHeureDebut: dateDebut.toISOString(), 
+      date_seance: formValue.date,
+      dateHeureDebut: dateDebut.toISOString(),
       dateHeureFin: dateFin.toISOString(),
       prix: parseFloat(formValue.prix),
       placesDisponibles: this.selectedSalle?.nombrePlaces || 0,

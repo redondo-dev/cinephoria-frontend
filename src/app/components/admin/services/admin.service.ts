@@ -43,17 +43,14 @@ export interface Seance {
   date_seance: string;
   dateHeureDebut: string;
   dateHeureFin: string;
-  prix: number;
-  placesDisponibles?: number;
   // Champs enrichis par l'API
   film?: string;
   salle?: string;
-  prixMoyen?: number;
 }
 export interface Salle {
-  id?: string;
+  id: number;
   nom: string;
-  nombrePlaces: number;
+  capacite: number;
   qualiteProjection?: 'Standard' | '4K' | 'IMAX' | 'Dolby Atmos';
 }
 @Injectable({

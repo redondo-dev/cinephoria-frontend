@@ -56,7 +56,6 @@ export class SeanceFormComponent implements OnInit {
       salleId: ['', Validators.required],
       date: ['', Validators.required],
       heure: ['', Validators.required],
-      prix: [0, [Validators.required, Validators.min(0.01)]],
     });
   }
 
@@ -93,7 +92,6 @@ export class SeanceFormComponent implements OnInit {
           salleId: seance.salleId,
           date: dateTime.toISOString().split('T')[0],
           heure: dateTime.toTimeString().substring(0, 5),
-          prix: seance.prix,
         });
         this.onSalleChange();
         this.loading = false;
@@ -142,8 +140,6 @@ export class SeanceFormComponent implements OnInit {
       date_seance: formValue.date,
       dateHeureDebut: dateDebut.toISOString(),
       dateHeureFin: dateFin.toISOString(),
-      prix: parseFloat(formValue.prix),
-      placesDisponibles: this.selectedSalle?.nombrePlaces || 0,
     } as Seance;
 
     const request =

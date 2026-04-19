@@ -32,7 +32,7 @@
         <option value="">Sélectionnez une salle</option>
         @for (salle of salles; track salle.id) {
         <option [value]="salle.id">
-          {{ salle.nom }} - {{ salle.nombrePlaces }} places ({{ salle.qualiteProjection }})
+          {{ salle.nom }} - {{ salle.capacite }} places ({{ salle.qualiteProjection }})
         </option>
         }
       </select>
@@ -64,21 +64,13 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="prix">Prix (€) *</label>
-      <input type="number" id="prix" formControlName="prix" step="0.50" class="form-control" placeholder="Ex: 9.50"
-        [class.error]="seanceForm.get('prix')?.invalid && seanceForm.get('prix')?.touched">
-      @if (seanceForm.get('prix')?.invalid && seanceForm.get('prix')?.touched) {
-      <span class="error-text">Le prix doit être supérieur à 0</span>
-      }
-    </div>
 
     @if (selectedSalle) {
     <div class="info-box">
       <div class="info-icon">ℹ️</div>
       <div class="info-content">
         <strong>Salle sélectionnée :</strong> {{ selectedSalle.nom }}<br>
-        <strong>Capacité :</strong> {{ selectedSalle.nombrePlaces }} places<br>
+        <strong>Capacité :</strong> {{ selectedSalle.capacite }} places<br>
         <strong>Qualité :</strong> {{ selectedSalle.qualiteProjection }}
       </div>
     </div>

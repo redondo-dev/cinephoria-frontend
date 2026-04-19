@@ -32,6 +32,7 @@ export class SeanceFormComponent implements OnInit {
   films: Film[] = [];
   salles: Salle[] = [];
   selectedSalle: Salle | null = null;
+  selectedFilm: Film | null = null;
 
   isEditMode = false;
   seanceId: string | null = null;
@@ -55,7 +56,6 @@ export class SeanceFormComponent implements OnInit {
       salleId: ['', Validators.required],
       date: ['', Validators.required],
       heure: ['', Validators.required],
-      prix: [0, [Validators.required, Validators.min(0.01)]],
     });
   }
 
@@ -86,13 +86,12 @@ export class SeanceFormComponent implements OnInit {
   loadSeance(id: string) {
     this.adminService.getSeance(id).subscribe({
       next: (seance) => {
-        const dateTime = new Date((seance as any).date_heure_debut);
+        const dateTime = new Date(seance.date_seance);
         this.seanceForm.patchValue({
-          filmId: seance.film_id,
-          salleId: seance.salle_id,
+          filmId: seance.filmId,
+          salleId: seance.salleId,
           date: dateTime.toISOString().split('T')[0],
           heure: dateTime.toTimeString().substring(0, 5),
-          prix: (seance as any).prix,
         });
         this.onSalleChange();
         this.loading = false;
@@ -110,6 +109,11 @@ export class SeanceFormComponent implements OnInit {
     this.selectedSalle = this.salles.find((s) => s.id === salleId) || null;
   }
 
+  onFilmChange() {
+    const filmId = this.seanceForm.get('filmId')?.value;
+    this.selectedFilm = this.films.find((f) => f.id == filmId) || null;
+    console.log('selectedFilm:', this.selectedFilm);
+  }
   onSubmit() {
     if (this.seanceForm.invalid) {
       Object.keys(this.seanceForm.controls).forEach((key) => {
@@ -122,15 +126,21 @@ export class SeanceFormComponent implements OnInit {
     this.error = null;
 
     const formValue = this.seanceForm.value;
-    const dateHeure = `${formValue.date}T${formValue.heure}:00`;
 
-    const seanceData={
-      film_id: formValue.filmId,
-      salle_id: formValue.salleId,
-      date_heure_debut: dateHeure,
-      prix: parseFloat(formValue.prix),
-      placesDisponibles: this.selectedSalle?.nombrePlaces || 0,
-    } as Seance;;
+    // Date de début
+    const dateDebut = new Date(`${formValue.date}T${formValue.heure}:00`);
+
+    // Date de fin = début + durée du film (en minutes)
+    const dureeMinutes = this.selectedFilm?.duree || 0;
+    const dateFin = new Date(dateDebut.getTime() + dureeMinutes * 60 * 1000);
+
+    const seanceData = {
+      filmId: parseInt(formValue.filmId),
+      salleId: parseInt(formValue.salleId),
+      date_seance: formValue.date,
+      dateHeureDebut: dateDebut.toISOString(),
+      dateHeureFin: dateFin.toISOString(),
+    } as Seance;
 
     const request =
       this.isEditMode && this.seanceId
@@ -142,6 +152,8 @@ export class SeanceFormComponent implements OnInit {
         this.router.navigate(['/admin/seances']);
       },
       error: (err) => {
+        console.error('DETAIL ERREUR:', err.error);
+
         this.error = `Erreur lors de ${
           this.isEditMode ? 'la modification' : 'la création'
         } de la séance`;

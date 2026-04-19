@@ -57,12 +57,23 @@
           <input type="checkbox" [disabled]="isLoading" />
           <span>Se souvenir de moi</span>
         </label>
-       <button
-    type="button"
-    class="forgot-link"
-    (click)="openForgotPassword()">
-    Mot de passe oublié ?
-  </button>
+        <button type="button" class="forgot-link" (click)="openForgotPassword()">
+          Mot de passe oublié ?
+        </button>
+      </div>
+      <!-- ✅ Consentement RGPD -->
+      <div class="form-group rgpd-group">
+        <label class="checkbox rgpd-checkbox" [class.error]="hasError('rgpdConsent')">
+          <input type="checkbox" formControlName="rgpdConsent" [disabled]="isLoading" />
+          <span>
+            J'accepte la
+            <a href="/politique-de-confidentialite" target="_blank" class="rgpd-link">politique de confidentialité</a>
+            et consens au traitement de mes données personnelles conformément au RGPD.
+          </span>
+        </label>
+        <div *ngIf="hasError('rgpdConsent')" class="error-message">
+          Vous devez accepter la politique de confidentialité pour continuer.
+        </div>
       </div>
 
       <!-- Submit Button -->
@@ -88,11 +99,10 @@
         </button>
       </div>
     </form>
-@if (showForgotPassword()) {
-  <app-forgot-password
-    (close)="closeForgotPassword()">
-  </app-forgot-password>
-}
+    @if (showForgotPassword()) {
+    <app-forgot-password (close)="closeForgotPassword()">
+    </app-forgot-password>
+    }
     <!-- Sign Up Link -->
     <div class="form-footer">
       <p>

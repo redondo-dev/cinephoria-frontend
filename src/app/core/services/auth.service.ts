@@ -73,7 +73,7 @@ export class AuthService {
     const isAuth = !!token && !!user;
 
     console.log(
-      '🔍 [AUTH SERVICE] isAuthenticated:',
+      '[AUTH SERVICE] isAuthenticated:',
       isAuth,
       '(token:',
       !!token,
@@ -111,13 +111,13 @@ export class AuthService {
   // ========================================
 
   login(email: string, password: string): Observable<LoginResponse> {
-    console.log('📤 [AUTH SERVICE] Tentative de login:', email);
-    console.log('🔑 [AUTH SERVICE] Password length:', password?.length);
+    console.log(' [AUTH SERVICE] Tentative de login:', email);
+    console.log('[AUTH SERVICE] Password length:', password?.length);
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap((response: LoginResponse) => {
-          console.log('✅ [AUTH SERVICE] Login réussi:', response);
+          console.log(' [AUTH SERVICE] Login réussi:', response);
 
           // Ajouter l'alias 'name' pour compatibilité
           const userWithName = {
@@ -136,11 +136,11 @@ export class AuthService {
 
           // Vérification immédiate
           console.log(
-            '💾 [AUTH SERVICE] Token sauvegardé:',
+            ' [AUTH SERVICE] Token sauvegardé:',
             localStorage.getItem('token')
           );
           console.log(
-            '👤 [AUTH SERVICE] User sauvegardé:',
+            ' [AUTH SERVICE] User sauvegardé:',
             localStorage.getItem('user')
           );
         })
@@ -152,7 +152,7 @@ export class AuthService {
   // ========================================
 
   register(data: RegisterData): Observable<any> {
-    console.log("📝 [AUTH SERVICE] Tentative d'inscription:", data.email);
+    console.log("[AUTH SERVICE] Tentative d'inscription:", data.email);
 
     return this.http.post(`${this.apiUrl}/register`, data).pipe(
       tap((response: any) => {
@@ -167,7 +167,7 @@ export class AuthService {
 
   resetPassword(email: string): Observable<{ message: string }> {
     console.log(
-      '🔑 [AUTH SERVICE] Demande de réinitialisation mot de passe:',
+      ' [AUTH SERVICE] Demande de réinitialisation mot de passe:',
       email
     );
 
@@ -178,7 +178,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           console.log(
-            '✅ [AUTH SERVICE] Email de réinitialisation envoyé:',
+            '[AUTH SERVICE] Email de réinitialisation envoyé:',
             response
           );
         })
@@ -207,7 +207,7 @@ export class AuthService {
   // ========================================
 
   logout(): void {
-    console.log('🚪 [AUTH SERVICE] Logout...');
+    console.log(' [AUTH SERVICE] Logout...');
 
     // Réinitialiser tout
     this.currentUser.set(null);

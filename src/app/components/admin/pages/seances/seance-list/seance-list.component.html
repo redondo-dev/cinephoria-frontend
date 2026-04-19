@@ -1,76 +1,66 @@
-    <div class="page-header">
-      <h1>Gestion des Séances</h1>
-      <a routerLink="/admin/seances/create" class="btn btn-primary">
-        + Créer une séance
-      </a>
-    </div>
+<div class="page-header">
+  <h1>Gestion des Séances</h1>
+  <a routerLink="/admin/seances/create" class="btn btn-primary">
+    + Créer une séance
+  </a>
+</div>
 
-    @if (loading) {
-      <div class="loading">Chargement des séances...</div>
-    } @else if (error) {
-      <div class="error-message">{{ error }}</div>
-    } @else {
-      <div class="seances-table-container">
-        <table class="seances-table">
-          <thead>
-            <tr>
-              <th>Film</th>
-              <th>Salle</th>
-              <th>Date & Heure</th>
-              <th>Prix</th>
-              <th>Places disponibles</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @if (seances.length === 0) {
-              <tr>
-                <td colspan="6" class="empty-row">
-                  <div class="empty-state">
-                    <p>Aucune séance programmée</p>
-                    <a routerLink="/admin/seances/create" class="btn btn-primary">
-                      Créer la première séance
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            } @else {
-              @for (seance of seances; track seance.id) {
-                <tr>
-                  <td>
-                    <strong>{{ seance.film }}</strong>
-                  </td>
-                  <td>
-                    <span class="badge badge-salle">{{ seance.salle }}</span>
-                  </td>
-                  <td>
-                    <div class="date-time">
-                      <!-- CORRECTION : Utiliser heureDebut au lieu de date_heure_debut -->
-                      <span class="date">📅 {{ formatDate(seance.heureDebut) }}</span>
-                      <span class="time">🕐 {{ formatTime(seance.heureDebut) }}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <!-- CORRECTION : Utiliser prixMoyen au lieu de prix -->
-                    <strong class="prix">{{ seance.prixMoyen | number:'1.2-2' }}€</strong>
-                  </td>
-                  <td>
-                    <span class="places" [class.places-low]="isLowAvailability(seance)">
-                      {{ seance.placesDisponibles || 0 }} places
-                    </span>
-                  </td>
-                  <td class="actions-cell">
-                    <a [routerLink]="['/admin/seances/edit', seance.id]" class="btn btn-sm btn-secondary">
-                      Modifier
-                    </a>
-                    <button (click)="deleteSeance(seance)" class="btn btn-sm btn-danger">
-                      Supprimer
-                    </button>
-                  </td>
-                </tr>
-              }
-            }
-          </tbody>
-        </table>
-      </div>
-    }
+@if (loading) {
+<div class="loading">Chargement des séances...</div>
+} @else if (error) {
+<div class="error-message">{{ error }}</div>
+} @else {
+<div class="seances-table-container">
+  <table class="seances-table">
+    <thead>
+      <tr>
+        <th>Film</th>
+        <th>Salle</th>
+        <th>Date & Heure</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (seances.length === 0) {
+      <tr>
+        <td colspan="6" class="empty-row">
+          <div class="empty-state">
+            <p>Aucune séance programmée</p>
+            <a routerLink="/admin/seances/create" class="btn btn-primary">
+              Créer la première séance
+            </a>
+          </div>
+        </td>
+      </tr>
+      } @else {
+      @for (seance of seances; track seance.id) {
+      <tr>
+        <td>
+          <strong>{{ seance.film }}</strong>
+        </td>
+        <td>
+          <span class="badge badge-salle">{{ seance.salle }}</span>
+        </td>
+        <td>
+          <div class="date-time">
+            <!-- CORRECTION : Utiliser heureDebut au lieu de date_heure_debut -->
+            <span class="date">📅 {{ formatDate(seance.heureDebut) }}</span>
+            <span class="time">🕐 {{ formatTime(seance.heureDebut) }}</span>
+          </div>
+        </td>
+
+        <td class="actions-cell">
+          <a [routerLink]="['/admin/seances/edit', seance.id]" class="btn btn-sm btn-secondary">
+            Modifier
+          </a>
+          <button (click)="deleteSeance(seance)" class="btn btn-sm btn-danger">
+            Supprimer
+          </button>
+        </td>
+      </tr>
+      }
+      }
+    </tbody>
+  </table>
+</div>
+}

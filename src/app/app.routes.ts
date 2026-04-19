@@ -20,7 +20,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/home/home.component').then((m) => m.HomeComponent),
   },
-
+  // ✅ Route publique RGPD — aucun garde d'authentification
+  {
+    path: 'politique-de-confidentialite',
+    loadComponent: () =>
+      import('./components/rgpd/rgpd.component').then((m) => m.RgpdComponent),
+    title: 'Politique de confidentialité – Cinephoria',
+  },
   // Routes d'administration
   {
     path: 'admin',
@@ -33,9 +39,9 @@ export const routes: Routes = [
     path: 'films',
     data: { title: 'Cinephoria - Tous les films' },
     loadComponent: () =>
-      import(
-        './components/films/films-list-component/films-list-component'
-      ).then((m) => m.FilmsListComponent),
+      import('./components/films/films-list-component/films-list-component').then(
+        (m) => m.FilmsListComponent,
+      ),
   },
 
   // Route publique - Détail d'un film
@@ -43,18 +49,18 @@ export const routes: Routes = [
     path: 'films/:id',
     data: { title: 'Cinephoria - Détail du film' },
     loadComponent: () =>
-      import(
-        './components/films/film-detail-component/film-detail-component'
-      ).then((m) => m.FilmDetailComponent),
+      import('./components/films/film-detail-component/film-detail-component').then(
+        (m) => m.FilmDetailComponent,
+      ),
   },
   // Routes d'authentification
 
   {
     path: 'auth/register',
-    canActivate: [AuthGuard],
+
     loadComponent: () =>
       import('./components/register/register.component').then(
-        (m) => m.RegisterComponent
+        (m) => m.RegisterComponent,
       ),
     title: 'Créer un compte - Cinephoria',
   },
@@ -63,7 +69,7 @@ export const routes: Routes = [
     path: 'auth/login',
     loadComponent: () =>
       import('./components/login/login.component').then(
-        (m) => m.LoginComponent
+        (m) => m.LoginComponent,
       ),
   },
   // Route reservations
@@ -81,24 +87,24 @@ export const routes: Routes = [
         path: 'selection',
         loadComponent: () =>
           import('./components/reservation/reservation.component').then(
-            (m) => m.ReservationComponent
+            (m) => m.ReservationComponent,
           ),
       },
 
       {
         path: 'sieges/:seanceId',
         loadComponent: () =>
-          import(
-            './components/reservation/seat-selection/seat-selection.component'
-          ).then((m) => m.SeatSelectionComponent),
+          import('./components/reservation/seat-selection/seat-selection.component').then(
+            (m) => m.SeatSelectionComponent,
+          ),
       },
 
       {
         path: 'confirmation',
         loadComponent: () =>
-          import(
-            './components/reservation/reservation-confirmation/reservation-confirmation.component'
-          ).then((m) => m.ReservationConfirmationComponent),
+          import('./components/reservation/reservation-confirmation/reservation-confirmation.component').then(
+            (m) => m.ReservationConfirmationComponent,
+          ),
       },
 
       {
@@ -106,30 +112,30 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         loadComponent: () =>
           import('./components/reservation/payment/payment.component').then(
-            (m) => m.PaymentComponent
+            (m) => m.PaymentComponent,
           ),
       },
 
       {
         path: 'payment/card',
         loadComponent: () =>
-          import(
-            './components/reservation/payment/payment-card/payment-card.component'
-          ).then((m) => m.PaymentCardComponent),
+          import('./components/reservation/payment/payment-card/payment-card.component').then(
+            (m) => m.PaymentCardComponent,
+          ),
       },
       {
         path: 'payment/paypal',
         loadComponent: () =>
-          import(
-            './components/reservation/payment/payment-paypal/payment-paypal.component'
-          ).then((m) => m.PaymentPaypalComponent),
+          import('./components/reservation/payment/payment-paypal/payment-paypal.component').then(
+            (m) => m.PaymentPaypalComponent,
+          ),
       },
 
       {
         path: 'success/:id',
         loadComponent: () =>
           import('./components/reservation/success/success.component').then(
-            (m) => m.ReservationSuccessComponent
+            (m) => m.ReservationSuccessComponent,
           ),
       },
     ],
@@ -139,7 +145,7 @@ export const routes: Routes = [
     path: 'contact',
     loadComponent: () =>
       import('./components/contact/contact.component').then(
-        (m) => m.ContactComponent
+        (m) => m.ContactComponent,
       ),
     title: 'Contact - Cinéphoria',
   },
@@ -151,9 +157,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['EMPLOYE'] },
     loadComponent: () =>
-      import(
-        './components/employes/pages/employes-dashboard/employes-dashboard.component'
-      ).then((m) => m.EmployesDashboardComponent),
+      import('./components/employes/pages/employes-dashboard/employes-dashboard.component').then(
+        (m) => m.EmployesDashboardComponent,
+      ),
     title: 'Intranet employé - Cinéphoria',
     children: EMPLOYE_ROUTES,
   },
@@ -164,7 +170,7 @@ export const routes: Routes = [
     path: 'change-password',
     loadComponent: () =>
       import('./change-temp-password/change-temp-password.component').then(
-        (m) => m.ChangeTempPasswordComponent
+        (m) => m.ChangeTempPasswordComponent,
       ),
     canActivate: [AuthGuard],
   },
@@ -175,7 +181,7 @@ export const routes: Routes = [
     data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import('./components/users/pages/mon-espace/mon-espace.component').then(
-        (m) => m.MonEspaceComponent
+        (m) => m.MonEspaceComponent,
       ),
   },
   { path: '**', redirectTo: '/home' },

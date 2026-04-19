@@ -35,26 +35,22 @@ export interface DashboardResponse {
   to: string;
   stats: ReservationStats[];
 }
-// Dans admin.service.ts, mettez à jour l'interface Seance :
 
 export interface Seance {
   id: number;
-  film_id: number;
-  salle_id: number;
+  filmId: number;
+  salleId: number;
   date_seance: string;
-  date_heure_debut: string;
-  date_heure_fin: string;
-  prix: number;
-  placesDisponibles?: number;
+  dateHeureDebut: string;
+  dateHeureFin: string;
   // Champs enrichis par l'API
   film?: string;
   salle?: string;
-  prixMoyen?: number;
 }
 export interface Salle {
-  id?: string;
+  id: number;
   nom: string;
-  nombrePlaces: number;
+  capacite: number;
   qualiteProjection?: 'Standard' | '4K' | 'IMAX' | 'Dolby Atmos';
 }
 @Injectable({
@@ -77,7 +73,7 @@ export class AdminService {
       `${this.apiUrl}/employes/${id}/reset-password`,
       {
         newPassword,
-      }
+      },
     );
   }
 
@@ -108,7 +104,7 @@ export class AdminService {
   // === DASHBOARD / STATISTIQUES (NoSQL) ===
   getReservationsStats(days: number = 7): Observable<DashboardResponse> {
     return this.http.get<DashboardResponse>(
-      `${this.apiUrl}/dashboard/reservations?days=${days}`
+      `${this.apiUrl}/dashboard/reservations?days=${days}`,
     );
   }
 
@@ -167,7 +163,7 @@ export class AdminService {
   }
 
   updateSeance(id: string, seance: Seance): Observable<Seance> {
-    return this.http.put<Seance>(`${this.apiUrl}/seances/${id}`, seance);
+    return this.http.patch<Seance>(`${this.apiUrl}/seances/${id}`, seance);
   }
 
   deleteSeance(id: number | string): Observable<void> {

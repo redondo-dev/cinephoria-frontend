@@ -1,58 +1,58 @@
 <div class="container">
-<div class="page-header">
-      <h1>Gestion des Salles</h1>
+  <div class="page-header">
+    <h1>Gestion des Salles</h1>
+    <a routerLink="/admin/salles/create" class="btn btn-primary">
+      + Créer une salle
+    </a>
+  </div>
+
+  @if (loading) {
+  <div class="loading">Chargement des salles...</div>
+  } @else if (error) {
+  <div class="error-message">{{ error }}</div>
+  } @else {
+  <div class="salles-grid">
+    @if (salles.length === 0) {
+    <div class="empty-state">
+      <p>Aucune salle enregistrée</p>
       <a routerLink="/admin/salles/create" class="btn btn-primary">
-        + Créer une salle
+        Créer la première salle
       </a>
     </div>
-
-    @if (loading) {
-      <div class="loading">Chargement des salles...</div>
-    } @else if (error) {
-      <div class="error-message">{{ error }}</div>
     } @else {
-      <div class="salles-grid">
-        @if (salles.length === 0) {
-          <div class="empty-state">
-            <p>Aucune salle enregistrée</p>
-            <a routerLink="/admin/salles/create" class="btn btn-primary">
-              Créer la première salle
-            </a>
+    @for (salle of salles; track salle.id) {
+    <div class="salle-card">
+      <div class="salle-icon">🏛️</div>
+      <div class="salle-content">
+        <h3>{{ salle.nom }}</h3>
+        <div class="salle-info">
+          <div class="info-item">
+            <span class="info-icon">💺</span>
+            <span class="info-label">Capacité:</span>
+            <span class="info-value">{{ salle.capacite }} places</span>
           </div>
-        } @else {
-          @for (salle of salles; track salle.id) {
-            <div class="salle-card">
-              <div class="salle-icon">🏛️</div>
-              <div class="salle-content">
-                <h3>{{ salle.nom }}</h3>
-                <div class="salle-info">
-                  <div class="info-item">
-                    <span class="info-icon">💺</span>
-                    <span class="info-label">Capacité:</span>
-                    <span class="info-value">{{ salle.nombrePlaces }} places</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-icon">🎬</span>
-                    <span class="info-label">Qualité:</span>
-                    <span class="info-value quality-badge" [class]="'quality-' + getQualityClass(salle.qualiteProjection!)">
-                      {{ salle.qualiteProjection }}
-                    </span>
-                  </div>
-                </div>
-                <div class="salle-actions">
-                  <a [routerLink]="['/admin/salles/edit', salle.id]" class="btn btn-sm btn-secondary">
-                    Modifier
-                  </a>
-                  <button (click)="deleteSalle(salle)" class="btn btn-sm btn-danger">
-                    Supprimer
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-        }
+          <div class="info-item">
+            <span class="info-icon">🎬</span>
+            <span class="info-label">Qualité:</span>
+            <span class="info-value quality-badge" [class]="'quality-' + getQualityClass(salle.qualiteProjection!)">
+              {{ salle.qualiteProjection }}
+            </span>
+          </div>
+        </div>
+        <div class="salle-actions">
+          <a [routerLink]="['/admin/salles/edit', salle.id]" class="btn btn-sm btn-secondary">
+            Modifier
+          </a>
+          <button (click)="deleteSalle(salle)" class="btn btn-sm btn-danger">
+            Supprimer
+          </button>
+        </div>
       </div>
-
+    </div>
     }
+    }
+  </div>
 
- </div>
+  }
+
+</div>

@@ -142,7 +142,7 @@ export class SeanceFormComponent implements OnInit {
       prix: parseFloat(formValue.prix),
       placesDisponibles: this.selectedSalle?.nombrePlaces || 0,
     } as Seance;
-
+    console.log('SEANCE ENVOYÉE:', seanceData);
     const request =
       this.isEditMode && this.seanceId
         ? this.adminService.updateSeance(this.seanceId, seanceData)
@@ -153,6 +153,8 @@ export class SeanceFormComponent implements OnInit {
         this.router.navigate(['/admin/seances']);
       },
       error: (err) => {
+        console.error('DETAIL ERREUR:', err.error);
+        
         this.error = `Erreur lors de ${
           this.isEditMode ? 'la modification' : 'la création'
         } de la séance`;

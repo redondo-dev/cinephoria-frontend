@@ -41,6 +41,7 @@ export interface Seance {
   filmId: number;
   salleId: number;
   date_seance: string;
+  dateHeureDebut: string;
   dateHeureFin: string;
   prix: number;
   placesDisponibles?: number;

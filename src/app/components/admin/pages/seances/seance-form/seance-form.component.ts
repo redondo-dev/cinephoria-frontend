@@ -127,14 +127,9 @@ export class SeanceFormComponent implements OnInit {
     this.error = null;
 
     const formValue = this.seanceForm.value;
-    // ✅ LOGS
-    console.log('formValue.date:', formValue.date);
-    console.log('formValue.heure:', formValue.heure);
+
     // Date de début
     const dateDebut = new Date(`${formValue.date}T${formValue.heure}:00`);
-    // ✅ LOGs
-    console.log('dateDebut:', dateDebut);
-    console.log('dateDebut.toISOString():', dateDebut.toISOString());
 
     // Date de fin = début + durée du film (en minutes)
     const dureeMinutes = this.selectedFilm?.duree || 0;
@@ -143,14 +138,13 @@ export class SeanceFormComponent implements OnInit {
     const seanceData = {
       filmId: parseInt(formValue.filmId),
       salleId: parseInt(formValue.salleId),
-      date_seance: dateDebut.toISOString(),
+      date_seance:  formValue.date,
+       dateHeureDebut: dateDebut.toISOString(), 
       dateHeureFin: dateFin.toISOString(),
       prix: parseFloat(formValue.prix),
       placesDisponibles: this.selectedSalle?.nombrePlaces || 0,
     } as Seance;
-    // ✅ LOG FINAL
-    console.log('seanceData complet:', seanceData);
-    console.log('SEANCE ENVOYÉE:', seanceData);
+
     const request =
       this.isEditMode && this.seanceId
         ? this.adminService.updateSeance(this.seanceId, seanceData)

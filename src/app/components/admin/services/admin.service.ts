@@ -163,7 +163,7 @@ export class AdminService {
   }
 
   updateSeance(id: string, seance: Seance): Observable<Seance> {
-    return this.http.put<Seance>(`${this.apiUrl}/seances/${id}`, seance);
+    return this.http.patch<Seance>(`${this.apiUrl}/seances/${id}`, seance);
   }
 
   deleteSeance(id: number | string): Observable<void> {

@@ -87,7 +87,7 @@ export class SeanceFormComponent implements OnInit {
   loadSeance(id: string) {
     this.adminService.getSeance(id).subscribe({
       next: (seance) => {
-        const dateTime = new Date(seance.dateHeureDebut);
+        const dateTime = new Date(seance.date_seance);
         this.seanceForm.patchValue({
           filmId: seance.filmId,
           salleId: seance.salleId,
@@ -137,7 +137,7 @@ export class SeanceFormComponent implements OnInit {
     const seanceData = {
       filmId: parseInt(formValue.filmId),
       salleId: parseInt(formValue.salleId),
-      dateHeureDebut: dateDebut.toISOString(),
+      date_seance: dateDebut.toISOString(),
       dateHeureFin: dateFin.toISOString(),
       prix: parseFloat(formValue.prix),
       placesDisponibles: this.selectedSalle?.nombrePlaces || 0,

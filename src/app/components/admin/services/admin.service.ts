@@ -40,8 +40,8 @@ export interface Seance {
   id: number;
   filmId: number;
   salleId: number;
-  dateHeureDebut: string;
-  dateHeureFin:string,
+  date_seance: string;
+  dateHeureFin: string;
   prix: number;
   placesDisponibles?: number;
   // Champs enrichis par l'API
@@ -75,7 +75,7 @@ export class AdminService {
       `${this.apiUrl}/employes/${id}/reset-password`,
       {
         newPassword,
-      }
+      },
     );
   }
 
@@ -106,7 +106,7 @@ export class AdminService {
   // === DASHBOARD / STATISTIQUES (NoSQL) ===
   getReservationsStats(days: number = 7): Observable<DashboardResponse> {
     return this.http.get<DashboardResponse>(
-      `${this.apiUrl}/dashboard/reservations?days=${days}`
+      `${this.apiUrl}/dashboard/reservations?days=${days}`,
     );
   }
 

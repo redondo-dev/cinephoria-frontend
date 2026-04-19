@@ -10,7 +10,7 @@
   <form [formGroup]="seanceForm" (ngSubmit)="onSubmit()" class="form">
     <div class="form-group">
       <label for="filmId">Film *</label>
-      <select id="filmId" formControlName="filmId" class="form-control"(change)="onFilmChange"
+      <select id="filmId" formControlName="filmId" class="form-control" (change)="onFilmChange()"
         [class.error]="seanceForm.get('filmId')?.invalid && seanceForm.get('filmId')?.touched">
         <option value="">Sélectionnez un film</option>
         @for (film of films; track film.id) {

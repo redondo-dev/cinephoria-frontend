@@ -38,9 +38,9 @@ export interface DashboardResponse {
 
 export interface Seance {
   id: number;
-  film_id: number;
-  salle_id: number;
-  date_seance: string;
+  filmId: number;
+  salleId: number;
+  dateHeureDebut: string;
   dateHeureFin:string,
   prix: number;
   placesDisponibles?: number;

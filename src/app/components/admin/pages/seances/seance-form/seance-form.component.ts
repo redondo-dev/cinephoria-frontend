@@ -87,13 +87,13 @@ export class SeanceFormComponent implements OnInit {
   loadSeance(id: string) {
     this.adminService.getSeance(id).subscribe({
       next: (seance) => {
-        const dateTime = new Date(seance.date_seance);
+        const dateTime = new Date(seance.dateHeureDebut);
         this.seanceForm.patchValue({
-          filmId: seance.film_id,
-          salleId: seance.salle_id,
+          filmId: seance.filmId,
+          salleId: seance.salleId,
           date: dateTime.toISOString().split('T')[0],
           heure: dateTime.toTimeString().substring(0, 5),
-          prix: (seance as any).prix,
+          prix: seance.prix,
         });
         this.onSalleChange();
         this.loading = false;
@@ -135,9 +135,9 @@ export class SeanceFormComponent implements OnInit {
     const dateFin = new Date(dateDebut.getTime() + dureeMinutes * 60 * 1000);
 
     const seanceData = {
-      film_id: formValue.filmId,
-      salle_id: formValue.salleId,
-      date_seance: dateDebut.toISOString(),
+      filmId: parseInt(formValue.filmId),
+      salleId: parseInt(formValue.salleId),
+      dateHeureDebut: dateDebut.toISOString(),
       dateHeureFin: dateFin.toISOString(),
       prix: parseFloat(formValue.prix),
       placesDisponibles: this.selectedSalle?.nombrePlaces || 0,
@@ -154,7 +154,7 @@ export class SeanceFormComponent implements OnInit {
       },
       error: (err) => {
         console.error('DETAIL ERREUR:', err.error);
-        
+
         this.error = `Erreur lors de ${
           this.isEditMode ? 'la modification' : 'la création'
         } de la séance`;

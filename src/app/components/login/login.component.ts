@@ -11,6 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CaptchaComponent } from '../../components/captcha/captcha.component';
 
 @Component({
   selector: 'app-login',
@@ -20,17 +21,26 @@ import { takeUntil } from 'rxjs/operators';
     ReactiveFormsModule,
     RouterModule,
     ForgotPasswordComponent,
+    CaptchaComponent,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  captchaToken: string | null = null;
+  captchaError = false;
   loginForm!: FormGroup;
   isLoading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
   showPassword = false;
   showForgotPassword = signal(false);
+
+  onCaptchaResolved(token: string | null): void {
+    this.captchaToken = token;
+    this.captchaError = false; // reset l'erreur dès que l'utilisateur valide
+  }
+
   openForgotPassword(): void {
     this.showForgotPassword.set(true);
   }
@@ -75,6 +85,11 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Soumettre le formulaire de login
    */
   onSubmit(): void {
+    // ✅ Ajouter  CAPTCHA avant validation du formulaire
+    if (!this.captchaToken) {
+      this.captchaError = true;
+      return;
+    }
     if (!this.loginForm.valid) {
       this.errorMessage = 'Veuillez remplir correctement tous les champs';
       return;
@@ -88,7 +103,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const credentials = this.loginForm.value;
     console.log('DEBUG credentials envoyés:', credentials);
     this.authService
-      .login(credentials.email, credentials.password)
+      .login(credentials.email, credentials.password, this.captchaToken)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {

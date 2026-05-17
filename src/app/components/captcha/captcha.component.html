@@ -1,0 +1,13 @@
+<div class="captcha-wrapper" [class.has-error]="showError">
+
+  <ngx-turnstile [siteKey]="siteKey" theme="light" (resolved)="onResolved($event)" (error)="onError()">
+  </ngx-turnstile>
+  <!-- ↑ (error) et non (errored) -->
+
+  @if (showError) {
+  <div class="captcha-error">
+    ⚠️ Veuillez valider le CAPTCHA pour continuer.
+  </div>
+  }
+
+</div>

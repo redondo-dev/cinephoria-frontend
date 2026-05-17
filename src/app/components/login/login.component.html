@@ -27,8 +27,8 @@
       <div class="form-group">
         <label for="email" class="form-label">Email</label>
         <div class="input-wrapper">
-          <input id="email" type="email" formControlName="email" placeholder="votre@email.com" class="form-input"
-            [class.error]="hasError('email')" />
+          <input id="email" type="email" formControlName="email" placeholder="votre@email.com" autocomplete="email"
+            class="form-input" [class.error]="hasError('email')" />
           <span class="input-icon">📧</span>
         </div>
         <div *ngIf="hasError('email')" class="error-message">
@@ -41,7 +41,8 @@
         <label for="password" class="form-label">Mot de passe</label>
         <div class="input-wrapper">
           <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
-            placeholder="••••••••" class="form-input" [class.error]="hasError('password')" />
+            placeholder="••••••••" class="form-input" autocomplete="current-password"
+            [class.error]="hasError('password')" />
           <button type="button" (click)="togglePasswordVisibility()" class="password-toggle" [disabled]="isLoading">
             {{ showPassword ? '👁️' : '👁️‍🗨️' }}
           </button>
@@ -54,7 +55,7 @@
       <!-- Remember Me & Forgot Password -->
       <div class="form-footer-top">
         <label class="checkbox">
-          <input type="checkbox" [disabled]="isLoading" />
+          <input type="checkbox" autocomplete="off" [disabled]="isLoading" />
           <span>Se souvenir de moi</span>
         </label>
         <button type="button" class="forgot-link" (click)="openForgotPassword()">
@@ -76,6 +77,10 @@
         </div>
       </div>
 
+      <!-- Ajout capcha avant le bouton submit -->
+      <app-captcha [showError]="captchaError" (tokenResolved)="onCaptchaResolved($event)">
+      </app-captcha>
+
       <!-- Submit Button -->
       <button type="submit" class="btn btn-primary btn-login" [disabled]="isLoading || !loginForm.valid">
         <span *ngIf="!isLoading">Se connecter</span>
@@ -84,12 +89,13 @@
         </span>
       </button>
 
+
       <!-- Divider -->
       <div class="divider">
         <span>ou</span>
       </div>
 
-      <!-- Social Login (Optional) -->
+      <!-- Social Login (Optional)
       <div class="social-login">
         <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Google">
           <span>🔵 Google</span>
@@ -97,7 +103,7 @@
         <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Facebook">
           <span>📘 Facebook</span>
         </button>
-      </div>
+      </div> -->
     </form>
     @if (showForgotPassword()) {
     <app-forgot-password (close)="closeForgotPassword()">

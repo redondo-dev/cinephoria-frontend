@@ -46,7 +46,11 @@ export class AuthService {
 
   private redirectUrl: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
+    console.log('🌐 API URL:', this.apiUrl);
     this.loadUserFromStorage();
   }
 
@@ -58,7 +62,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     console.log(
       '🔑 [AUTH SERVICE] getToken appelé, token:',
-      token ? ' Présent' : 'Absent'
+      token ? ' Présent' : 'Absent',
     );
     return token;
   }
@@ -79,7 +83,7 @@ export class AuthService {
       !!token,
       ', user:',
       !!user,
-      ')'
+      ')',
     );
 
     return isAuth;
@@ -110,11 +114,19 @@ export class AuthService {
   // LOGIN
   // ========================================
 
-  login(email: string, password: string): Observable<LoginResponse> {
+  login(
+    email: string,
+    password: string,
+    captchaToken: string,
+  ): Observable<LoginResponse> {
     console.log(' [AUTH SERVICE] Tentative de login:', email);
     console.log('[AUTH SERVICE] Password length:', password?.length);
     return this.http
-      .post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
+      .post<LoginResponse>(`${this.apiUrl}/login`, {
+        email,
+        password,
+        captchaToken,
+      })
       .pipe(
         tap((response: LoginResponse) => {
           console.log(' [AUTH SERVICE] Login réussi:', response);
@@ -137,13 +149,13 @@ export class AuthService {
           // Vérification immédiate
           console.log(
             ' [AUTH SERVICE] Token sauvegardé:',
-            localStorage.getItem('token')
+            localStorage.getItem('token'),
           );
           console.log(
             ' [AUTH SERVICE] User sauvegardé:',
-            localStorage.getItem('user')
+            localStorage.getItem('user'),
           );
-        })
+        }),
       );
   }
 
@@ -157,7 +169,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, data).pipe(
       tap((response: any) => {
         console.log('[AUTH SERVICE] Inscription réussie:', response);
-      })
+      }),
     );
   }
 
@@ -168,7 +180,7 @@ export class AuthService {
   resetPassword(email: string): Observable<{ message: string }> {
     console.log(
       ' [AUTH SERVICE] Demande de réinitialisation mot de passe:',
-      email
+      email,
     );
 
     return this.http
@@ -179,9 +191,9 @@ export class AuthService {
         tap((response) => {
           console.log(
             '[AUTH SERVICE] Email de réinitialisation envoyé:',
-            response
+            response,
           );
-        })
+        }),
       );
   }
 
@@ -191,7 +203,7 @@ export class AuthService {
   changeTemporaryPassword(
     email: string,
     tempPassword: string,
-    newPassword: string
+    newPassword: string,
   ): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
       `${this.apiUrl}/reset-password`,
@@ -199,7 +211,7 @@ export class AuthService {
         email,
         tempPassword,
         newPassword,
-      }
+      },
     );
   }
   // ========================================
@@ -234,7 +246,7 @@ export class AuthService {
       '[AUTH SERVICE] Chargement depuis localStorage - Token:',
       !!token,
       'User:',
-      !!userStr
+      !!userStr,
     );
 
     if (token && userStr) {

@@ -4,6 +4,9 @@ import { environment } from '../../../environments/environment';
 const PROD_API = 'https://cinephoria-backend-cja3.onrender.com';
 
 export const forceUrlInterceptor: HttpInterceptorFn = (req, next) => {
+  if (!environment.production) {
+    return next(req);
+  }
   let url = req.url;
 
   // Forcer TOUJOURS l'URL de production

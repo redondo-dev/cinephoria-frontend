@@ -1,0 +1,46 @@
+// .captcha-wrapper {
+//   margin: 16px 0;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+//   gap: 8px;
+
+//   &.has-error {
+//     ngx-turnstile {
+//       outline: 2px solid #e94560;
+//       border-radius: 6px;
+//     }
+//   }
+// }
+
+// .captcha-error {
+//   font-size: 0.82rem;
+//   color: #e94560;
+//   font-weight: 500;
+// }
+.captcha-wrapper {
+  margin: 16px 0;
+  display: block;          // ← on simplifie
+  min-height: 70px;        // ← force la hauteur du widget
+  width: 100%;
+  overflow: visible;       // ← rien ne coupe le widget
+
+  ngx-turnstile {
+    display: block;
+    min-height: 65px;
+  }
+
+  &.has-error {
+    ngx-turnstile {
+      outline: 2px solid #e94560;
+      border-radius: 6px;
+    }
+  }
+}
+
+.captcha-error {
+  font-size: 0.82rem;
+  color: #e94560;
+  font-weight: 500;
+  margin-top: 4px;
+}

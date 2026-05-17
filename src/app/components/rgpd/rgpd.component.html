@@ -1,0 +1,300 @@
+<div class="rgpd-wrapper">
+  <div class="rgpd-container">
+
+    <!-- Header -->
+    <div class="rgpd-header">
+      <button class="back-btn" routerLink="/">← Retour à l'accueil</button>
+      <div class="rgpd-badge">🔒 Protection des données</div>
+      <h1 class="rgpd-title">Politique de Confidentialité</h1>
+      <p class="rgpd-meta">
+        Dernière mise à jour : <strong>{{ lastUpdated }}</strong> &nbsp;|&nbsp;
+        Version : <strong>1.0</strong>
+      </p>
+    </div>
+
+    <!-- Sommaire -->
+    <nav class="rgpd-summary">
+      <h2>Sommaire</h2>
+      <ol>
+        <li><a href="#responsable">Responsable du traitement</a></li>
+        <li><a href="#donnees">Données collectées</a></li>
+        <li><a href="#finalites">Finalités du traitement</a></li>
+        <li><a href="#base-legale">Base légale</a></li>
+        <li><a href="#conservation">Durée de conservation</a></li>
+        <li><a href="#partage">Partage des données</a></li>
+        <li><a href="#droits">Vos droits</a></li>
+        <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#contact">Nous contacter</a></li>
+      </ol>
+    </nav>
+
+    <!-- Sections -->
+    <div class="rgpd-content">
+
+      <!-- 1. Responsable -->
+      <section id="responsable" class="rgpd-section">
+        <h2><span class="section-number">1</span> Responsable du traitement</h2>
+        <p>
+          Le responsable du traitement des données personnelles collectées via la plateforme
+          <strong>Cinephoria</strong> est :
+        </p>
+        <div class="info-card">
+          <p><strong>Société :</strong> Cinephoria SAS</p>
+          <p><strong>Adresse :</strong> 12 Rue du Cinéma, 75001 Paris, France</p>
+          <p><strong>Email :</strong><a href="mailto:dpo&#64;cinephoria.fr">dpo&#64;cinephoria.fr</a></p>
+          <p><strong>SIRET :</strong> 000 000 000 00000</p>
+        </div>
+      </section>
+
+      <!-- 2. Données collectées -->
+      <section id="donnees" class="rgpd-section">
+        <h2><span class="section-number">2</span> Données collectées</h2>
+        <p>Dans le cadre de votre utilisation de Cinephoria, nous collectons les données suivantes :</p>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Catégorie</th>
+                <th>Données</th>
+                <th>Obligatoire</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Identité</td>
+                <td>Nom, prénom, adresse e-mail</td>
+                <td><span class="badge badge-required">Oui</span></td>
+              </tr>
+              <tr>
+                <td>Authentification</td>
+                <td>Mot de passe (hashé), token de session</td>
+                <td><span class="badge badge-required">Oui</span></td>
+              </tr>
+              <tr>
+                <td>Réservations</td>
+                <td>Films réservés, séances, sièges choisis</td>
+                <td><span class="badge badge-required">Oui</span></td>
+              </tr>
+              <tr>
+                <td>Navigation</td>
+                <td>Adresse IP, navigateur, pages visitées</td>
+                <td><span class="badge badge-optional">Non</span></td>
+              </tr>
+              <tr>
+                <td>Préférences</td>
+                <td>Genres favoris, avis laissés</td>
+                <td><span class="badge badge-optional">Non</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. Finalités -->
+      <section id="finalites" class="rgpd-section">
+        <h2><span class="section-number">3</span> Finalités du traitement</h2>
+        <p>Vos données sont utilisées pour les finalités suivantes :</p>
+        <ul class="rgpd-list">
+          <li>
+            <span class="list-icon">🎟️</span>
+            <div>
+              <strong>Gestion des réservations</strong>
+              <p>Création, modification et suivi de vos réservations de séances.</p>
+            </div>
+          </li>
+          <li>
+            <span class="list-icon">🔐</span>
+            <div>
+              <strong>Authentification et sécurité</strong>
+              <p>Connexion sécurisée à votre compte et prévention des fraudes.</p>
+            </div>
+          </li>
+          <li>
+            <span class="list-icon">📧</span>
+            <div>
+              <strong>Communication</strong>
+              <p>Envoi de confirmations, rappels de séances et notifications importantes.</p>
+            </div>
+          </li>
+          <li>
+            <span class="list-icon">📊</span>
+            <div>
+              <strong>Amélioration du service</strong>
+              <p>Analyse anonymisée de l'utilisation pour améliorer l'expérience utilisateur.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Base légale -->
+      <section id="base-legale" class="rgpd-section">
+        <h2><span class="section-number">4</span> Base légale</h2>
+        <div class="legal-grid">
+          <div class="legal-card">
+            <div class="legal-icon">✅</div>
+            <h3>Consentement</h3>
+            <p>Collecte lors de votre inscription et acceptation de cette politique.</p>
+          </div>
+          <div class="legal-card">
+            <div class="legal-icon">📋</div>
+            <h3>Exécution du contrat</h3>
+            <p>Traitement nécessaire à la gestion de vos réservations.</p>
+          </div>
+          <div class="legal-card">
+            <div class="legal-icon">⚖️</div>
+            <h3>Obligation légale</h3>
+            <p>Conservation des données de facturation imposée par la loi.</p>
+          </div>
+          <div class="legal-card">
+            <div class="legal-icon">🛡️</div>
+            <h3>Intérêt légitime</h3>
+            <p>Sécurisation de la plateforme et prévention des abus.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Conservation -->
+      <section id="conservation" class="rgpd-section">
+        <h2><span class="section-number">5</span> Durée de conservation</h2>
+        <ul class="conservation-list">
+          <li>
+            <span class="duration">3 ans</span>
+            <span>Données de compte après la dernière connexion</span>
+          </li>
+          <li>
+            <span class="duration">10 ans</span>
+            <span>Données de facturation (obligation légale)</span>
+          </li>
+          <li>
+            <span class="duration">13 mois</span>
+            <span>Cookies et données de navigation</span>
+          </li>
+          <li>
+            <span class="duration">Immédiat</span>
+            <span>Suppression sur demande (droit à l'effacement)</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Partage -->
+      <section id="partage" class="rgpd-section">
+        <h2><span class="section-number">6</span> Partage des données</h2>
+        <p>
+          Cinephoria ne vend jamais vos données personnelles. Elles peuvent être partagées uniquement avec :
+        </p>
+        <ul class="rgpd-list">
+          <li>
+            <span class="list-icon">💳</span>
+            <div>
+              <strong>Prestataires de paiement</strong>
+              <p>Stripe ou équivalent, pour le traitement sécurisé des paiements.</p>
+            </div>
+          </li>
+          <li>
+            <span class="list-icon">📨</span>
+            <div>
+              <strong>Service d'emailing</strong>
+              <p>Envoi de confirmations et notifications transactionnelles.</p>
+            </div>
+          </li>
+          <li>
+            <span class="list-icon">🏛️</span>
+            <div>
+              <strong>Autorités compétentes</strong>
+              <p>Sur réquisition judiciaire uniquement.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. Droits -->
+      <section id="droits" class="rgpd-section">
+        <h2><span class="section-number">7</span> Vos droits</h2>
+        <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+        <div class="rights-grid">
+          <div class="right-card">
+            <span>👁️</span>
+            <strong>Accès</strong>
+            <p>Consulter toutes les données que nous détenons sur vous.</p>
+          </div>
+          <div class="right-card">
+            <span>✏️</span>
+            <strong>Rectification</strong>
+            <p>Corriger des données inexactes ou incomplètes.</p>
+          </div>
+          <div class="right-card">
+            <span>🗑️</span>
+            <strong>Effacement</strong>
+            <p>Demander la suppression de vos données.</p>
+          </div>
+          <div class="right-card">
+            <span>⏸️</span>
+            <strong>Limitation</strong>
+            <p>Restreindre le traitement de vos données.</p>
+          </div>
+          <div class="right-card">
+            <span>📦</span>
+            <strong>Portabilité</strong>
+            <p>Recevoir vos données dans un format lisible.</p>
+          </div>
+          <div class="right-card">
+            <span>🚫</span>
+            <strong>Opposition</strong>
+            <p>S'opposer à certains traitements de vos données.</p>
+          </div>
+        </div>
+        <div class="rights-note">
+          <p>
+            Pour exercer vos droits, contactez-nous à
+            <a href="mailto:dpo&#64;cinephoria.fr">dpo&#64;cinephoria.fr</a>.
+            Vous pouvez également introduire une réclamation auprès de la
+            <a href="https://www.cnil.fr" target="_blank">CNIL</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- 8. Cookies -->
+      <section id="cookies" class="rgpd-section">
+        <h2><span class="section-number">8</span> Cookies</h2>
+        <p>Nous utilisons les types de cookies suivants :</p>
+        <div class="cookies-list">
+          <div class="cookie-item cookie-required">
+            <div class="cookie-header">
+              <strong>🔒 Cookies essentiels</strong>
+              <span class="badge badge-required">Obligatoires</span>
+            </div>
+            <p>Session, authentification, sécurité. Ne peuvent pas être désactivés.</p>
+          </div>
+          <div class="cookie-item cookie-optional">
+            <div class="cookie-header">
+              <strong>📊 Cookies analytiques</strong>
+              <span class="badge badge-optional">Optionnels</span>
+            </div>
+            <p>Mesure d'audience anonymisée pour améliorer le service.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. Contact -->
+      <section id="contact" class="rgpd-section">
+        <h2><span class="section-number">9</span> Nous contacter</h2>
+        <div class="contact-card">
+          <p>Pour toute question relative à cette politique ou à l'exercice de vos droits :</p>
+          <div class="contact-info">
+            <p>📧 <a href="mailto:dpo&#64;cinephoria.fr">dpo&#64;cinephoria.fr</a></p>
+            <p>📮 Cinephoria SAS – DPO, 12 Rue du Cinéma, 75001 Paris</p>
+            <p>⏱️ Délai de réponse : 30 jours maximum</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer de la page -->
+    <div class="rgpd-footer">
+      <p>© {{ currentYear }} Cinephoria – Tous droits réservés</p>
+      <button class="back-btn" routerLink="/">← Retour à l'accueil</button>
+    </div>
+
+  </div>
+</div>

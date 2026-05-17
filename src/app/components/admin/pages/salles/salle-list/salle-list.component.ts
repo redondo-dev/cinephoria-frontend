@@ -45,7 +45,7 @@ export class SalleListComponent implements OnInit {
     }
 
     if (salle.id) {
-      this.adminService.deleteSalle(salle.id).subscribe({
+      this.adminService.deleteSalle(salle.id.toString()).subscribe({
         next: () => {
           this.salles = this.salles.filter((s) => s.id !== salle.id);
         },

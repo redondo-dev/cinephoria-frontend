@@ -27,8 +27,8 @@
       <div class="form-group">
         <label for="email" class="form-label">Email</label>
         <div class="input-wrapper">
-          <input id="email" type="email" formControlName="email" placeholder="votre@email.com" class="form-input"
-            [class.error]="hasError('email')" />
+          <input id="email" type="email" formControlName="email" placeholder="votre@email.com" autocomplete="email"
+            class="form-input" [class.error]="hasError('email')" />
           <span class="input-icon">📧</span>
         </div>
         <div *ngIf="hasError('email')" class="error-message">
@@ -41,7 +41,8 @@
         <label for="password" class="form-label">Mot de passe</label>
         <div class="input-wrapper">
           <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
-            placeholder="••••••••" class="form-input" [class.error]="hasError('password')" />
+            placeholder="••••••••" class="form-input" autocomplete="current-password"
+            [class.error]="hasError('password')" />
           <button type="button" (click)="togglePasswordVisibility()" class="password-toggle" [disabled]="isLoading">
             {{ showPassword ? '👁️' : '👁️‍🗨️' }}
           </button>
@@ -54,16 +55,31 @@
       <!-- Remember Me & Forgot Password -->
       <div class="form-footer-top">
         <label class="checkbox">
-          <input type="checkbox" [disabled]="isLoading" />
+          <input type="checkbox" autocomplete="off" [disabled]="isLoading" />
           <span>Se souvenir de moi</span>
         </label>
-       <button
-    type="button"
-    class="forgot-link"
-    (click)="openForgotPassword()">
-    Mot de passe oublié ?
-  </button>
+        <button type="button" class="forgot-link" (click)="openForgotPassword()">
+          Mot de passe oublié ?
+        </button>
       </div>
+      <!-- ✅ Consentement RGPD -->
+      <div class="form-group rgpd-group">
+        <label class="checkbox rgpd-checkbox" [class.error]="hasError('rgpdConsent')">
+          <input type="checkbox" formControlName="rgpdConsent" [disabled]="isLoading" />
+          <span>
+            J'accepte la
+            <a href="/politique-de-confidentialite" target="_blank" class="rgpd-link">politique de confidentialité</a>
+            et consens au traitement de mes données personnelles conformément au RGPD.
+          </span>
+        </label>
+        <div *ngIf="hasError('rgpdConsent')" class="error-message">
+          Vous devez accepter la politique de confidentialité pour continuer.
+        </div>
+      </div>
+
+      <!-- Ajout capcha avant le bouton submit -->
+      <app-captcha [showError]="captchaError" (tokenResolved)="onCaptchaResolved($event)">
+      </app-captcha>
 
       <!-- Submit Button -->
       <button type="submit" class="btn btn-primary btn-login" [disabled]="isLoading || !loginForm.valid">
@@ -73,12 +89,13 @@
         </span>
       </button>
 
+
       <!-- Divider -->
       <div class="divider">
         <span>ou</span>
       </div>
 
-      <!-- Social Login (Optional) -->
+      <!-- Social Login (Optional)
       <div class="social-login">
         <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Google">
           <span>🔵 Google</span>
@@ -86,13 +103,12 @@
         <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Facebook">
           <span>📘 Facebook</span>
         </button>
-      </div>
+      </div> -->
     </form>
-@if (showForgotPassword()) {
-  <app-forgot-password
-    (close)="closeForgotPassword()">
-  </app-forgot-password>
-}
+    @if (showForgotPassword()) {
+    <app-forgot-password (close)="closeForgotPassword()">
+    </app-forgot-password>
+    }
     <!-- Sign Up Link -->
     <div class="form-footer">
       <p>

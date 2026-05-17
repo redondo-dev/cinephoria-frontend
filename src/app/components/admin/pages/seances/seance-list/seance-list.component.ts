@@ -72,7 +72,6 @@
 //       // CORRECTION : Utiliser ApiResponse au lieu de any
 //      const seancesArray = (seancesRes as any)?.data || seancesRes || [];
 
-
 //       // Enrichir les séances avec les noms de films et salles
 //       this.seances = seancesArray.map((seance: ApiSeance) => ({
 //         ...seance,
@@ -153,9 +152,8 @@ interface ApiSeance {
   salle: string;
   dateSeance: string;
   heureDebut: string;
+  capacite?: number;
   heureFin: string;
-  prixMoyen: number;
-  placesDisponibles: number;
   film_id?: number;
   salle_id?: number;
 }
@@ -185,26 +183,31 @@ export class SeanceListComponent implements OnInit {
 
     const startTime = performance.now();
 
-    this.adminService.getSeances().pipe(
-      map((response: any) => {
-        const data = response?.data || response || [];
-        return Array.isArray(data) ? data : [];
-      }),
-      catchError(err => {
-        console.error('❌ Erreur chargement:', err);
-        this.error = 'Erreur lors du chargement des séances';
-        return of([]);
-      })
-    ).subscribe({
-      next: (seances) => {
-        const endTime = performance.now();
-        console.log(`📊 ${seances.length} séances chargées en ${(endTime - startTime).toFixed(0)}ms`);
-        console.timeEnd('⏱️ Chargement total');
+    this.adminService
+      .getSeances()
+      .pipe(
+        map((response: any) => {
+          const data = response?.data || response || [];
+          return Array.isArray(data) ? data : [];
+        }),
+        catchError((err) => {
+          console.error('❌ Erreur chargement:', err);
+          this.error = 'Erreur lors du chargement des séances';
+          return of([]);
+        }),
+      )
+      .subscribe({
+        next: (seances) => {
+          const endTime = performance.now();
+          console.log(
+            `📊 ${seances.length} séances chargées en ${(endTime - startTime).toFixed(0)}ms`,
+          );
+          console.timeEnd('⏱️ Chargement total');
 
-        this.seances = seances;
-        this.loading = false;
-      }
-    });
+          this.seances = seances;
+          this.loading = false;
+        },
+      });
   }
 
   deleteSeance(seance: ApiSeance) {
@@ -254,6 +257,6 @@ export class SeanceListComponent implements OnInit {
   }
 
   isLowAvailability(seance: ApiSeance): boolean {
-    return (seance.placesDisponibles || 0) < 20;
+    return (seance.capacite || 0) < 20;
   }
 }

@@ -1,0 +1,674 @@
+// rgpd.component.scss
+
+// ── Variables ────────────────────────────────────────────────
+$primary: #1a1a2e;
+$accent: #e94560;
+$accent-soft: #ff6b6b;
+$gold: #f5a623;
+$surface: #ffffff;
+$surface-alt: #f7f8fc;
+$surface-card: #ffffff;
+$border: #e8eaf0;
+$text-primary: #1a1a2e;
+$text-secondary: #5a6370;
+$text-muted: #9aa3af;
+$success: #2ecc71;
+$shadow-sm: 0 2px 8px rgba(26, 26, 46, 0.08);
+$shadow-md: 0 8px 24px rgba(26, 26, 46, 0.12);
+$shadow-lg: 0 16px 48px rgba(26, 26, 46, 0.16);
+$radius-sm: 6px;
+$radius-md: 12px;
+$radius-lg: 20px;
+
+// ── Wrapper ──────────────────────────────────────────────────
+.rgpd-wrapper {
+  min-height: 100vh;
+  background: $surface-alt;
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba($accent, 0.06) 0%, transparent 60%),
+    radial-gradient(
+      ellipse at 90% 100%,
+      rgba($primary, 0.05) 0%,
+      transparent 60%
+    );
+  padding: 0 0 80px;
+}
+
+// ── Container ────────────────────────────────────────────────
+.rgpd-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+// ── Header ───────────────────────────────────────────────────
+.rgpd-header {
+  text-align: center;
+  padding: 60px 0 48px;
+  border-bottom: 1px solid $border;
+  margin-bottom: 48px;
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid $border;
+    color: $text-secondary;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 32px;
+
+    &:hover {
+      border-color: $accent;
+      color: $accent;
+      background: rgba($accent, 0.04);
+    }
+  }
+
+  .rgpd-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba($accent, 0.1), rgba($gold, 0.1));
+    border: 1px solid rgba($accent, 0.2);
+    color: $accent;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+}
+
+.rgpd-title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  color: $text-primary;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  line-height: 1.1;
+}
+
+.rgpd-meta {
+  color: $text-muted;
+  font-size: 0.875rem;
+  margin: 0;
+
+  strong {
+    color: $text-secondary;
+    font-weight: 600;
+  }
+}
+
+// ── Sommaire ─────────────────────────────────────────────────
+.rgpd-summary {
+  background: $surface-card;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  padding: 28px 32px;
+  margin-bottom: 48px;
+  box-shadow: $shadow-sm;
+
+  h2 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $text-muted;
+    margin: 0 0 16px;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 32px;
+    counter-reset: summary-counter;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  li {
+    counter-increment: summary-counter;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      color: $text-secondary;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: all 0.2s;
+
+      &::before {
+        content: counter(summary-counter, decimal-leading-zero);
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: $accent;
+        min-width: 24px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      &:hover {
+        color: $accent;
+        padding-left: 4px;
+      }
+    }
+  }
+}
+
+// ── Sections ─────────────────────────────────────────────────
+.rgpd-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.rgpd-section {
+  background: $surface-card;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  padding: 36px 40px;
+  box-shadow: $shadow-sm;
+  scroll-margin-top: 80px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+
+  @media (max-width: 600px) {
+    padding: 24px 20px;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $border;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: $text-secondary;
+    line-height: 1.75;
+    margin: 0 0 16px;
+    font-size: 0.95rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.section-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, $accent, $accent-soft);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+}
+
+// ── Info Card ────────────────────────────────────────────────
+.info-card {
+  background: $surface-alt;
+  border: 1px solid $border;
+  border-left: 3px solid $accent;
+  border-radius: $radius-md;
+  padding: 20px 24px;
+  margin-top: 16px;
+
+  p {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: $text-primary;
+      font-weight: 600;
+      min-width: 80px;
+      display: inline-block;
+    }
+
+    a {
+      color: $accent;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ── Table ────────────────────────────────────────────────────
+.data-table-wrapper {
+  overflow-x: auto;
+  margin-top: 16px;
+  border-radius: $radius-md;
+  border: 1px solid $border;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  thead {
+    background: $primary;
+
+    th {
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 14px 20px;
+      text-align: left;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $border;
+      transition: background 0.15s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover {
+        background: rgba($accent, 0.03);
+      }
+    }
+
+    td {
+      padding: 14px 20px;
+      color: $text-secondary;
+      vertical-align: middle;
+    }
+  }
+}
+
+// ── Badges ───────────────────────────────────────────────────
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  &.badge-required {
+    background: rgba($accent, 0.1);
+    color: $accent;
+    border: 1px solid rgba($accent, 0.2);
+  }
+
+  &.badge-optional {
+    background: rgba($success, 0.1);
+    color: darken($success, 10%);
+    border: 1px solid rgba($success, 0.25);
+  }
+}
+
+// ── RGPD List ────────────────────────────────────────────────
+.rgpd-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: $surface-alt;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    padding: 16px 20px;
+    transition: border-color 0.2s;
+
+    &:hover {
+      border-color: rgba($accent, 0.3);
+    }
+
+    .list-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    div {
+      strong {
+        display: block;
+        color: $text-primary;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: $text-muted;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+// ── Legal Grid ───────────────────────────────────────────────
+.legal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.legal-card {
+  background: $surface-alt;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.3);
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+  }
+
+  .legal-icon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 8px;
+  }
+
+  p {
+    font-size: 0.82rem;
+    color: $text-muted;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+// ── Conservation List ────────────────────────────────────────
+.conservation-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 20px;
+    background: $surface-alt;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+
+    .duration {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: $accent;
+      min-width: 90px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    span:last-child {
+      color: $text-secondary;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// ── Rights Grid ──────────────────────────────────────────────
+.rights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 16px;
+
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.right-card {
+  background: $surface-alt;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: rgba($accent, 0.4);
+    background: rgba($accent, 0.03);
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+  }
+
+  span {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  strong {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 0.78rem;
+    color: $text-muted;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.rights-note {
+  margin-top: 20px;
+  background: rgba($gold, 0.08);
+  border: 1px solid rgba($gold, 0.25);
+  border-radius: $radius-md;
+  padding: 16px 20px;
+
+  p {
+    font-size: 0.875rem;
+    color: $text-secondary;
+    margin: 0;
+
+    a {
+      color: $accent;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ── Cookies ──────────────────────────────────────────────────
+.cookies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cookie-item {
+  border-radius: $radius-md;
+  padding: 18px 20px;
+  border: 1px solid $border;
+
+  &.cookie-required {
+    background: rgba($primary, 0.03);
+    border-left: 3px solid $primary;
+  }
+
+  &.cookie-optional {
+    background: rgba($success, 0.04);
+    border-left: 3px solid $success;
+  }
+
+  .cookie-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 12px;
+
+    strong {
+      color: $text-primary;
+      font-size: 0.9rem;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $text-muted;
+    line-height: 1.6;
+  }
+}
+
+// ── Contact Card ─────────────────────────────────────────────
+.contact-card {
+  background: linear-gradient(
+    135deg,
+    rgba($primary, 0.04),
+    rgba($accent, 0.04)
+  );
+  border: 1px solid rgba($accent, 0.15);
+  border-radius: $radius-md;
+  padding: 24px 28px;
+  margin-top: 16px;
+
+  & > p {
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    p {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      font-size: 0.9rem;
+      color: $text-secondary;
+
+      a {
+        color: $accent;
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// ── Footer ───────────────────────────────────────────────────
+.rgpd-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid $border;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 0.82rem;
+    margin: 0;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid $border;
+    color: $text-secondary;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: $accent;
+      color: $accent;
+      background: rgba($accent, 0.04);
+    }
+  }
+}

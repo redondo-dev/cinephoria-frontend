@@ -117,6 +117,14 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.router.navigate(['/change-password']);
             return;
           }
+
+          // ✅ 1. Vérifier redirectAfterLogin EN PREMIER — priorité absolue
+          const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+          if (redirectUrl) {
+            sessionStorage.removeItem('redirectAfterLogin');
+            this.router.navigateByUrl(redirectUrl); // → /reservation/payment
+            return;
+          }
           /** Redirection selon le rôle **/
           if (response.user.role === 'ADMIN') {
             this.router.navigate(['/admin/dashboard']);
@@ -131,13 +139,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           ) {
             this.router.navigate(['/mon-espace']);
           } else {
-            const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-            sessionStorage.removeItem('redirectAfterLogin');
-            if (redirectUrl) {
-              this.router.navigateByUrl(redirectUrl);
-            } else {
-              this.router.navigate(['/']);
-            }
+            this.router.navigate(['/']);
           }
         },
 

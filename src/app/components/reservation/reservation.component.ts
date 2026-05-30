@@ -37,7 +37,7 @@ export class ReservationComponent implements OnInit {
 
   constructor(
     private reservationService: ReservationService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -141,7 +141,7 @@ export class ReservationComponent implements OnInit {
         film: this.selectedFilm,
         seance: seance,
         nombrePersonnes: this.nombrePersonnes,
-      })
+      }),
     );
 
     // Navigation vers la sélection de sièges
@@ -167,5 +167,32 @@ export class ReservationComponent implements OnInit {
     this.films = [];
     this.seances = [];
     this.nombrePersonnes = 2;
+  }
+
+  // ← Ajoute des méthodes de formatage
+  formatDateSeance(dateStr: string): string {
+    if (!dateStr) return '';
+    try {
+      return new Date(dateStr).toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    } catch {
+      return dateStr;
+    }
+  }
+
+  formatHeureSeance(dateStr: string): string {
+    if (!dateStr) return '';
+    try {
+      return new Date(dateStr).toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch {
+      return dateStr;
+    }
   }
 }

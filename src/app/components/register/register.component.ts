@@ -11,11 +11,11 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from './../../core/services/auth.service';
-
+import { CaptchaComponent } from '../../components/captcha/captcha.component';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, CaptchaComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -28,6 +28,9 @@ export class RegisterComponent {
   isSubmitting = false;
   errorMessage = '';
   successMessage = '';
+
+  captchaToken: string | null = null;
+  captchaError = false;
 
   constructor() {
     this.registerForm = this.fb.group(
@@ -46,7 +49,7 @@ export class RegisterComponent {
           ],
         ],
       },
-      { validators: this.passwordMatchValidator }
+      { validators: this.passwordMatchValidator },
     );
   }
 
@@ -63,7 +66,7 @@ export class RegisterComponent {
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
-      password
+      password,
     );
 
     const valid =
@@ -126,7 +129,18 @@ export class RegisterComponent {
     return this.registerForm.get('username');
   }
 
+  onCaptchaResolved(token: string | null): void {
+    this.captchaToken = token;
+    this.captchaError = false;
+  }
+
   onSubmit(): void {
+
+ if (!this.captchaToken) {
+      this.captchaError = true;
+      return;
+    }
+
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
@@ -141,6 +155,7 @@ export class RegisterComponent {
     this.authService.register(registerData).subscribe({
       next: (response) => {
         this.isSubmitting = false;
+        this.captchaToken = null; // ← reset après succès
         this.successMessage =
           'Compte créé avec succès ! Veuillez vérifier votre email pour confirmer votre inscription.';
         this.registerForm.reset();
@@ -152,6 +167,7 @@ export class RegisterComponent {
       },
       error: (error) => {
         this.isSubmitting = false;
+        this.captchaToken = null; // ← reset après erreur
         this.errorMessage =
           error.error?.message ||
           'Une erreur est survenue lors de la création du compte. Veuillez réessayer.';

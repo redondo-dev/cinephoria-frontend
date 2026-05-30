@@ -73,16 +73,14 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = this.getToken();
-    const user = this.currentUser();
-    const isAuth = !!token && !!user;
+    const isAuth = !!token;
 
     console.log(
       '[AUTH SERVICE] isAuthenticated:',
       isAuth,
       '(token:',
       !!token,
-      ', user:',
-      !!user,
+
       ')',
     );
 
@@ -248,6 +246,10 @@ export class AuthService {
       'User:',
       !!userStr,
     );
+    if (!token) {
+      this.isAuthenticatedSubject.next(false);
+      return;
+    }
 
     if (token && userStr) {
       try {

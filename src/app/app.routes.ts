@@ -111,23 +111,8 @@ export const routes: Routes = [
         path: 'payment',
         canActivate: [AuthGuard],
         loadComponent: () =>
-          import('./components/reservation/payment/payment.component').then(
-            (m) => m.PaymentComponent,
-          ),
-      },
-
-      {
-        path: 'payment/card',
-        loadComponent: () =>
-          import('./components/reservation/payment/payment-card/payment-card.component').then(
-            (m) => m.PaymentCardComponent,
-          ),
-      },
-      {
-        path: 'payment/paypal',
-        loadComponent: () =>
-          import('./components/reservation/payment/payment-paypal/payment-paypal.component').then(
-            (m) => m.PaymentPaypalComponent,
+          import('./components/reservation/payment/stripe-payment/stripe-payment.component').then(
+            (m) => m.StripePaymentComponent,
           ),
       },
 

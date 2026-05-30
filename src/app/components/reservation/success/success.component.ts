@@ -1,44 +1,35 @@
-
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from './../../../core/services/reservation.service';
 
-
-
-
-
 @Component({
   selector: 'app-success',
-  standalone:true,
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './success.component.html',
-  styleUrls: ['./success.component.scss']
+  styleUrls: ['./success.component.scss'],
 })
-
-
-
 export class ReservationSuccessComponent implements OnInit {
   reservationId: number | null = null;
   reservationDetails: any = null;
   isLoading = true;
   error = false;
-  qrCodeUrl: string = ''; // ✅ Nouveau : URL du QR code
+  qrCodeUrl: string = '';
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
   ) {}
 
   ngOnInit(): void {
-    // Récupérer l'ID de réservation depuis l'URL
-    this.route.queryParams.subscribe((params) => {
-      const id = params['reservationId'];
-
+    // ✅ Corrigé — paramMap au lieu de queryParams
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
       if (id) {
         this.reservationId = +id;
-        this.qrCodeUrl = this.generateQrCodeUrl(this.reservationId); // ✅ QR code généré
+        this.qrCodeUrl = this.generateQrCodeUrl(this.reservationId);
         this.loadReservationDetails(this.reservationId);
       } else {
         this.isLoading = false;
@@ -47,22 +38,20 @@ export class ReservationSuccessComponent implements OnInit {
     });
   }
 
- private loadReservationDetails(id: number): void {
+  private loadReservationDetails(id: number): void {
     this.reservationService.getReservationById(id).subscribe({
       next: (data) => {
         this.reservationDetails = data;
         this.isLoading = false;
-        console.log('Détails de la réservation:', data);
       },
       error: (err) => {
-        console.error('Erreur lors du chargement de la réservation:', err);
+        console.error('Erreur chargement réservation:', err);
         this.isLoading = false;
         this.error = true;
       },
     });
   }
 
-  /** Afficher le succès par défaut si pas de détails */
   private showDefaultSuccess(): void {
     this.reservationDetails = {
       id: 'N/A',
@@ -71,36 +60,23 @@ export class ReservationSuccessComponent implements OnInit {
     };
   }
 
-  /** ✅ Génération du QR code */
   private generateQrCodeUrl(id: number): string {
-    // Utilisation du service public QRServer
-   return `https://api.qrserver.com/v1/create-qr-code/?data=reservation-${id}&size=200x200`;
+    return `https://api.qrserver.com/v1/create-qr-code/?data=reservation-${id}&size=200x200`;
   }
 
-  /** Télécharger le billet (simulation) */
   downloadTicket(): void {
-    if (!this.reservationId) {
-      alert('Impossible de télécharger le billet');
-      return;
-    }
-
-    console.log('Téléchargement du billet pour la réservation:', this.reservationId);
+    if (!this.reservationId) return;
     alert(`Téléchargement du billet #${this.reservationId} en cours...`);
   }
 
-  /** Envoyer par email (simulation) */
   sendByEmail(): void {
-    if (!this.reservationId) {
-      alert("Impossible d'envoyer l'email");
-      return;
-    }
-
-    console.log('Envoi du billet par email pour la réservation:', this.reservationId);
+    if (!this.reservationId) return;
     alert('Un email de confirmation a été envoyé à votre adresse !');
   }
 
+  // ✅ Corrigé — route correcte
   goToMyReservations(): void {
-    this.router.navigate(['/profile/reservations']);
+    this.router.navigate(['/mon-espace']);
   }
 
   goToHome(): void {
@@ -111,10 +87,8 @@ export class ReservationSuccessComponent implements OnInit {
     this.router.navigate(['/reservation']);
   }
 
-  /** Formatter la date */
   formatDate(date: string | Date): string {
-    const dateObj = new Date(date);
-    return dateObj.toLocaleDateString('fr-FR', {
+    return new Date(date).toLocaleDateString('fr-FR', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
@@ -124,12 +98,10 @@ export class ReservationSuccessComponent implements OnInit {
     });
   }
 
-  /** Obtenir les sièges formatés */
   get formattedSeats(): string {
-    if (!this.reservationDetails?.sieges) return 'N/A';
-    return this.reservationDetails.sieges
-      .map((s: any) => `${s.rangee}${s.numero_siege}`)
-      .join(', ');
+    const sieges = this.reservationDetails?.siegesReserves;
+    if (!sieges?.length) return 'N/A';
+    return sieges.map((s: any) => `${s.rangee}${s.numero_siege}`).join(', ');
   }
 
   get filmTitle(): string {
@@ -148,12 +120,11 @@ export class ReservationSuccessComponent implements OnInit {
     );
   }
 
+  // ✅ Corrigé — dateHeureDebut au lieu de date_seance
   get showTime(): string {
     const seance = this.reservationDetails?.seance;
     if (!seance) return 'N/A';
-
-    const date = seance.date_seance || seance.date;
-    if (date) return this.formatDate(date);
-    return 'N/A';
+    const date = seance.dateHeureDebut;
+    return date ? this.formatDate(date) : 'N/A';
   }
 }

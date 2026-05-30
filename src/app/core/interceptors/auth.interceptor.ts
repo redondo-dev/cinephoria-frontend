@@ -5,11 +5,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Récupérer le token depuis localStorage
   const token = localStorage.getItem('token');
 
-  // Debug
-  console.log('[AUTH INTERCEPTOR] Token:', token ? 'Présent' : ' Absent');
-  console.log('📦 [AUTH INTERCEPTOR] Params:', req.params.toString());
-  console.log(' [AUTH INTERCEPTOR] URL:', req.url);
-
   // Ne pas ajouter le token pour les routes d'authentification
   if (
     req.url.includes('/auth/login') ||
@@ -29,10 +24,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       params: req.params,
     });
 
-    console.log(' [AUTH INTERCEPTOR] Token ajouté au header');
     return next(clonedRequest);
   }
 
-  console.log('[AUTH INTERCEPTOR] Requête sans token');
   return next(req);
 };

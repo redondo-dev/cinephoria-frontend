@@ -13,14 +13,20 @@ export const RoleGuard: CanActivateFn = (route, state) => {
 
   return authService.currentUser$.pipe(
     map(user => {
-      if (user && allowedRoles.includes(user.role)) {
+       if (!user) {
+        router.navigate(['/auth/login']);
+        return false;
+      }
+    const userRole = user.role?.toUpperCase();
+      const allowed = allowedRoles.map(r => r.toUpperCase());
+
+      if (allowed.includes(userRole)) {
         return true;
       }
 
-      router.navigate(['/login'], {
-        queryParams: { returnUrl: state.url }
-      });
+      router.navigate(['/home']); // ← redirige vers home si mauvais rôle
       return false;
     })
+
   );
 };

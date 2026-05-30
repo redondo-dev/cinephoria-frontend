@@ -30,7 +30,7 @@ export class ReservationConfirmationComponent {
 
   /** Simule un test d'authentification */
   get isAuthenticated(): boolean {
-    return !!localStorage.getItem('userToken');
+    return !!localStorage.getItem('token');
   }
 
   get selectedSeatsDisplay(): string {
@@ -43,9 +43,9 @@ export class ReservationConfirmationComponent {
     if (!seance) return 'Non spécifiée';
 
     // Essayer différents formats
-    const horaire = seance.horaire || seance.dateHeureDebut;
+    const horaire = seance.dateHeureDebut;
     const date = seance.date_seance || seance.date;
-    const salle = seance.salle?.nom || seance.salle?.nom_salle;
+    const salle = seance.salle?.nom_salle || seance.salle?.nom;
 
     let display = '';
 
@@ -102,7 +102,7 @@ export class ReservationConfirmationComponent {
   /** Retour à la sélection */
   goBack() {
     this.router.navigate([
-      '/reservation/seats',
+      '/reservation/sieges',
       this.reservationData.seance?.id || this.reservationData.seanceId,
     ]);
   }
@@ -120,7 +120,7 @@ export class ReservationConfirmationComponent {
     }
     sessionStorage.setItem(
       'reservationIncomplete',
-      JSON.stringify(this.reservationData)
+      JSON.stringify(this.reservationData),
     );
     sessionStorage.setItem('redirectAfterLogin', '/reservation/payment');
     this.router.navigate(['/auth/login']);
@@ -129,7 +129,7 @@ export class ReservationConfirmationComponent {
   goToRegister(): void {
     sessionStorage.setItem(
       'reservationIncomplete',
-      JSON.stringify(this.reservationData)
+      JSON.stringify(this.reservationData),
     );
     sessionStorage.setItem('redirectAfterLogin', '/reservation/payment');
     this.router.navigate(['/auth/register']);

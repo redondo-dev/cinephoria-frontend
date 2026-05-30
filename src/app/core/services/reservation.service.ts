@@ -17,14 +17,14 @@ export class ReservationService {
   // Étape 1 : Récupérer la liste des cinémas
   getCinemas(): Observable<Cinema[]> {
     return this.http.get<Cinema[]>(
-      `${this.apiUrl}/public/reservations/cinemas`
+      `${this.apiUrl}/public/reservations/cinemas`,
     );
   }
 
   // Étape 2 : Récupérer les films d'un cinéma
   getFilmsByCinema(cinemaId: number): Observable<Film[]> {
     return this.http.get<Film[]>(
-      `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films`
+      `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films`,
     );
   }
 
@@ -32,7 +32,7 @@ export class ReservationService {
   getSeances(
     cinemaId: number,
     filmId: number,
-    nbPersonnes: number
+    nbPersonnes: number,
   ): Observable<Seance[]> {
     const params = new HttpParams().set('nbPersonnes', nbPersonnes.toString());
 
@@ -45,34 +45,36 @@ export class ReservationService {
     });
     return this.http.get<Seance[]>(
       `${this.apiUrl}/public/reservations/cinemas/${cinemaId}/films/${filmId}/seances`,
-      { params }
+      { params },
     );
   }
 
   // Étape 4 : Récupérer les sièges d'une séance
   getSiegesBySeance(seanceId: number): Observable<SiegeWithStatus[]> {
     return this.http.get<SiegeWithStatus[]>(
-      `${this.apiUrl}/public/reservations/seances/${seanceId}/sieges`
+      `${this.apiUrl}/public/reservations/seances/${seanceId}/sieges`,
     );
   }
 
   // Étape 5 : Créer une réservation
   createReservation(reservationData: {
-    utilisateurId: number;
-    seanceId: number;
+    utilisateur_id: number;
+    seance_id: number;
     sieges: number[]; // IDs des sièges sélectionnés
-    total: number;
+    nb_places: number;
+    prix_unitaire: number;
+    stripe_payment_id?: string;
   }): Observable<Reservation> {
     return this.http.post<Reservation>(
       `${this.apiUrl}/reservations`,
-      reservationData
+      reservationData,
     );
   }
 
   // Étape 6 : Récupérer une réservation par ID
   getReservationById(reservationId: number): Observable<Reservation> {
     return this.http.get<Reservation>(
-      `${this.apiUrl}/reservations/${reservationId}`
+      `${this.apiUrl}/reservations/${reservationId}`,
     );
   }
 }

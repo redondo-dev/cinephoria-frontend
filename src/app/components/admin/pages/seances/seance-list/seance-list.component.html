@@ -6,10 +6,26 @@
 </div>
 
 @if (loading) {
-<div class="loading">Chargement des séances...</div>
+<div class="loading">
+  <span class="spinner"></span>
+  Chargement des séances...
+</div>
 } @else if (error) {
-<div class="error-message">{{ error }}</div>
+<div class="error-message">
+  ⚠️ {{ error }}
+  <button class="btn btn-sm btn-secondary" (click)="loadSeances()">
+    Réessayer
+  </button>
+</div>
 } @else {
+<!-- Info total + pagination haute -->
+<div class="table-meta">
+  <span class="total-info">{{ total }} séances au total</span>
+  @if (totalPages > 1) {
+  <span class="page-info">Page {{ currentPage }} / {{ totalPages }}</span>
+  }
+</div>
+
 <div class="seances-table-container">
   <table class="seances-table">
     <thead>
@@ -23,7 +39,7 @@
     <tbody>
       @if (seances.length === 0) {
       <tr>
-        <td colspan="6" class="empty-row">
+        <td colspan="4" class="empty-row">
           <div class="empty-state">
             <p>Aucune séance programmée</p>
             <a routerLink="/admin/seances/create" class="btn btn-primary">
@@ -35,26 +51,22 @@
       } @else {
       @for (seance of seances; track seance.id) {
       <tr>
+        <td><strong>{{ seance.film }}</strong></td>
         <td>
-          <strong>{{ seance.film }}</strong>
-        </td>
-        <td>
-          <span class="badge badge-salle">{{ seance.salle }}</span>
+          <span class="badge-salle">{{ seance.salle }}</span>
         </td>
         <td>
           <div class="date-time">
-            <!-- CORRECTION : Utiliser heureDebut au lieu de date_heure_debut -->
             <span class="date">📅 {{ formatDate(seance.heureDebut) }}</span>
             <span class="time">🕐 {{ formatTime(seance.heureDebut) }}</span>
           </div>
         </td>
-
         <td class="actions-cell">
           <a [routerLink]="['/admin/seances/edit', seance.id]" class="btn btn-sm btn-secondary">
-            Modifier
+            ✏️ Modifier
           </a>
-          <button (click)="deleteSeance(seance)" class="btn btn-sm btn-danger">
-            Supprimer
+          <button (click)="openDeleteModal(seance)" class="btn btn-sm btn-danger">
+            🗑️ Supprimer
           </button>
         </td>
       </tr>
@@ -62,5 +74,51 @@
       }
     </tbody>
   </table>
+
+  <!-- Pagination bas -->
+  @if (totalPages > 1) {
+  <div class="pagination">
+    <button class="btn btn-secondary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(1)">
+      ««
+    </button>
+    <button class="btn btn-secondary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+      ← Précédent
+    </button>
+    <span class="page-info">
+      {{ currentPage }} / {{ totalPages }}
+    </span>
+    <button class="btn btn-secondary btn-sm" [disabled]="currentPage === totalPages"
+      (click)="goToPage(currentPage + 1)">
+      Suivant →
+    </button>
+    <button class="btn btn-secondary btn-sm" [disabled]="currentPage === totalPages" (click)="goToPage(totalPages)">
+      »»
+    </button>
+  </div>
+  }
+</div>
+}
+
+<!-- Modale suppression -->
+@if (showDeleteModal && seanceToDelete) {
+<div class="modal-overlay" (click)="closeDeleteModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <h3>🗑️ Confirmer la suppression</h3>
+    <p>
+      Supprimer la séance
+      <strong>{{ seanceToDelete.film }}</strong>
+      du <strong>{{ formatDate(seanceToDelete.heureDebut) }}</strong>
+      à <strong>{{ formatTime(seanceToDelete.heureDebut) }}</strong> ?
+    </p>
+    <p class="modal-warning">⚠️ Cette action est irréversible.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="closeDeleteModal()">
+        Annuler
+      </button>
+      <button class="btn btn-danger" (click)="confirmDelete()">
+        Confirmer la suppression
+      </button>
+    </div>
+  </div>
 </div>
 }

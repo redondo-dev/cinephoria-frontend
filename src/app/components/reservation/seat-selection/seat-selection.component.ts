@@ -23,7 +23,7 @@ export class SeatSelectionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
   ) {}
 
   ngOnInit(): void {
@@ -70,20 +70,13 @@ export class SeatSelectionComponent implements OnInit {
         // Mapper vers le format SiegeWithStatus
         const siegesWithStatus: SiegeWithStatus[] = sieges.map((siege) => ({
           id: siege.id,
-          numero_siege: siege.numero,
+          numero_siege: siege.numero || siege.numero_siege, // Support des deux formats
           rangee: siege.rangee,
-          type_siege:
-            siege.type && typeof siege.type === 'string'
-              ? siege.type.toLowerCase() === 'pmr'
-                ? 'pmr'
-                : siege.type.toLowerCase() === 'premium'
-                ? 'premium'
-                : 'classique'
-              : 'classique',
+          type_siege: siege.type || siege.type_siege || 'classique',
           salle_id: siege.salle_id, // Ajout de la propriété requise
           isAvailable: siege.disponible,
           isSelected: false,
-          price: 10.5, // Prix par défaut,
+          price: this.getPrixByType(siege.type || siege.type_siege),
         }));
 
         this.organizeSeatsInRows(siegesWithStatus);
@@ -122,7 +115,7 @@ export class SeatSelectionComponent implements OnInit {
     this.seats = Array.from(rowsMap.entries())
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([_, sieges]) =>
-        sieges.sort((a, b) => a.numero_siege - b.numero_siege)
+        sieges.sort((a, b) => a.numero_siege - b.numero_siege),
       );
   }
 
@@ -140,6 +133,20 @@ export class SeatSelectionComponent implements OnInit {
     }
   }
 
+  getPrixByType(type: string): number {
+    switch (type?.toLowerCase()) {
+      case 'vip':
+        return 18.0;
+      case 'premium':
+        return 13.5;
+      case 'pmr':
+        return 9.0;
+      case 'couple':
+        return 22.0;
+      default:
+        return 10.5; // classique
+    }
+  }
   getTotalPrice(): number {
     return this.selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
   }
@@ -163,7 +170,7 @@ export class SeatSelectionComponent implements OnInit {
 
       sessionStorage.setItem(
         'reservationComplete',
-        JSON.stringify(reservationComplete)
+        JSON.stringify(reservationComplete),
       );
 
       console.log(' Sièges confirmés:', this.selectedSeats);

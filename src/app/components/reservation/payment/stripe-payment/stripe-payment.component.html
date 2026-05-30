@@ -1,0 +1,148 @@
+<!-- stripe-payment.component.html -->
+<div class="payment-wrapper">
+
+  <!-- En-tête -->
+  <div class="payment-header">
+    <button class="btn-back" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 5l-7 7 7 7" />
+      </svg>
+      Retour
+    </button>
+    <div class="header-title">
+      <span class="step-label">Étape finale</span>
+      <h1>Paiement sécurisé</h1>
+    </div>
+    <div class="stripe-badge">
+      <svg viewBox="0 0 60 25" class="stripe-logo">
+        <path
+          d="M59.64 14.28h-8.06c.19 1.93 1.6 2.55 3.2 2.55 1.64 0 2.96-.37 4.05-.95v3.32a8.33 8.33 0 0 1-4.56 1.1c-4.01 0-6.83-2.5-6.83-7.48 0-4.19 2.39-7.52 6.3-7.52 3.92 0 5.96 3.28 5.96 7.5 0 .4-.04 1.26-.06 1.48zm-5.92-5.62c-1.03 0-2.17.73-2.17 2.58h4.25c0-1.85-1.07-2.58-2.08-2.58zM40.95 20.3c-1.44 0-2.32-.6-2.9-1.04l-.02 4.63-4.45.94V6.27h3.96l.17 1.02c.5-.68 1.69-1.34 3.28-1.34 3.4 0 5.9 2.9 5.9 7.26 0 4.6-2.35 7.09-5.94 7.09zM40 9.95c-.57 0-1.49.23-1.95.68l.02 5.45c.42.42 1.27.69 1.93.69 1.65 0 2.58-1.32 2.58-3.41 0-2.05-.93-3.41-2.58-3.41zM28.24 5.07c1.44 0 2.3 1.01 2.3 2.4 0 1.28-.85 2.39-2.3 2.39-1.45 0-2.31-1.1-2.31-2.4 0-1.38.86-2.39 2.31-2.39zm2.22 15.07h-4.44V6.27h4.44V20.14zM19.7 20.3c-1.44 0-2.32-.6-2.9-1.04l-.02 4.63L12.33 25V6.27h3.96l.17 1.02c.5-.68 1.69-1.34 3.28-1.34 3.4 0 5.9 2.9 5.9 7.26 0 4.6-2.35 7.09-5.94 7.09zm-.95-10.35c-.57 0-1.49.23-1.95.68l.02 5.45c.42.42 1.27.69 1.93.69 1.65 0 2.58-1.32 2.58-3.41 0-2.05-.93-3.41-2.58-3.41zM6.27 18.58c1.15 0 2.15-.31 2.85-.7v3.4c-.7.4-1.89.72-3.42.72C2.65 22 0 20.5 0 16.92V9.8H2.04V6.27H6.5V9.8h3.5v3.53H6.5v3.35c0 1.13.6 1.9 1.77 1.9z"
+          fill="#635BFF" />
+      </svg>
+      Sécurisé
+    </div>
+  </div>
+
+  <div class="payment-grid">
+
+    <!-- Colonne gauche : Récapitulatif -->
+    <div class="summary-panel">
+      <h2 class="panel-title">Récapitulatif</h2>
+
+      <div class="summary-item">
+        <span class="summary-label">🎬 Film</span>
+        <span class="summary-value">{{ reservationData?.film?.titre || reservationData?.seance?.film?.titre || '—'
+          }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">🏛️ Cinéma</span>
+        <span class="summary-value">{{ reservationData?.cinema?.nom || '—' }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">📅 Séance</span>
+        <span class="summary-value">
+          {{ reservationData?.seance?.dateHeureDebut
+          ? (reservationData.seance.dateHeureDebut | date:'dd/MM/yyyy HH:mm')
+          : '—' }}
+        </span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">💺 Sièges</span>
+        <span class="summary-value seats-value">{{ selectedSeatsDisplay || '—' }}</span>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-total">
+        <span>Total</span>
+        <span class="total-amount">{{ totalPrice | number:'1.2-2' }} €</span>
+      </div>
+
+      <!-- Sécurité -->
+      <div class="security-badges">
+        <div class="badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Paiement chiffré SSL
+        </div>
+        <div class="badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          Données protégées
+        </div>
+        <div class="badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          Conforme PCI-DSS
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne droite : Formulaire Stripe -->
+    <div class="payment-panel">
+      <h2 class="panel-title">Informations de paiement</h2>
+
+      <p class="stripe-info">
+        Vos données bancaires sont traitées directement par
+        <strong>Stripe</strong> et ne transitent jamais par nos serveurs.
+      </p>
+
+      <!-- Carte de test info -->
+      <div class="test-card-info">
+        <span>🧪 Mode test — Carte :</span>
+        <code>4242 4242 4242 4242</code>
+        <span>· Exp : 12/29 · CVV : 123</span>
+      </div>
+
+      <!-- Élément Stripe Card -->
+      <div class="card-field-wrapper">
+        <label class="field-label">Numéro de carte, expiration, CVV</label>
+        <div id="stripe-card-element" class="stripe-card-element" [class.loading]="!isStripeReady">
+          <div *ngIf="!isStripeReady" class="stripe-loading">
+            <div class="spinner"></div>
+            Chargement du module de paiement...
+          </div>
+        </div>
+        <div class="card-error" *ngIf="cardError">{{ cardError }}</div>
+      </div>
+
+      <!-- Erreur globale -->
+      <div class="global-error" *ngIf="errorMessage">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Bouton paiement -->
+      <button class="btn-pay" (click)="submitPayment()" [disabled]="!isStripeReady || isProcessing">
+        <span *ngIf="!isProcessing">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+            <line x1="1" y1="10" x2="23" y2="10" />
+          </svg>
+          Payer {{ totalPrice | number:'1.2-2' }} €
+        </span>
+        <span *ngIf="isProcessing" class="processing">
+          <div class="btn-spinner"></div>
+          Traitement en cours...
+        </span>
+      </button>
+
+      <p class="legal-note">
+        En validant, vous acceptez nos
+        <a href="/conditions" target="_blank">conditions générales de vente</a>.
+      </p>
+    </div>
+
+  </div>
+</div>

@@ -6,14 +6,12 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-
   background: url("/assets/img/netflix-bg.jpg") center/cover no-repeat;
   padding: 3rem 2rem;
   border-radius: 12px;
   position: relative;
   overflow: hidden;
 
-  /* Gradient façon Netflix */
   &::after {
     content: "";
     position: absolute;
@@ -29,14 +27,14 @@
   > * {
     z-index: 1;
   }
-}
 
-.page-header h1 {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-  text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
+  }
 }
 
 /* ================================
@@ -59,65 +57,63 @@
 }
 
 /* ================================
-   🎞️ TABLE SEANCES (Design Netflix)
+   🎞️ TABLE SÉANCES
 ================================ */
 .seances-table-container {
   background: rgba(20, 20, 20, 0.9);
   border-radius: 8px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
   overflow: hidden;
-  backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .seances-table {
   width: 100%;
   border-collapse: collapse;
-}
 
-.seances-table thead {
-  background: #e50914;
-  color: white;
-  text-transform: uppercase;
-}
+  thead {
+    background: #e50914;
+    color: white;
+    text-transform: uppercase;
+  }
 
-.seances-table th {
-  padding: 1rem;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.7px;
-}
+  th {
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.7px;
+  }
 
-.seances-table td {
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #f2f2f2;
-}
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #f2f2f2;
+  }
 
-.seances-table tbody tr {
-  transition: 0.25s ease;
-}
-
-.seances-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
+  tbody tr {
+    transition: 0.25s ease;
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
 }
 
 /* ================================
-   🎫 BADGES / INFORMATIONS
+   🎫 BADGES
 ================================ */
-.badge {
+.badge-salle {
   display: inline-block;
   padding: 0.3rem 0.75rem;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
-}
-
-.badge-salle {
   background: rgba(229, 9, 20, 0.15);
   color: #e50914;
 }
 
+/* ================================
+   📅 DATE / HEURE
+================================ */
 .date-time {
   display: flex;
   flex-direction: column;
@@ -135,20 +131,6 @@
   color: #bbb;
 }
 
-.prix {
-  color: #1ed760;
-  font-size: 1.1rem;
-}
-
-.places {
-  font-weight: bold;
-  color: #1ed760;
-}
-
-.places-low {
-  color: #e50914;
-}
-
 /* ================================
    🧰 ACTIONS
 ================================ */
@@ -157,7 +139,7 @@
 }
 
 /* ================================
-   📭 EMPTY
+   📭 EMPTY STATE
 ================================ */
 .empty-row {
   padding: 0 !important;
@@ -175,7 +157,7 @@
 }
 
 /* ================================
-   🔘 BOUTONS STYLE NETFLIX
+   🔘 BOUTONS
 ================================ */
 .btn {
   padding: 0.5rem 1rem;
@@ -191,40 +173,154 @@
   &:last-child {
     margin-right: 0;
   }
-}
 
-.btn-primary {
-  background: #e50914;
-  color: white;
+  &-primary {
+    background: #e50914;
+    color: white;
+    &:hover {
+      background: #b00710;
+    }
+  }
 
-  &:hover {
-    background: #b00710;
+  &-secondary {
+    background: #333;
+    color: white;
+    &:hover {
+      background: #555;
+    }
+  }
+
+  &-danger {
+    background: #b90707;
+    color: white;
+    &:hover {
+      background: #8a0505;
+    }
+  }
+
+  &-sm {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.78rem;
   }
 }
 
-.btn-secondary {
-  background: #333;
-  color: white;
+/* ================================
+   🗑️ MODALE SUPPRESSION
+================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
 
-  &:hover {
-    background: #555;
+.modal-box {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 12px;
+  }
+
+  p {
+    color: #aaaaaa;
+    margin: 0 0 24px;
   }
 }
 
-.btn-danger {
-  background: #b90707;
-  color: white;
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
 
-  &:hover {
-    background: #8a0505;
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(20, 20, 20, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  .page-info {
+    color: #aaa;
+    font-size: 0.9rem;
+    small {
+      color: #666;
+      margin-left: 6px;
+    }
+  }
+
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }
-
-.btn-sm {
-  padding: 0.35rem 0.7rem;
-  font-size: 0.78rem;
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #e50914;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.table-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 12px;
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+.total-info { color: #888; }
+
+.modal-warning {
+  font-size: 0.82rem;
+  color: #e50914;
+  margin: -16px 0 20px !important;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+
+  .page-info {
+    color: #aaa;
+    font-size: 0.9rem;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
 /* ================================
    📱 RESPONSIVE
 ================================ */
@@ -238,7 +334,6 @@
   .seances-table-container {
     overflow-x: auto;
   }
-
   .seances-table {
     min-width: 850px;
   }

@@ -138,6 +138,9 @@
         }
       </div>
 
+      <app-captcha [showError]="captchaError" (tokenResolved)="onCaptchaResolved($event)">
+      </app-captcha>
+
       <!-- Bouton de soumission -->
       <button type="submit" class="btn-primary" [disabled]="isSubmitting">
         @if (isSubmitting) {

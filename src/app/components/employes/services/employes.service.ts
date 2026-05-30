@@ -26,7 +26,6 @@ export interface Seance {
   id?: number;
   filmId: number; // Correspond à film_id
   salleId: number; // Correspond à salle_id
-  date_seance: string;
   dateHeureDebut: string; // Correspond à date_heure_debut
   dateHeureFin: string; // Correspond à date_heure_fin
   filmTitre?: string;
@@ -222,7 +221,7 @@ export class AvisService {
 
   getAll(): Observable<Avis[]> {
     return this.http.get<{ data: Avis[] }>(this.apiUrl).pipe(
-      map((response) => response.data) // on extrait uniquement le tableau d'avis
+      map((response) => response.data), // on extrait uniquement le tableau d'avis
     );
   }
 

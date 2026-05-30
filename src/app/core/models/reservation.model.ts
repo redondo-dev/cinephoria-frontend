@@ -37,18 +37,19 @@ export interface Salle {
 
 export interface Seance {
   id: number;
-  date_seance: string; // DATEONLY format YYYY-MM-DD
-  film_id: number;
-  salle_id: number;
   dateHeureDebut: string; // ISO datetime string
   dateHeureFin: string; // ISO datetime string
-  qualite?: string;
-  // Champs calculés ou ajoutés par le backend
+// Champs calculés ou ajoutés par le backend
   places_disponibles?: number;
-  prix_base?: number;
+  places_reservees?: number;
+salle?: {                   // ✅ objet salle dans l'API
+    id: number;
+    nom_salle: string;
+    capacite: number;
+    qualite_projection: string;
+  };
   // Relations
   film?: Film;
-  salle?: Salle;
   reservations?: Reservation[];
 }
 

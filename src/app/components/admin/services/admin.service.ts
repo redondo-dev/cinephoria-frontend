@@ -148,11 +148,15 @@ export class AdminService {
 
   //CRUD Seances
 
-  getSeances(): Observable<Seance[]> {
-    return this.http
-      .get<{ data: Seance[] }>(`${this.apiUrl}/seances`)
-      .pipe(map((res: { data: Seance[] }) => res.data || []));
-  }
+getSeances(page = 1, limit = 20): Observable<any> {
+  return this.http.get(`${this.apiUrl}/seances`, {
+    params: {
+      page: page.toString(),
+      limit: limit.toString()
+    }
+  });
+  
+}
 
   getSeance(id: string): Observable<Seance> {
     return this.http.get<Seance>(`${this.apiUrl}/seances/${id}`);

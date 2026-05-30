@@ -29,7 +29,6 @@ export class SeancesComponent implements OnInit {
     private seancesService: SeancesService,
     private filmsService: FilmsService,
     private sallesService: SallesService,
-
   ) {}
 
   ngOnInit(): void {
@@ -59,8 +58,12 @@ export class SeancesComponent implements OnInit {
 
   private seancesLoaded = false;
   checkAndLoadSeances(): void {
-    if (!this.seancesLoaded &&this.films.length > 0 && this.salles.length > 0) {
-     this.seancesLoaded = true;
+    if (
+      !this.seancesLoaded &&
+      this.films.length > 0 &&
+      this.salles.length > 0
+    ) {
+      this.seancesLoaded = true;
       this.loadSeances();
     }
   }
@@ -120,7 +123,6 @@ export class SeancesComponent implements OnInit {
     return {
       filmId: 0,
       salleId: 0,
-      date_seance: '',
       dateHeureDebut: '',
       dateHeureFin: '',
     };

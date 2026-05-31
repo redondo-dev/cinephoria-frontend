@@ -1,38 +1,148 @@
-<div class="success-container" *ngIf="!isLoading && !error; else loadingOrError">
-  <div class="success-icon">✅</div>
-  <h1>Réservation confirmée !</h1>
+<!-- success.component.html -->
+<div class="success-wrapper" *ngIf="!isLoading && !error; else loadingOrError">
 
-  <div class="confirmation-details">
-    <p>Numéro de réservation : <strong>{{ reservationId }}</strong></p>
-    <p>Film : <strong>{{ filmTitle }}</strong></p>
-    <p>Cinéma : <strong>{{ cinemaName }}</strong></p>
-    <p>Séance : <strong>{{ showTime }}</strong></p>
-    <p>Sièges : <strong>{{ formattedSeats }}</strong></p>
+  <!-- ── Header ── -->
+  <div class="success-header">
+    <div class="check-icon">
+      <svg viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="26" r="25" stroke="#22c55e" stroke-width="2"/>
+        <path d="M14 26l8 8 16-16" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1>Réservation confirmée !</h1>
+    <p class="subtitle">Votre billet a été enregistré avec succès.</p>
+    <span class="reservation-ref">Réf. #{{ reservationId }}</span>
   </div>
 
-  <!-- ✅ QR Code -->
-  <div class="qr-code-container">
-    <h3>Votre QR Code :</h3>
+  <!-- ── Détails ── -->
+  <div class="ticket-card">
+    <div class="ticket-left">
+      <div class="detail-row">
+        <span class="detail-label">🎬 Film</span>
+        <span class="detail-value">{{ filmTitle }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">🏛️ Cinéma</span>
+        <span class="detail-value">{{ cinemaName }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">📅 Séance</span>
+        <span class="detail-value">{{ showTime }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">💺 Sièges</span>
+        <span class="detail-value seats">{{ formattedSeats }}</span>
+      </div>
+      <div class="detail-row" *ngIf="reservationDetails?.nb_places && reservationDetails?.prix_unitaire">
+        <span class="detail-label">💳 Total</span>
+        <span class="detail-value price">
+          {{ (reservationDetails.nb_places * reservationDetails.prix_unitaire) | number:'1.2-2' }} €
+        </span>
+      </div>
+    </div>
 
-    <!-- Option 1 : via API externe -->
-    <img [src]="qrCodeUrl" alt="QR Code de la réservation" width="200" height="200" />
+    <!-- Séparateur perforé -->
+    <div class="ticket-separator">
+      <div class="circle top"></div>
+      <div class="dashes"></div>
+      <div class="circle bottom"></div>
+    </div>
 
-    <!-- Option 2 : via angularx-qrcode -->
-    <!-- <qrcode [qrdata]="reservationId?.toString()" [width]="200" [errorCorrectionLevel]="'M'"></qrcode> -->
-
-
+    <!-- QR Code -->
+    <div class="ticket-right">
+      <img [src]="qrCodeUrl" alt="QR Code réservation" width="140" height="140" />
+      <p class="qr-label">Présentez ce QR code à l'entrée</p>
+    </div>
   </div>
 
-  <div class="actions">
-    <button (click)="downloadTicket()">📄 Télécharger le billet</button>
-    <button (click)="sendByEmail()">📧 Envoyer par email</button>
-    <button (click)="goToMyReservations()">🎟️ Mes réservations</button>
-    <button (click)="bookAnother()">➕ Nouvelle réservation</button>
-    <button (click)="goToHome()">🏠 Accueil</button>
+  <!-- ── Actions ── -->
+  <div class="actions-grid">
+
+    <!-- Télécharger billet -->
+    <button class="action-btn primary" (click)="downloadTicket()" [disabled]="isDownloading">
+      <span *ngIf="!isDownloading">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Télécharger le billet
+      </span>
+      <span *ngIf="isDownloading" class="loading-text">
+        <div class="mini-spinner"></div>
+        Génération PDF...
+      </span>
+    </button>
+
+    <!-- Envoyer par email -->
+    <button
+      class="action-btn secondary"
+      (click)="sendByEmail()"
+      [disabled]="isSendingEmail || emailSent"
+    >
+      <span *ngIf="!isSendingEmail && !emailSent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        Envoyer par email
+      </span>
+      <span *ngIf="isSendingEmail" class="loading-text">
+        <div class="mini-spinner"></div>
+        Envoi en cours...
+      </span>
+      <span *ngIf="emailSent">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Email envoyé !
+      </span>
+    </button>
+
+    <!-- Mes réservations -->
+    <button class="action-btn outline" (click)="goToMyReservations()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 12V22H4V12"/>
+        <path d="M22 7H2v5h20V7z"/>
+        <path d="M12 22V7"/>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+      </svg>
+      Mes réservations
+    </button>
+
+    <!-- Nouvelle réservation -->
+    <button class="action-btn outline" (click)="bookAnother()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      Nouvelle réservation
+    </button>
+
+    <!-- Accueil -->
+    <button class="action-btn ghost" (click)="goToHome()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Retour à l'accueil
+    </button>
+
   </div>
 </div>
 
+<!-- ── Loading / Error ── -->
 <ng-template #loadingOrError>
-  <div *ngIf="isLoading">Chargement...</div>
-  <div *ngIf="error">Erreur lors du chargement de la réservation.</div>
+  <div class="state-wrapper">
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner-large"></div>
+      <p>Chargement de votre réservation...</p>
+    </div>
+    <div *ngIf="error" class="error-state">
+      <p>❌ Erreur lors du chargement de la réservation.</p>
+      <button (click)="goToHome()">Retour à l'accueil</button>
+    </div>
+  </div>
 </ng-template>

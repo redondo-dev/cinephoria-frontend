@@ -27,6 +27,7 @@
     "@stripe/stripe-js": "^9.7.0",
     "angularx-qrcode": "^19.0.0",
     "chart.js": "^4.5.1",
+    "jspdf": "^4.2.1",
     "ngx-toastr": "^19.1.0",
     "ngx-turnstile": "^0.2.5",
     "rxjs": "~7.8.0",

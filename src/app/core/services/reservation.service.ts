@@ -77,4 +77,13 @@ export class ReservationService {
       `${this.apiUrl}/reservations/${reservationId}`,
     );
   }
+  // etape 7 : Envoyer la confirmation par email
+  sendConfirmationEmail(
+    reservationId: number,
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/reservations/${reservationId}/send-email`,
+      {},
+    );
+  }
 }

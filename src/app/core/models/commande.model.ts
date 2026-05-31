@@ -27,9 +27,8 @@ export interface Billet {
 
 export interface Seance {
   id: number;
-  date_seance: Date;
-  date_heure_debut: Date;
-  date_heure_fin: Date;
+  dateHeureDebut: Date;
+  dateHeureFin: Date;
   film_id: number;
   salle_id: number;
   film?: Film;

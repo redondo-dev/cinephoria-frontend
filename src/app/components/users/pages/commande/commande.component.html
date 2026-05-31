@@ -42,7 +42,7 @@
             <h4>{{ commande.seance.film.titre }}</h4>
             <p class="seance-info">
               <span class="icon">📅</span>
-              {{ commande.seance.date_heure_debut | date: 'EEEE dd MMMM yyyy à HH:mm' }}
+              {{ commande.seance.dateHeureDebut | date: 'EEEE dd MMMM yyyy à HH:mm' }}
             </p>
             <p *ngIf="commande.seance.salle" class="seance-info">
               <span class="icon">🎬</span>
@@ -75,7 +75,7 @@
         </div>
 
         <!-- Bouton Noter (si séance passée) -->
-        <div *ngIf="commande.seance.date_heure_debut && isSeancePassee(commande.seance.date_heure_debut)"
+        <div *ngIf="commande.seance.dateHeureDebut && isSeancePassee(commande.seance.dateHeureDebut)"
           class="action-avis">
           <button class="btn-noter" (click)="ouvrirFormulaireAvis(commande.seance.film!)">
             <span class="icon">⭐</span>

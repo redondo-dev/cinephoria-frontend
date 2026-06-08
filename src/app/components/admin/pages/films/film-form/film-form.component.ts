@@ -54,8 +54,10 @@ export class FilmFormComponent implements OnInit {
     this.loading = true;
     this.adminService.getFilm(id).subscribe({
       next: (film) => {
+        const genreNom = film.genres?.[0]?.nom || '';
         this.filmForm.patchValue({
           ...film,
+          genre: genreNom,
         });
 
         this.loading = false;
@@ -107,7 +109,7 @@ export class FilmFormComponent implements OnInit {
       next: (response) => {
         this.submitting = false;
         this.toast.success(
-          `Film ${this.isEditMode ? 'modifié' : 'créé'} avec succès`
+          `Film ${this.isEditMode ? 'modifié' : 'créé'} avec succès`,
         );
         this.router.navigate(['/admin/films']);
       },

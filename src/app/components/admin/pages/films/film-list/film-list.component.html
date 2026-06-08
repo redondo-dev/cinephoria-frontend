@@ -26,7 +26,7 @@
 
     <div class="film-content">
       <h3>{{ film.titre }}</h3>
-      <p class="film-genre">{{ film.genre }}</p>
+      <p class="film-genre">{{ film.genres?.[0]?.nom || 'Non spécifié' }}</p>
       <p class="film-description">{{ film.description }}</p>
       <div class="film-meta">
         <span>⏱️ {{ film.duree }} min</span>
@@ -51,4 +51,3 @@
     Créer le premier film
   </a>
 </div>
-

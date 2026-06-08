@@ -38,6 +38,7 @@ export interface Seance {
 export interface Film {
   id: number;
   titre: string;
+  genres?: { id: number; nom: string }[];
   affiche: string;
   noteAverage?: number; // Calculée dynamiquement
   date_derniere_seance?: Date; // Pour films-a-noter

@@ -8,6 +8,7 @@ export interface Seance {
   date_seance: string;
   dateHeureDebut: string;
   dateHeureFin: string;
+  genres?: Genre[];
   salle?: {
     id: number;
     nom_salle: string;
@@ -33,7 +34,7 @@ export interface Film {
   titre: string;
   affiche: string;
   note_moyenne?: number;
-  genre?: Genre;
+  genres?: Genre[];
   duree: number;
   dateAjout: string;
   description: string;
@@ -104,7 +105,7 @@ export class FilmService {
   getAllFilms(
     page: number,
     limit: number,
-    filters?: any
+    filters?: any,
   ): Observable<{ films: Film[]; total: number }> {
     let params = new HttpParams()
       .set('page', page.toString())
@@ -123,6 +124,10 @@ export class FilmService {
 
   getFilmById(id: number): Observable<Film> {
     return this.http.get<Film>(`${this.apiUrl}/${id}`);
+  }
+  // Récupère les séances d'un film
+  getSeancesByFilm(filmId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/api/seances/film/${filmId}`);
   }
 
   getTopRatedFilms(limit = 10): Observable<Film[]> {

@@ -39,10 +39,11 @@ export interface Seance {
   id: number;
   dateHeureDebut: string; // ISO datetime string
   dateHeureFin: string; // ISO datetime string
-// Champs calculés ou ajoutés par le backend
+  // Champs calculés ou ajoutés par le backend
   places_disponibles?: number;
   places_reservees?: number;
-salle?: {                   // ✅ objet salle dans l'API
+  salle?: {
+    // ✅ objet salle dans l'API
     id: number;
     nom_salle: string;
     capacite: number;
@@ -59,7 +60,7 @@ export interface Film {
   duree: number; // en minutes
   affiche?: string;
   description?: string;
-  genre?: string;
+  genres?: { id: number; nom: string }[];
   annee_sortie?: number;
   realisateur?: string;
   // Relations

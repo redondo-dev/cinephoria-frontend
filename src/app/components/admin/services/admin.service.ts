@@ -51,7 +51,7 @@ export interface Seance {
 export interface Salle {
   id: number;
   nom: string;
-  capacite: number;
+  nombrePlaces: number;
   qualiteProjection?: 'Standard' | '4K' | 'IMAX' | 'Dolby Atmos';
 }
 @Injectable({

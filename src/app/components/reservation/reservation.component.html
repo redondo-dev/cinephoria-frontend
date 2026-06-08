@@ -77,7 +77,7 @@
           <div class="film-info">
             <span class="film-duree">{{ film.duree }} min</span>
             <span class="separator">|</span>
-            <span class="film-genre">{{ film.genre }}</span>
+            <span class="genre">{{ film.genres?.[0]?.nom || 'Genre non disponible' }}</span>
           </div>
           <p class="film-description" *ngIf="film.description">
             {{ film.description }}

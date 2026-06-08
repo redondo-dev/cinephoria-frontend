@@ -47,7 +47,7 @@ export class SeancesListComponent implements OnInit {
     // this.groupSeancesByDate();
   }
 
- ngOnChanges(): void {
+  ngOnChanges(): void {
     if (this.seances && this.seances.length > 0) {
       this.groupSeancesByDate();
     }
@@ -72,7 +72,7 @@ export class SeancesListComponent implements OnInit {
         date,
         displayDate: this.formatDate(date),
         seances: seances.sort((a, b) =>
-          a.dateHeureDebut.localeCompare(b.dateHeureDebut)
+          a.dateHeureDebut.localeCompare(b.dateHeureDebut),
         ),
       }))
       .sort((a, b) => a.date.localeCompare(b.date));
@@ -83,27 +83,24 @@ export class SeancesListComponent implements OnInit {
    */
   formatDate(dateString: string): string {
     const date = new Date(dateString);
+    const timeZone = 'Europe/Paris';
+
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    // Normaliser les dates pour comparaison
-    const normalizeDate = (d: Date) =>
-      new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const fmt = (d: Date) => d.toLocaleDateString('fr-FR', { timeZone });
 
-    const normalizedDate = normalizeDate(date);
-    const normalizedToday = normalizeDate(today);
-    const normalizedTomorrow = normalizeDate(tomorrow);
-
-    if (normalizedDate.getTime() === normalizedToday.getTime()) {
+    if (fmt(date) === fmt(today)) {
       return "Aujourd'hui";
-    } else if (normalizedDate.getTime() === normalizedTomorrow.getTime()) {
+    } else if (fmt(date) === fmt(tomorrow)) {
       return 'Demain';
     } else {
       return date.toLocaleDateString('fr-FR', {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
+        timeZone,
       });
     }
   }
@@ -112,8 +109,12 @@ export class SeancesListComponent implements OnInit {
    * Formater l'heure
    */
   formatTime(time: string): string {
-    const date = new Date(time);
-    return date.toTimeString().substring(0, 5);
+    if (!time) return '--:--';
+    return new Date(time).toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Europe/Paris',
+    });
   }
   /**
    * Obtenir la classe CSS pour la qualité

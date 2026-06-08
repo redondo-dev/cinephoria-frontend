@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit,inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService, Salle } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-salle-from',
-    standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './salle-form.component.html',
   styleUrls: ['./salle-form.component.scss'],
 })
-
 export class SalleFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private adminService = inject(AdminService);
@@ -27,7 +31,6 @@ export class SalleFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-
     this.salleId = this.route.snapshot.paramMap.get('id');
     if (this.salleId) {
       this.isEditMode = true;
@@ -39,28 +42,33 @@ export class SalleFormComponent implements OnInit {
     this.salleForm = this.fb.group({
       nom: ['', Validators.required],
       nombrePlaces: [null, [Validators.required, Validators.min(1)]],
-      qualiteProjection: ['', Validators.required]
+      qualiteProjection: ['', Validators.required],
     });
   }
 
   loadSalle(id: string) {
     this.loading = true;
     this.adminService.getSalle(id).subscribe({
-      next: (salle) => {
-        this.salleForm.patchValue(salle);
+      next: (response: any) => {
+        const salle = response.data || response; // ← extraire data
+        this.salleForm.patchValue({
+          nom: salle.nom,
+          nombrePlaces: salle.nombrePlaces,
+          qualiteProjection: salle.qualiteProjection,
+        });
         this.loading = false;
       },
       error: (err) => {
         this.error = 'Erreur lors du chargement de la salle';
         this.loading = false;
         console.error(err);
-      }
+      },
     });
   }
 
   onSubmit() {
     if (this.salleForm.invalid) {
-      Object.keys(this.salleForm.controls).forEach(key => {
+      Object.keys(this.salleForm.controls).forEach((key) => {
         this.salleForm.get(key)?.markAsTouched();
       });
       return;
@@ -71,9 +79,10 @@ export class SalleFormComponent implements OnInit {
 
     const salleData: Salle = this.salleForm.value;
 
-    const request = this.isEditMode && this.salleId
-      ? this.adminService.updateSalle(this.salleId, salleData)
-      : this.adminService.createSalle(salleData);
+    const request =
+      this.isEditMode && this.salleId
+        ? this.adminService.updateSalle(this.salleId, salleData)
+        : this.adminService.createSalle(salleData);
 
     request.subscribe({
       next: () => {
@@ -83,7 +92,7 @@ export class SalleFormComponent implements OnInit {
         this.error = `Erreur lors de ${this.isEditMode ? 'la modification' : 'la création'} de la salle`;
         this.submitting = false;
         console.error(err);
-      }
+      },
     });
   }
 

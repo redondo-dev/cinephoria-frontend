@@ -87,32 +87,54 @@ export class EmployeFormComponent implements OnInit {
       prenom: data.prenom,
       email: data.email,
       username: data.username,
-      password: '', 
+      password: '',
     });
   }
 
   /** Soumission du formulaire */
   onSubmit(): void {
     if (this.employeForm.invalid) return;
+    this.submitting = true;
+    this.error = null;
 
     const employeData = this.employeForm.value;
 
-    console.log('Données envoyées :', employeData); // 👈 Vérifie ici dans la console
+    if (!employeData.password) {
+      delete employeData.password; // Supprime le champ password si il est vide pour éviter les problèmes d’API
+      return;
+    }
 
+    console.log('Données envoyées :', employeData); // 👈 Vérifie ici dans la console
+    if (this.employeId) {
+      this.adminService.updateEmploye(this.employeId, employeData).subscribe({
+        next: () => {
+          this.submitting = false;
+          this.toastr.success('Employé mis à jour avec succès');
+          this.router.navigate(['/admin/employes']);
+        },
+        error: (err) => {
+          this.submitting = false;
+          this.error = err.message || 'Erreur lors de la mise à jour';
+
+          this.toastr.error(this.error!);
+        },
+      });
+      return;
+    }
+    // Mode création
     this.adminService.createEmploye(employeData).subscribe({
       next: (res: any) => {
-        console.log('Employé créé', res);
+        this.submitting = false;
         this.toastr.success(res.message, 'Employé ajouté avec succès');
-         this.router.navigate(['/admin/employes']);
+        this.router.navigate(['/admin/employes']);
       },
       error: (err) => {
-        console.error('Erreur API AdminService :', err);
-        this.toastr.error(err.message || 'Erreur lors de l’ajout');
-
+        this.submitting = false;
+        this.error = err.message || "Erreur lors de l'ajout";
+        this.toastr.error(this.error!);
       },
     });
   }
-
   /** Retour à la liste */
   goBack() {
     this.router.navigate(['/admin/employes']);

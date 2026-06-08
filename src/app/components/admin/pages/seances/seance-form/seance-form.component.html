@@ -32,7 +32,7 @@
         <option value="">Sélectionnez une salle</option>
         @for (salle of salles; track salle.id) {
         <option [value]="salle.id">
-          {{ salle.nom }} - {{ salle.capacite }} places ({{ salle.qualiteProjection }})
+          {{ salle.nom }} - {{ salle.nombrePlaces }} places ({{ salle.qualiteProjection }})
         </option>
         }
       </select>
@@ -70,7 +70,7 @@
       <div class="info-icon">ℹ️</div>
       <div class="info-content">
         <strong>Salle sélectionnée :</strong> {{ selectedSalle.nom }}<br>
-        <strong>Capacité :</strong> {{ selectedSalle.capacite }} places<br>
+        <strong>Capacité :</strong> {{ selectedSalle.nombrePlaces }} places<br>
         <strong>Qualité :</strong> {{ selectedSalle.qualiteProjection }}
       </div>
     </div>

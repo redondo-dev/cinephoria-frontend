@@ -31,7 +31,7 @@
         <td>{{ film.titre }}</td>
         <!-- <td>{{ film.realisateur }}</td> -->
         <td>{{ film.duree }} min</td>
-        <td>{{ film.genre_id }}</td>
+        <td>{{ film.genres?.[0]?.nom || 'Non spécifié' }}</td>
         <td>{{ film.date_ajout | date:'dd/MM/yyyy' }}</td>
         <td>
           <button (click)="editFilm(film)">Modifier</button>

@@ -19,6 +19,7 @@ export interface Film {
   note_moyenne?: number;
   nb_avis?: number;
   genre_id?: number;
+  genres?: { id: number; nom: string }[];
 }
 
 // Interface Seance

@@ -18,7 +18,7 @@
   </button>
 </div>
 } @else {
-<!-- Info total + pagination haute -->
+
 <div class="table-meta">
   <span class="total-info">{{ total }} séances au total</span>
   @if (totalPages > 1) {
@@ -30,10 +30,10 @@
   <table class="seances-table">
     <thead>
       <tr>
-        <th>Film</th>
-        <th>Salle</th>
-        <th>Date & Heure</th>
-        <th>Actions</th>
+        <th class="col-film">Film</th>
+        <th class="col-salle">Salle</th>
+        <th class="col-date">Date &amp; Heure</th>
+        <th class="col-actions">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -51,23 +51,25 @@
       } @else {
       @for (seance of seances; track seance.id) {
       <tr>
-        <td><strong>{{ seance.film }}</strong></td>
-        <td>
+        <td class="col-film"><strong>{{ seance.film }}</strong></td>
+        <td class="col-salle">
           <span class="badge-salle">{{ seance.salle }}</span>
         </td>
-        <td>
+        <td class="col-date">
           <div class="date-time">
-            <span class="date">📅 {{ formatDate(seance.heureDebut) }}</span>
-            <span class="time">🕐 {{ formatTime(seance.heureDebut) }}</span>
+            <span class="date">{{ formatDate(seance.heureDebut) }}</span>
+            <span class="time">{{ formatTime(seance.heureDebut) }}</span>
           </div>
         </td>
-        <td class="actions-cell">
-          <a [routerLink]="['/admin/seances/edit', seance.id]" class="btn btn-sm btn-secondary">
-            ✏️ Modifier
-          </a>
-          <button (click)="openDeleteModal(seance)" class="btn btn-sm btn-danger">
-            🗑️ Supprimer
-          </button>
+        <td class="col-actions">
+          <div class="actions-cell">
+            <a [routerLink]="['/admin/seances/edit', seance.id]" class="btn btn-sm btn-secondary">
+              ✏️ <span>Modifier</span>
+            </a>
+            <button (click)="openDeleteModal(seance)" class="btn btn-sm btn-danger">
+              🗑️ <span>Suppr.</span>
+            </button>
+          </div>
         </td>
       </tr>
       }
@@ -75,7 +77,6 @@
     </tbody>
   </table>
 
-  <!-- Pagination bas -->
   @if (totalPages > 1) {
   <div class="pagination">
     <button class="btn btn-secondary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(1)">
@@ -84,9 +85,7 @@
     <button class="btn btn-secondary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
       ← Précédent
     </button>
-    <span class="page-info">
-      {{ currentPage }} / {{ totalPages }}
-    </span>
+    <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
     <button class="btn btn-secondary btn-sm" [disabled]="currentPage === totalPages"
       (click)="goToPage(currentPage + 1)">
       Suivant →
@@ -99,7 +98,6 @@
 </div>
 }
 
-<!-- Modale suppression -->
 @if (showDeleteModal && seanceToDelete) {
 <div class="modal-overlay" (click)="closeDeleteModal()">
   <div class="modal-box" (click)="$event.stopPropagation()">
@@ -112,12 +110,8 @@
     </p>
     <p class="modal-warning">⚠️ Cette action est irréversible.</p>
     <div class="modal-actions">
-      <button class="btn btn-secondary" (click)="closeDeleteModal()">
-        Annuler
-      </button>
-      <button class="btn btn-danger" (click)="confirmDelete()">
-        Confirmer la suppression
-      </button>
+      <button class="btn btn-secondary" (click)="closeDeleteModal()">Annuler</button>
+      <button class="btn btn-danger" (click)="confirmDelete()">Confirmer la suppression</button>
     </div>
   </div>
 </div>

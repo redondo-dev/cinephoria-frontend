@@ -1,5 +1,5 @@
 /* ================================
-   🎬 STYLE GLOBAL NETFLIX
+   🎬 PAGE HEADER
 ================================ */
 .page-header {
   display: flex;
@@ -52,12 +52,34 @@
   color: #ff4e4e;
   padding: 1rem;
   border-left: 4px solid #e50914;
-  border-radius: 4px;
+  border-radius: 0;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* ================================
-   🎞️ TABLE SÉANCES
+   📊 TABLE META
+================================ */
+.table-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 12px;
+  color: #aaa;
+  font-size: 0.85rem;
+
+  .total-info {
+    color: #888;
+  }
+  .page-info {
+    color: #aaa;
+  }
+}
+
+/* ================================
+   🎞️ TABLE CONTAINER
 ================================ */
 .seances-table-container {
   background: rgba(20, 20, 20, 0.9);
@@ -67,48 +89,84 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* ================================
+   📋 TABLE
+================================ */
 .seances-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; // ← alignement garanti
+
+  // Largeurs de colonnes
+  .col-film {
+    width: 35%;
+  }
+  .col-salle {
+    width: 20%;
+  }
+  .col-date {
+    width: 28%;
+  }
+  .col-actions {
+    width: 17%;
+  }
 
   thead {
     background: #e50914;
     color: white;
     text-transform: uppercase;
+
+    th {
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.7px;
+      text-align: left;
+
+      &.col-actions {
+        text-align: right;
+      }
+    }
   }
 
-  th {
-    padding: 1rem;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.7px;
-  }
+  tbody {
+    tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background 0.2s ease;
 
-  td {
-    padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: #f2f2f2;
-  }
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+    }
 
-  tbody tr {
-    transition: 0.25s ease;
-    &:hover {
-      background: rgba(255, 255, 255, 0.05);
+    td {
+      padding: 1rem;
+      color: #f2f2f2;
+      vertical-align: middle;
+      font-size: 0.9rem;
+
+      &.col-actions {
+        text-align: right;
+      }
     }
   }
 }
 
 /* ================================
-   🎫 BADGES
+   🎫 BADGE SALLE
 ================================ */
 .badge-salle {
   display: inline-block;
   padding: 0.3rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   background: rgba(229, 9, 20, 0.15);
   color: #e50914;
+  white-space: nowrap;
 }
 
 /* ================================
@@ -117,25 +175,28 @@
 .date-time {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-}
+  gap: 3px;
 
-.date {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: white;
-}
+  .date {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
 
-.time {
-  font-size: 0.85rem;
-  color: #bbb;
+  .time {
+    font-size: 0.8rem;
+    color: #aaa;
+  }
 }
 
 /* ================================
    🧰 ACTIONS
 ================================ */
 .actions-cell {
-  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 /* ================================
@@ -160,6 +221,9 @@
    🔘 BOUTONS
 ================================ */
 .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   font-size: 0.85rem;
@@ -167,12 +231,7 @@
   cursor: pointer;
   border: none;
   text-decoration: none;
-  margin-right: 0.5rem;
-  transition: 0.25s ease;
-
-  &:last-child {
-    margin-right: 0;
-  }
+  transition: background 0.2s ease;
 
   &-primary {
     background: #e50914;
@@ -202,10 +261,35 @@
     padding: 0.35rem 0.7rem;
     font-size: 0.78rem;
   }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 }
 
 /* ================================
-   🗑️ MODALE SUPPRESSION
+   📄 PAGINATION
+================================ */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 15, 15, 0.8);
+
+  .page-info {
+    color: #aaa;
+    font-size: 0.9rem;
+    min-width: 70px;
+    text-align: center;
+  }
+}
+
+/* ================================
+   🗑️ MODALE
 ================================ */
 .modal-overlay {
   position: fixed;
@@ -222,7 +306,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 32px;
-  max-width: 400px;
+  max-width: 420px;
   width: 90%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
 
@@ -234,9 +318,16 @@
   }
 
   p {
-    color: #aaaaaa;
-    margin: 0 0 24px;
+    color: #aaa;
+    margin: 0 0 16px;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
+}
+
+.modal-warning {
+  font-size: 0.82rem !important;
+  color: #e50914 !important;
 }
 
 .modal-actions {
@@ -245,34 +336,14 @@
   justify-content: flex-end;
 }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 20px;
-  background: rgba(20, 20, 20, 0.9);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-
-  .page-info {
-    color: #aaa;
-    font-size: 0.9rem;
-    small {
-      color: #666;
-      margin-left: 6px;
-    }
-  }
-
-  button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-}
+/* ================================
+   ⏳ SPINNER
+================================ */
 .spinner {
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #e50914;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -281,60 +352,71 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.table-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0 12px;
-  color: #aaa;
-  font-size: 0.85rem;
-}
-
-.total-info { color: #888; }
-
-.modal-warning {
-  font-size: 0.82rem;
-  color: #e50914;
-  margin: -16px 0 20px !important;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-
-  .page-info {
-    color: #aaa;
-    font-size: 0.9rem;
-    min-width: 70px;
-    text-align: center;
-  }
-
-  button:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
+  to {
+    transform: rotate(360deg);
   }
 }
+
 /* ================================
    📱 RESPONSIVE
 ================================ */
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .page-header {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+    padding: 2rem 1rem;
+
+    h1 {
+      font-size: 1.6rem;
+    }
   }
 
   .seances-table-container {
     overflow-x: auto;
   }
+
   .seances-table {
-    min-width: 850px;
+    min-width: 600px;
+
+    .col-film {
+      width: 38%;
+    }
+    .col-salle {
+      width: 18%;
+    }
+    .col-date {
+      width: 26%;
+    }
+    .col-actions {
+      width: 18%;
+    }
+  }
+
+  .actions-cell {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+
+    span {
+      display: none;
+    } // icône seulement sur mobile
+  }
+}
+
+@media (max-width: 480px) {
+  .seances-table {
+    .col-salle {
+      display: none;
+    }
+    .col-film {
+      width: 45%;
+    }
+    .col-date {
+      width: 32%;
+    }
+    .col-actions {
+      width: 23%;
+    }
   }
 }

@@ -85,15 +85,27 @@ export class SeanceFormComponent implements OnInit {
 
   loadSeance(id: string) {
     this.adminService.getSeance(id).subscribe({
-      next: (seance) => {
-        const dateTime = new Date(seance.date_seance);
+      next: (response: any) => {
+        const seance = response.data || response; // ← extraire data si présent
+
+        // dateHeureDebut est la vraie colonne, pas date_seance
+        const dateTime = new Date(seance.dateHeureDebut);
+
         this.seanceForm.patchValue({
-          filmId: seance.filmId,
-          salleId: seance.salleId,
+          filmId: String(seance.filmId), // ← convertir en string pour matcher le select
+          salleId: String(seance.salleId), // ← idem
           date: dateTime.toISOString().split('T')[0],
-          heure: dateTime.toTimeString().substring(0, 5),
+          heure: dateTime.toISOString().substring(11, 16), // UTC, pas toTimeString()
         });
-        this.onSalleChange();
+
+        // Mettre à jour les objets sélectionnés pour l'affichage
+        this.selectedFilm =
+          this.films.find((f) => String(f.id) === String(seance.filmId)) ||
+          null;
+        this.selectedSalle =
+          this.salles.find((s) => String(s.id) === String(seance.salleId)) ||
+          null;
+
         this.loading = false;
       },
       error: (err) => {
@@ -103,7 +115,6 @@ export class SeanceFormComponent implements OnInit {
       },
     });
   }
-
   onSalleChange() {
     const salleId = this.seanceForm.get('salleId')?.value;
     this.selectedSalle = this.salles.find((s) => s.id === salleId) || null;

@@ -1,4 +1,4 @@
-// import { Cinema } from './../../../core/models/reservation.model';
+// films-list.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
@@ -24,7 +24,6 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   films: Film[] = [];
   filteredFilms: Film[] = [];
   cinemas: Cinema[] = [];
-  selectedCinema: string = '';
 
   // Pagination
   currentPage = 1;
@@ -35,11 +34,10 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   // Filtres
   searchTerm = '';
   selectedGenre = '';
-  // selectedCinema = '';
+  selectedCinema = '';
   selectedDate = '';
-  sortBy = 'recent'; // recent, rating, title
-  genres: string[] = [];
-  // cinemas: string[] = [];
+  sortBy = 'recent';
+  genres: { id: number; nom: string }[] = []; // ✅ objets {id, nom}
   availableDates: string[] = [];
 
   // États
@@ -55,7 +53,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   constructor(
     private filmService: FilmService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -66,9 +64,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     this.loadAvailableDates();
   }
 
-  /**
-   * Configuration de la recherche avec debounce
-   */
+  // ── Recherche avec debounce ───────────────────
   private setupSearch(): void {
     this.searchSubject
       .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
@@ -79,9 +75,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Charger les paramètres de l'URL
-   */
+  // ── Charger les paramètres URL ────────────────
   private loadQueryParams(): void {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
@@ -93,9 +87,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Charger tous les films
-   */
+  // ── Charger les films ─────────────────────────
   loadFilms(): void {
     this.isLoading = true;
     this.errorMessage = null;
@@ -114,8 +106,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.films = response.films;
           console.log(
-            'Structure des films:',
-            JSON.stringify(this.films[0], null, 2)
+            '🎬 Premier film:',
+            JSON.stringify(this.films[0], null, 2),
           );
           this.totalFilms = response.total;
           this.totalPages = Math.ceil(this.totalFilms / this.itemsPerPage);
@@ -132,61 +124,41 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   *  Charger la liste des cinémas
-   */
+  // ── Charger les cinémas ───────────────────────
   private loadCinemas(): void {
     this.filmService
       .getCinemas()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (cinemas) => {
-          console.log('cinemas reçus =>', cinemas);
-          this.cinemas = cinemas;
-        },
-        error: (error) => {
-          console.error('Erreur chargement cinémas:', error);
-        },
+        next: (cinemas) => (this.cinemas = cinemas),
+        error: (error) => console.error('Erreur chargement cinémas:', error),
       });
   }
 
-  /**
-   *  Charger les dates disponibles
-   */
+  // ── Charger les dates ─────────────────────────
   private loadAvailableDates(): void {
     this.filmService
       .getAvailableDates()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (dates) => {
-          console.log('Dates reçues:', dates);
-          this.availableDates = dates;
-        },
-        error: (error) => {
-          console.error('Erreur chargement dates:', error);
-        },
+        next: (dates) => (this.availableDates = dates),
+        error: (error) => console.error('Erreur chargement dates:', error),
       });
   }
 
-  /**
-   * Extraire tous les genres uniques
-   */
+  // ── Extraire les genres uniques ───────────────
   private extractGenres(): void {
-    const genresSet = new Set<string>();
-    if (this.films && Array.isArray(this.films)) {
-      // ← Ajouter cette vérification
-      this.films.forEach((film) => {
-        if (film.genre?.nom) {
-          genresSet.add(film.genre.nom);
-        }
-      });
-    }
-    this.genres = Array.from(genresSet).sort();
+    const genresMap = new Map<number, string>();
+    this.films.forEach((film) => {
+      film.genres?.forEach((g) => genresMap.set(g.id, g.nom));
+    });
+    this.genres = Array.from(genresMap, ([id, nom]) => ({ id, nom })).sort(
+      (a, b) => a.nom.localeCompare(b.nom),
+    );
+    console.log('✅ Genres extraits:', this.genres);
   }
 
-  /**
-   * Appliquer les filtres et le tri
-   */
+  // ── Appliquer les filtres ─────────────────────
   applyFilters(): void {
     if (!this.films || !Array.isArray(this.films)) {
       this.filteredFilms = [];
@@ -195,61 +167,61 @@ export class FilmsListComponent implements OnInit, OnDestroy {
 
     let filtered = [...this.films];
 
-    // Filtre par recherche
+    // Filtre recherche
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(
         (film) =>
-          film.titre.toLowerCase().includes(term) ||
-          film.description.toLowerCase().includes(term) ||
-          (film.genre?.nom && film.genre.nom.toLowerCase().includes(term))
+          film.titre?.toLowerCase().includes(term) ||
+          film.description?.toLowerCase().includes(term) ||
+          film.genres?.some((g) => g.nom.toLowerCase().includes(term)),
       );
     }
 
-    // Filtre par genre
+    // ✅ Filtre genre par id
     if (this.selectedGenre) {
-      filtered = filtered.filter(
-        (film) => film.genre?.nom === this.selectedGenre
+      const genreIdNum = Number(this.selectedGenre);
+      filtered = filtered.filter((film) =>
+        film.genres?.some((g) => g.id === genreIdNum),
       );
     }
 
-    //  Filtre par cinéma
+    // ✅ Filtre cinéma — via seances.salle.cinema.id
     if (this.selectedCinema) {
       const cinemaIdNum = Number(this.selectedCinema);
-      filtered = filtered.filter((film) => {
-        return film.seances?.some(
-          (seance: any) => seance.salle?.cinema?.id === cinemaIdNum
-        );
-      });
+      filtered = filtered.filter((film) =>
+        film.seances?.some(
+          (seance: any) => seance.salle?.cinema?.id === cinemaIdNum,
+        ),
+      );
     }
 
-    //  Filtre par date
+    // ✅ Filtre date — via seances.dateHeureDebut
     if (this.selectedDate) {
-      filtered = filtered.filter((film) => {
-        return film.seances?.some((seance: any) => {
-          // Comparer les dates au format YYYY-MM-DD
-          const seanceDate = new Date(seance.date_seance)
+      filtered = filtered.filter((film) =>
+        film.seances?.some((seance: any) => {
+          const seanceDate = new Date(
+            seance.date_heure_debut || seance.dateHeureDebut,
+          )
             .toISOString()
             .split('T')[0];
           return seanceDate === this.selectedDate;
-        });
-      });
+        }),
+      );
     }
 
     // Tri
     filtered = this.sortFilms(filtered);
-
     this.filteredFilms = filtered;
     this.updateURL();
   }
-  /**
-   * Trier les films
-   */
+
+  // ── Trier les films ───────────────────────────
   private sortFilms(films: Film[]): Film[] {
     switch (this.sortBy) {
       case 'rating':
         return films.sort(
-          (a, b) => (b.note_moyenne ?? 0) - (a.note_moyenne ?? 0)
+          (a, b) => (b.note_moyenne ?? 0) - (a.note_moyenne ?? 0),
         );
       case 'title':
         return films.sort((a, b) => a.titre.localeCompare(b.titre));
@@ -259,14 +231,12 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       default:
         return films.sort(
           (a, b) =>
-            new Date(b.dateAjout).getTime() - new Date(a.dateAjout).getTime()
+            new Date(b.dateAjout).getTime() - new Date(a.dateAjout).getTime(),
         );
     }
   }
 
-  /**
-   * Mettre à jour l'URL avec les filtres
-   */
+  // ── Mettre à jour l'URL ───────────────────────
   private updateURL(): void {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -282,48 +252,34 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Gestion de la recherche
-   */
+  // ── Handlers filtres ──────────────────────────
   onSearchChange(term: string): void {
     this.searchSubject.next(term);
   }
 
-  /**
-   * Changer de genre
-   */
   onGenreChange(genre: string): void {
     this.selectedGenre = genre;
     this.currentPage = 1;
     this.applyFilters();
   }
-  /**
-   *  Changer de cinéma
-   */
-  onCinemaChange(cinemaID: string): void {
-    (this.selectedCinema = cinemaID), (this.currentPage = 1);
+
+  onCinemaChange(cinemaId: string): void {
+    this.selectedCinema = cinemaId;
+    this.currentPage = 1;
     this.applyFilters();
   }
 
-  /**
-   *  Changer de date
-   */
   onDateChange(date: string): void {
     this.selectedDate = date;
     this.currentPage = 1;
     this.applyFilters();
   }
-  /**
-   * Changer le tri
-   */
+
   onSortChange(sortBy: string): void {
     this.sortBy = sortBy;
     this.applyFilters();
   }
 
-  /**
-   * Réinitialiser les filtres
-   */
   resetFilters(): void {
     this.searchTerm = '';
     this.selectedGenre = '';
@@ -334,9 +290,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  /**
-   * Pagination
-   */
+  // ── Pagination ────────────────────────────────
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
@@ -346,70 +300,46 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.goToPage(this.currentPage + 1);
-    }
+    if (this.currentPage < this.totalPages) this.goToPage(this.currentPage + 1);
   }
 
   previousPage(): void {
-    if (this.currentPage > 1) {
-      this.goToPage(this.currentPage - 1);
-    }
+    if (this.currentPage > 1) this.goToPage(this.currentPage - 1);
   }
 
-  /**
-   * Changer le mode d'affichage
-   */
-  toggleViewMode(): void {
-    this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';
-  }
-
-  /**
-   * Navigation vers le détail
-   */
-  navigateToDetail(filmId: string): void {
-    this.router.navigate(['/films', filmId]);
-  }
-
-  /**
-   * Obtenir les pages à afficher dans la pagination
-   */
   getPageNumbers(): number[] {
     const pages: number[] = [];
     const maxPages = 5;
     let startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
     let endPage = Math.min(this.totalPages, startPage + maxPages - 1);
-
     if (endPage - startPage < maxPages - 1) {
       startPage = Math.max(1, endPage - maxPages + 1);
     }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
+    for (let i = startPage; i <= endPage; i++) pages.push(i);
     return pages;
   }
 
-  /**
-   * Formater la durée
-   */
+  // ── Vue ───────────────────────────────────────
+  toggleViewMode(): void {
+    this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';
+  }
+
+  navigateToDetail(filmId: string): void {
+    this.router.navigate(['/films', filmId]);
+  }
+
+  // ── Utilitaires ───────────────────────────────
   formatDuration(minutes: number): string {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
   }
 
-  /**
-   * Obtenir le texte des genres
-   */
-  getGenresText(genre?: Genre): string {
-    return genre ? genre.nom : 'Non spécifié';
+  getGenresText(genres?: Genre[]): string {
+    if (!genres?.length) return 'Non spécifié';
+    return genres.map((g) => g.nom).join(', ');
   }
 
-  /**
-   * Classe CSS pour la note
-   */
   getRatingClass(rating?: number): string {
     if (!rating) return 'rating-low';
     if (rating >= 8) return 'rating-high';
@@ -417,12 +347,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     return 'rating-low';
   }
 
-  /**
-   *  Formater la date pour affichage
-   */
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
       weekday: 'short',
       day: 'numeric',
       month: 'short',

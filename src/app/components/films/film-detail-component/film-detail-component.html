@@ -78,7 +78,7 @@
 
           <div class="metadata-item">
             <span class="metadata-label">Genres</span>
-            <span class="metadata-value">{{ film.genre?.nom|| 'non specifié' }}</span>
+            <span class="metadata-value">{{ film.genres?.[0]?.nom || 'non specifié' }}</span>
 
           </div>
 
@@ -90,8 +90,8 @@
 
         <!-- Genre tags -->
         <div class="genre-tags">
-          <span class="genre-tag">{{ film.genre?.nom }}</span>
-        </div>
+          <span class="genre-tag">{{ film.genres?.[0]?.nom }}</span>
+        </div>ss
         <!-- Synopsis -->
         <div class="film-description-section">
           <h2 class="section-title">Synopsis</h2>

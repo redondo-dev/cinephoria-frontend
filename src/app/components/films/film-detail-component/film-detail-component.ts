@@ -25,15 +25,14 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string | null = null;
   isFavorite = false;
-  cinemaId = 1;
-  nbPersonnes = 1;
+
   private destroy$ = new Subject<void>();
 
   constructor(
     private filmService: FilmService,
     private reservationService: ReservationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -73,7 +72,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
           this.film = film;
           this.isLoading = false;
           this.loadSimilarFilms();
-          this.loadSeancesFromReservationService();
+          this.loadSeancesFromFilmService();
         },
         error: (error) => {
           console.error('Erreur chargement film:', error);
@@ -84,7 +83,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
   }
 
   loadSimilarFilms(): void {
-    const genreId = this.film?.genre?.id;
+    const genreId = this.film?.genres?.[0]?.id;
     if (genreId === undefined) return;
 
     const filmIdNum = Number(this.filmId);
@@ -102,16 +101,15 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
           console.error('Erreur chargement films similaires:', error),
       });
   }
-/**
+  /**
    * Charger les séances via ReservationService
    */
-  loadSeancesFromReservationService(): void {
+  // Remplacer loadSeancesFromReservationService() par :
+  loadSeancesFromFilmService(): void {
     if (!this.filmId) return;
 
-    const filmIdNum = +this.filmId;
-
-    this.reservationService
-      .getSeances(this.cinemaId, filmIdNum, this.nbPersonnes)
+    this.filmService
+      .getSeancesByFilm(+this.filmId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (seances) => {
@@ -128,17 +126,23 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
    *  Formater les séances pour le composant SeancesListComponent
    */
   formatSeancesForDisplay(seances: any[]): Seance[] {
-    if (!this.film?.seances) return [];
+    if (!seances || seances.length === 0) return [];
 
-    return this.film.seances.map((seance) => ({
+    return seances.map((seance) => ({
       id: seance.id.toString(),
-      date_seance: seance.date_seance,
-      dateHeureDebut: seance.dateHeureDebut,
-      dateHeureFin: seance.dateHeureFin,
-      qualite: (seance.salle?.qualite_projection || 'Standard') as 'Standard' | '3D' | 'IMAX' | 'VIP',
-      prix: this.getPrixByQualite(seance.salle?.qualite_projection),
-      places_disponibles: seance.salle?.capacite || 0,
-      salle: seance.salle?.nom_salle || 'N/A',
+      date_seance:
+        seance.date ||
+        new Date(seance.dateHeureDebut).toISOString().split('T')[0],
+      dateHeureDebut: seance.dateHeureDebut || seance.heure_debut,
+      dateHeureFin: seance.dateHeureFin || seance.heure_fin,
+      qualite: (seance.qualite || 'Standard') as
+        | 'Standard'
+        | '3D'
+        | 'IMAX'
+        | 'VIP',
+      prix: seance.prix || this.getPrixByQualite(seance.qualite), // ✅ prix API en priorité
+      places_disponibles: seance.places_disponibles || 0,
+      salle: seance.salle || 'N/A',
     }));
   }
   /**
@@ -182,14 +186,14 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
 
   checkIfFavorite(): void {
     const favorites: string[] = JSON.parse(
-      localStorage.getItem('favorites') || '[]'
+      localStorage.getItem('favorites') || '[]',
     );
     this.isFavorite = this.filmId ? favorites.includes(this.filmId) : false;
   }
 
   toggleFavorite(): void {
     let favorites: string[] = JSON.parse(
-      localStorage.getItem('favorites') || '[]'
+      localStorage.getItem('favorites') || '[]',
     );
     if (this.isFavorite) {
       favorites = favorites.filter((id) => id !== this.filmId);

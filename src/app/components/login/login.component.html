@@ -78,8 +78,8 @@
       </div>
 
       <!-- Ajout capcha avant le bouton submit -->
-      <app-captcha [showError]="captchaError" (tokenResolved)="onCaptchaResolved($event)">
-      </app-captcha>
+      <app-captcha (tokenChange)="onCaptchaResolved($event)"></app-captcha>
+
 
       <!-- Submit Button -->
       <button type="submit" class="btn btn-primary btn-login" [disabled]="isLoading || !loginForm.valid">

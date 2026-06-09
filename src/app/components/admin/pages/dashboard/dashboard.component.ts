@@ -103,7 +103,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.chart) {
       this.chart.destroy();
     }
-
+    const palette = [
+      '#6366f1', // indigo
+      '#22d3ee', // cyan
+      '#a78bfa', // violet
+      '#34d399', // emerald
+      '#f59e0b', // amber
+      '#f472b6', // pink
+      '#38bdf8', // sky
+      '#fb923c', // orange
+    ];
     this.chart = new Chart(this.reservationsChart.nativeElement, {
       type: 'bar',
       data: {
@@ -112,9 +121,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           {
             label: 'Nombre de réservations',
             data,
-            backgroundColor: '#e50914',
+            backgroundColor: data.map((_, i) => palette[i % palette.length]),
             borderRadius: 8,
-            hoverBackgroundColor: '#b00610',
+            hoverBackgroundColor: data.map(
+              (_, i) => palette[i % palette.length] + 'cc',
+            ),
           },
         ],
       },
@@ -123,7 +134,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         maintainAspectRatio: true,
         plugins: {
           legend: {
-            labels: { color: '#fff' },
+            display: false,
           },
           tooltip: {
             backgroundColor: '#181818',

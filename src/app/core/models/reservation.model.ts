@@ -117,8 +117,11 @@ export interface Utilisateur {
 export interface CreateReservationDto {
   seance_id: number;
   nb_places: number;
-  sieges_ids: number[];
+  sieges: number[];
   utilisateur_id?: number;
+  prix_unitaire?: number;
+  stripe_payment_id?: string;
+  statut_reservation?: StatutReservation;
 }
 
 // Réponse de création

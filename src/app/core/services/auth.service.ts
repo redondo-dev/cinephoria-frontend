@@ -27,6 +27,7 @@ export interface RegisterData {
   prenom: string;
   nom: string;
   username?: string;
+  captchaToken?: string;
 }
 
 @Injectable({

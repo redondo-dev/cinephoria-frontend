@@ -39,8 +39,6 @@ export class NavbarComponent {
 
   // Méthode de déconnexion avec confirmation
   logout(): void {
-    if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-      this.authService.logout();
-    }
+    this.authService.logout();
   }
 }

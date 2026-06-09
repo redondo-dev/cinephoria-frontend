@@ -1,46 +1,35 @@
-// .captcha-wrapper {
-//   margin: 16px 0;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: flex-start;
-//   gap: 8px;
-
-//   &.has-error {
-//     ngx-turnstile {
-//       outline: 2px solid #e94560;
-//       border-radius: 6px;
-//     }
-//   }
-// }
-
-// .captcha-error {
-//   font-size: 0.82rem;
-//   color: #e94560;
-//   font-weight: 500;
-// }
 .captcha-wrapper {
-  margin: 16px 0;
-  display: block;          // ← on simplifie
-  min-height: 70px;        // ← force la hauteur du widget
-  width: 100%;
-  overflow: visible;       // ← rien ne coupe le widget
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 1rem 0;
 
-  ngx-turnstile {
-    display: block;
-    min-height: 65px;
-  }
-
+  // Bordure rouge si erreur de validation
   &.has-error {
-    ngx-turnstile {
-      outline: 2px solid #e94560;
-      border-radius: 6px;
+    iframe {
+      border: 2px solid #e24b4a !important;
+      border-radius: 4px;
     }
   }
 }
 
 .captcha-error {
-  font-size: 0.82rem;
-  color: #e94560;
-  font-weight: 500;
-  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #e24b4a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

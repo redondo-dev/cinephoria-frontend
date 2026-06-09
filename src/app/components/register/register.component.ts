@@ -135,14 +135,13 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-
- if (!this.captchaToken) {
-      this.captchaError = true;
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
 
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
+    if (!this.captchaToken) {
+      this.captchaError = true;
       return;
     }
 
@@ -150,9 +149,16 @@ export class RegisterComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    const { confirmPassword, ...registerData } = this.registerForm.value;
+    const { confirmPassword, firstName, lastName, ...rest } =
+      this.registerForm.value;
+    const payload = {
+      ...rest,
+      prenom: firstName,
+      nom: lastName,
+      captchaToken: this.captchaToken,
+    };
 
-    this.authService.register(registerData).subscribe({
+    this.authService.register(payload).subscribe({
       next: (response) => {
         this.isSubmitting = false;
         this.captchaToken = null; // ← reset après succès

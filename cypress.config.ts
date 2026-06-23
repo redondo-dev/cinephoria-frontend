@@ -1,8 +1,26 @@
 import { defineConfig } from 'cypress';
+import allureWriter from '@shelex/cypress-allure-plugin/writer';
 
 export default defineConfig({
+  reporter: 'cypress-multi-reporters',
+  reporterOptions: {
+    reporterEnabled: 'mochawesome',
+    mochawesomeReporterOptions: {
+      reportDir: 'cypress/reports/individual',
+      quiet: true,
+      overwrite: false,
+      html: false,
+      json: true,
+    },
+  },
+
   e2e: {
     baseUrl: 'http://localhost:4200',
+
+    env: {
+      API: 'http://localhost:3000/api',
+      allure: true,
+    },
 
     supportFile: 'cypress/support/e2e.ts',
 
@@ -11,7 +29,8 @@ export default defineConfig({
     specPattern: 'cypress/e2e/**/*.cy.ts',
 
     setupNodeEvents(on, config) {
-      // utile pour logs CI/CD si besoin
+      allureWriter(on, config);
+      return config;
     },
   },
 
@@ -20,6 +39,7 @@ export default defineConfig({
       framework: 'angular',
       bundler: 'webpack',
     },
-    specPattern: '**/*.cy.ts',
+    specPattern: 'src/**/*.cy.ts',
+    supportFile: 'cypress/support/component.ts',
   },
 });

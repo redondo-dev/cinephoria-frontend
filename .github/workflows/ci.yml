@@ -1,0 +1,40 @@
+name: CI Frontend
+
+on:
+  push:
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Installer les dependances
+        run: npm ci
+
+      # --- Audit de securite des dependances ---
+      - name: Audit npm (dependances vulnerables)
+        run: npm audit --audit-level=high
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Tests unitaires (Karma/Jasmine)
+        run: npm run test -- --watch=false --browsers=ChromeHeadless --if-present
+
+      - name: Build production
+        run: npx ng build --configuration production
+
+  # Vercel gere le deploiement automatique via sa propre integration Git
+  # (Project Settings -> Git -> Production Branch: main).
+  # Ce workflow ne fait donc que valider le code ; aucun deploy hook necessaire ici.

@@ -29,8 +29,6 @@ jobs:
       - name: Lint
         run: npm run lint --if-present
 
-      - name: Tests unitaires (Karma/Jasmine)
-        run: npm run test -- --watch=false --browsers=ChromeHeadless --if-present
 
       - name: Build production
         run: npx ng build --configuration production

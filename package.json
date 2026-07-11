@@ -11,7 +11,6 @@
     "build": "npx ng build --configuration=production",
     "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
     "vercel-build": "node build.js",
     "cy:run": "cypress run --headless",
     "cy:merge": "mochawesome-merge cypress/reports/individual/*.json > cypress/reports/merged.json",

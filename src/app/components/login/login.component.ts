@@ -85,13 +85,15 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Soumettre le formulaire de login
    */
   onSubmit(): void {
-    // ✅ Ajouter  CAPTCHA avant validation du formulaire
-    if (!this.captchaToken) {
-      this.captchaError = true;
+    if (!this.loginForm.valid) {
+        this.loginForm.markAllAsTouched();
+      this.errorMessage = 'Veuillez remplir correctement tous les champs';
       return;
     }
-    if (!this.loginForm.valid) {
-      this.errorMessage = 'Veuillez remplir correctement tous les champs';
+
+    // ✅ Ajouter  CAPTCHA
+    if (!this.captchaToken) {
+      this.captchaError = true;
       return;
     }
 
@@ -102,6 +104,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     const credentials = this.loginForm.value;
     console.log('DEBUG credentials envoyés:', credentials);
+    
     this.authService
       .login(credentials.email, credentials.password, this.captchaToken)
       .pipe(takeUntil(this.destroy$))

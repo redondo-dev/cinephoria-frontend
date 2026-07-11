@@ -41,3 +41,8 @@ testem.log
 .DS_Store
 Thumbs.db
 .vercel
+allure-report/
+allure-results/
+mochawesome-report/
+cypress/reports/
+cypress/videos/

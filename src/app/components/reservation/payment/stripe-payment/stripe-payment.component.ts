@@ -165,6 +165,7 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
             sieges: this.selectedSeats.map((s) => s.id),
             prix_unitaire: this.totalPrice / this.selectedSeats.length,
             stripe_payment_id: paymentIntent.id,
+            statut_reservation: 'confirmee',
           })
           .subscribe({
             next: (res) => {

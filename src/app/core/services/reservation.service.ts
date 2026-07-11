@@ -64,6 +64,7 @@ export class ReservationService {
     nb_places: number;
     prix_unitaire: number;
     stripe_payment_id?: string;
+    statut_reservation?: string;
   }): Observable<Reservation> {
     return this.http.post<Reservation>(
       `${this.apiUrl}/reservations`,

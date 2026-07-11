@@ -1,0 +1,18 @@
+{
+  "high": true,
+  "allowlist": [
+   "GHSA-rgjc-h3x7-9mwg",
+    "GHSA-48r7-hpm6-gfxm",
+    "GHSA-39pv-4j6c-2g6v",
+    "GHSA-34x7-hfp2-rc4v",
+    "GHSA-83g3-92jg-28cx",
+    "GHSA-8qq5-rm4j-mr97",
+    "GHSA-9ppj-qmqm-q256",
+    "GHSA-qffp-2rhf-9h96",
+    "GHSA-r6q2-hw4h-h46w",
+    "GHSA-5c6j-r48x-rmvq",
+    "GHSA-fx2h-pf6j-xcff",
+    "GHSA-gcq2-9pq2-cxqm",
+    "GHSA-x9g3-xrwr-cwfg"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "high": true,
+  "allowlist": [
+    "GHSA-rgjc-h3x7-9mwg",   // Angular core - fix nécessite upgrade majeur v20/21, planifié
+    "GHSA-58w9-8g37-x9v5",   // idem
+    "GHSA-48r7-hpm6-gfxm",   // idem
+    "GHSA-39pv-4j6c-2g6v"    // idem
+  ]
+}

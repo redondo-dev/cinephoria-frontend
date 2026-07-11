@@ -24,7 +24,7 @@ jobs:
 
       # --- Audit de securite des dependances ---
       - name: Audit npm (dependances vulnerables)
-        run: npm audit --audit-level=high
+        run: npx audit-ci --config audit-ci.jsonc
 
       - name: Lint
         run: npm run lint --if-present

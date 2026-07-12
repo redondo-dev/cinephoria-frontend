@@ -33,6 +33,34 @@ jobs:
       - name: Build production
         run: npx ng build --configuration production
 
+    -cypress-component:
+    # Tests composants : testent un composant Angular isolement,
+    # sans dependance au backend -> a leur place dans ce repo.
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Installer les dependances
+        run: npm ci
+
+      - name: Tests composants Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          component: true
+
+  # Les tests End-to-End (parcours utilisateur complets : login, reservation,
+  # paiement...) necessitent le frontend ET le backend actifs simultanement.
+  # Ils sont geres dans le repo cinephoria-orchestration, qui demarre
+  # l'ensemble via Docker Compose et y fait tourner la suite Cypress E2E.
   # Vercel gere le deploiement automatique via sa propre integration Git
   # (Project Settings -> Git -> Production Branch: main).
   # Ce workflow ne fait donc que valider le code ; aucun deploy hook necessaire ici.
+

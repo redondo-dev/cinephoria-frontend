@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main", "dev"]
   pull_request:
-    branches: ["main","dev"]
+    branches: ["main", "dev"]
 
 jobs:
   build-and-test:
@@ -29,11 +29,10 @@ jobs:
       - name: Lint
         run: npm run lint --if-present
 
-
       - name: Build production
         run: npx ng build --configuration production
 
-    -cypress-component:
+  cypress-component:
     # Tests composants : testent un composant Angular isolement,
     # sans dependance au backend -> a leur place dans ce repo.
     runs-on: ubuntu-latest
@@ -63,4 +62,3 @@ jobs:
   # Vercel gere le deploiement automatique via sa propre integration Git
   # (Project Settings -> Git -> Production Branch: main).
   # Ce workflow ne fait donc que valider le code ; aucun deploy hook necessaire ici.
-

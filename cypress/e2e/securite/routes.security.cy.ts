@@ -153,9 +153,9 @@ describe('Sécurité des routes Angular — Guards', () => {
       cy.url().should('include', '/admin')
     })
 
-    it('ADMIN peut accéder à /intranet', () => {
+    it('ADMIN redirige vers /home si acces /intranet (route reservee aux EMPLOYE)', () => {
       cy.visit('/intranet')
-      cy.url().should('include', '/intranet')
+      cy.url().should('include', '/home')
     })
 
   })

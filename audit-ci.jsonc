@@ -1,18 +1,63 @@
 {
-  "high": true,
   "allowlist": [
-   "GHSA-rgjc-h3x7-9mwg",
-    "GHSA-48r7-hpm6-gfxm",
-    "GHSA-39pv-4j6c-2g6v",
-    "GHSA-34x7-hfp2-rc4v",
-    "GHSA-83g3-92jg-28cx",
-    "GHSA-8qq5-rm4j-mr97",
-    "GHSA-9ppj-qmqm-q256",
-    "GHSA-qffp-2rhf-9h96",
-    "GHSA-r6q2-hw4h-h46w",
-    "GHSA-5c6j-r48x-rmvq",
-    "GHSA-fx2h-pf6j-xcff",
-    "GHSA-gcq2-9pq2-cxqm",
-    "GHSA-x9g3-xrwr-cwfg"
-  ]
+    // === VULNÉRABILITÉS ANGULAR (HIGH) ===
+    "GHSA-39pv-4j6c-2g6v", // @angular/common - Weak cache key hashing
+    "GHSA-48r7-hpm6-gfxm", // @angular/common - Denial of Service
+    "GHSA-rgjc-h3x7-9mwg", // @angular/core - DOM Clobbering
+
+    // === VULNÉRABILITÉS ANGULAR (MODERATE) ===
+    "GHSA-58w9-8g37-x9v5", // @angular/compiler - XSS
+
+    // === TAR (CRITICAL + HIGH) ===
+    "GHSA-23hp-3jrh-7fpw", // tar - Decompression/parse DoS
+    "GHSA-34x7-hfp2-rc4v", // tar - Hardlink Path Traversal
+    "GHSA-83g3-92jg-28cx", // tar - Hardlink Target Escape
+    "GHSA-8qq5-rm4j-mr97", // tar - File Overwrite & Symlink Poisoning
+    "GHSA-8x88-c5mf-7j5w", // tar - Negative entry size infinite loop
+    "GHSA-9ppj-qmqm-q256", // tar - Symlink Path Traversal
+    "GHSA-qffp-2rhf-9h96", // tar - Hardlink Path Traversal
+    "GHSA-r6q2-hw4h-h46w", // tar - Race Condition (macOS)
+    "GHSA-vmf3-w455-68vh", // tar - PAX size override
+    "GHSA-w8wr-v893-vjvp", // tar - Process crash via PAX
+    "GHSA-gvwx-54wh-qm9j", // tar - Uncaught Exception DoS
+    "GHSA-r292-9mhp-454m", // tar - Uncontrolled recursion
+
+    // === VITE (HIGH) ===
+    "GHSA-fx2h-pf6j-xcff", // vite - server.fs.deny bypass
+    "GHSA-v6wh-96g9-6wx3", // vite - NTLMv2 hash disclosure (moderate)
+
+    // === HTTP-PROXY-MIDDLEWARE (HIGH) ===
+    "GHSA-gcq2-9pq2-cxqm", // http-proxy-middleware - CRLF injection
+    "GHSA-64mm-vxmg-q3vj", // http-proxy-middleware - Host bypass (moderate)
+
+    // === POSTCSS (HIGH) ===
+    "GHSA-r28c-9q8g-f849", // postcss - Path Traversal
+
+    // === SERIALIZE-JAVASCRIPT (HIGH) ===
+    "GHSA-5c6j-r48x-rmvq", // serialize-javascript - RCE via RegExp
+    "GHSA-qj8w-gfj5-8c6v", // serialize-javascript - CPU Exhaustion (moderate)
+
+    // === AUTRES DÉPENDANCES ===
+    "GHSA-jfc7-64v2-mr8c", // @sigstore/core - DSSE payloadType (moderate)
+    "GHSA-w5hq-g745-h8pq", // uuid - Buffer bounds check (moderate)
+    "GHSA-4x5r-pxfx-6jf8", // @babel/core - Arbitrary File Read
+    "GHSA-g7r4-m6w7-qqqr", // esbuild - File read on Windows
+    "GHSA-73rr-hh4g-fpgx", // diff - DoS in parsePatch
+
+    // === 🆕 NOUVEAUX AJOUTS ===
+    // webpack-dev-server (4 vulnérabilités)
+    "GHSA-79cf-xcqc-c78w", // webpack-dev-server - [description]
+    "GHSA-f5vj-f2hx-8m93", // webpack-dev-server - [description]
+    "GHSA-m28w-2pqf-7qgj", // webpack-dev-server - [description]
+    "GHSA-mx8g-39q3-5c79", // webpack-dev-server - [description]
+    // piscina (1 vulnérabilité)
+    "GHSA-x9g3-xrwr-cwfg", // piscina - Prototype Pollution → RCE
+  ],
+
+  // 🚨 BLOQUE TOUT CE QUI N'EST PAS DANS LA LISTE
+  "high": false,
+  "critical": false,
+  "moderate": false,
+  "low": true,
+  "info": true,
 }

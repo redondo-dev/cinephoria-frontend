@@ -37,7 +37,7 @@ describe('API Réservations', () => {
           seance_id: 15,
           nb_places: 2,
           prix_unitaire: 9.90,
-          sieges: [724, 725],
+          sieges: [43,44],
           statut_reservation: 'en_attente'
         }
       }).then((res) => {

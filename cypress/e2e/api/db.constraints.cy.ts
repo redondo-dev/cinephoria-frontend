@@ -1,4 +1,3 @@
-
 // cypress/e2e/api/db.constraints.cy.ts
 
 /**
@@ -16,7 +15,6 @@
 const DB_API = 'http://localhost:3000/api';
 
 describe('Contraintes PostgreSQL', () => {
-
   /**
    * Authentification avant tous les tests
    * Le token JWT est stocké dans Cypress.env('token')
@@ -41,7 +39,6 @@ describe('Contraintes PostgreSQL', () => {
   // Vérifie que PostgreSQL rejette les références invalides
   // ══════════════════════════════════════════════════════════
   describe('Contrainte FK', () => {
-
     /**
      * Test : seance_id qui n'existe pas en base
      * La table reservation a une FK vers seance(id)
@@ -72,7 +69,6 @@ describe('Contraintes PostgreSQL', () => {
   // avec le même email (contrainte UNIQUE sur utilisateur.email)
   // ══════════════════════════════════════════════════════════
   describe('Contrainte UNIQUE', () => {
-
     /**
      * Test : tentative de création d'un compte avec un email déjà existant
      * La colonne email de la table utilisateur a une contrainte UNIQUE
@@ -106,7 +102,6 @@ describe('Contraintes PostgreSQL', () => {
   // avant insertion en base
   // ══════════════════════════════════════════════════════════
   describe('Contrainte NOT NULL', () => {
-
     /**
      * Test : nb_places = null
      * La colonne nb_places est NOT NULL dans la table reservation
@@ -158,7 +153,6 @@ describe('Contraintes PostgreSQL', () => {
   // les valeurs définies : en_attente, confirmee, annulee, valide
   // ══════════════════════════════════════════════════════════
   describe('Contrainte ENUM', () => {
-
     /**
      * Test : statut invalide non défini dans l'ENUM PostgreSQL
      * PostgreSQL doit rejeter toute valeur hors de l'ENUM
@@ -189,7 +183,6 @@ describe('Contraintes PostgreSQL', () => {
   // et ont la structure attendue par l'application
   // ══════════════════════════════════════════════════════════
   describe('Integrite des donnees', () => {
-
     /**
      * Test : la liste des films retourne des données structurées
      * Vérifie que chaque film a : id, titre, genres (array)
@@ -258,7 +251,6 @@ describe('Contraintes PostgreSQL', () => {
   // Tests de logique métier et de cohérence des données
   // ══════════════════════════════════════════════════════════
   describe('Contraintes supplémentaires', () => {
-
     /**
      * Test : CASCADE DELETE
      * Quand une réservation est supprimée, les entrées
@@ -274,7 +266,7 @@ describe('Contraintes PostgreSQL', () => {
           seance_id: 15,
           nb_places: 1,
           prix_unitaire: 9.9,
-          sieges: [724],
+          sieges: [43],
         },
       }).then((created) => {
         const id = created.body.id;
@@ -341,7 +333,6 @@ describe('Contraintes PostgreSQL', () => {
   // Vérifie la cohérence des relations entre tables
   // ══════════════════════════════════════════════════════════
   describe('Intégrité données métier', () => {
-
     /**
      * Test : chaque réservation a un seance_id valide
      * Vérifie que la FK reservation → seance est respectée
@@ -415,7 +406,6 @@ describe('Contraintes PostgreSQL', () => {
   // sous charge normale (1 utilisateur)
   // ══════════════════════════════════════════════════════════
   describe('Performance des requêtes', () => {
-
     /**
      * Test : GET /api/films doit répondre en moins de 500ms
      * Après optimisation (suppression includes Seance/Salle/Cinema)
@@ -463,7 +453,6 @@ describe('Contraintes PostgreSQL', () => {
   // correctement avec LIMIT et OFFSET
   // ══════════════════════════════════════════════════════════
   describe('Pagination PostgreSQL', () => {
-
     /**
      * Test : limit=5 retourne au maximum 5 films
      * Vérifie que le paramètre limit est bien appliqué
@@ -503,5 +492,4 @@ describe('Contraintes PostgreSQL', () => {
       });
     });
   });
-
 });

@@ -32,7 +32,7 @@ describe('API Réservations', () => {
         method: 'POST',
         url: `${API}/reservations`,
         body: {
-          seance_id: 1,
+          seance_id: 15,
           nb_places: 2,
           prix_unitaire: 9.9,
           sieges: [43, 44],
@@ -42,7 +42,7 @@ describe('API Réservations', () => {
         expect(res.status).to.eq(201);
         expect(res.body).to.have.property('id');
         expect(res.body).to.have.property('statut_reservation', 'en_attente');
-        expect(res.body).to.have.property('seance_id', 1);
+        expect(res.body).to.have.property('seance_id', 15);
       });
     });
 
@@ -63,7 +63,7 @@ describe('API Réservations', () => {
         method: 'POST',
         url: `${API}/reservations`,
         failOnStatusCode: false,
-        body: { seance_id: 1, prix_unitaire: 9.9 },
+        body: { seance_id: 15, prix_unitaire: 9.9 },
       }).then((res) => {
         expect(res.status).to.eq(400);
       });
@@ -129,7 +129,7 @@ describe('API Réservations', () => {
       auth({
         method: 'POST',
         url: `${API}/reservations`,
-        body: { seance_id: 1, nb_places: 1, prix_unitaire: 9.9 },
+        body: { seance_id: 15, nb_places: 1, prix_unitaire: 9.9, sieges: [45] },
       }).then((created) => {
         const id = created.body.id;
 
@@ -166,7 +166,7 @@ describe('API Réservations', () => {
       auth({
         method: 'POST',
         url: `${API}/reservations`,
-        body: { seance_id: 1, nb_places: 1, prix_unitaire: 9.9 },
+        body: { seance_id: 15, nb_places: 1, prix_unitaire: 9.9, sieges: [46] },
       }).then((created) => {
         const id = created.body.id;
 

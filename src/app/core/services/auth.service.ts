@@ -74,18 +74,20 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = this.getToken();
-    const isAuth = !!token;
+    const user = localStorage.getItem('user');
+    const result = !!token && !!user;
 
     console.log(
       '[AUTH SERVICE] isAuthenticated:',
-      isAuth,
+      result,
       '(token:',
       !!token,
-
+      ', user:',
+      !!user,
       ')',
     );
+    return result;
 
-    return isAuth;
   }
 
   getCurrentUser(): User | null {

@@ -1,4 +1,3 @@
-
 // success.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -79,7 +78,11 @@ export class ReservationSuccessComponent implements OnInit {
     this.isDownloading = true;
 
     try {
-      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
 
       // ── Fond header ──
       doc.setFillColor(26, 26, 46);
@@ -111,12 +114,12 @@ export class ReservationSuccessComponent implements OnInit {
       doc.setTextColor(80, 80, 100);
 
       const details = [
-        ['Film',    this.filmTitle],
-        ['Cinéma',  this.cinemaName],
-        ['Séance',  this.showTime],
-        ['Sièges',  this.formattedSeats],
-        ['Places',  String(this.reservationDetails?.nb_places || 'N/A')],
-        ['Statut',  'Confirmée ✓'],
+        ['Film', this.filmTitle],
+        ['Cinéma', this.cinemaName],
+        ['Séance', this.showTime],
+        ['Sièges', this.formattedSeats],
+        ['Places', String(this.reservationDetails?.nb_places || 'N/A')],
+        ['Statut', 'Confirmée ✓'],
       ];
 
       details.forEach(([label, value], i) => {
@@ -146,9 +149,13 @@ export class ReservationSuccessComponent implements OnInit {
       doc.line(10, 152, 200, 152);
 
       // ── Prix total ──
-      if (this.reservationDetails?.nb_places && this.reservationDetails?.prix_unitaire) {
+      if (
+        this.reservationDetails?.nb_places &&
+        this.reservationDetails?.prix_unitaire
+      ) {
         const total = (
-          this.reservationDetails.nb_places * this.reservationDetails.prix_unitaire
+          this.reservationDetails.nb_places *
+          this.reservationDetails.prix_unitaire
         ).toFixed(2);
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
@@ -163,7 +170,11 @@ export class ReservationSuccessComponent implements OnInit {
       doc.setFontSize(8);
       doc.setFont('helvetica', 'normal');
       doc.text('Ce billet est personnel et non remboursable.', 20, 280);
-      doc.text('En cas de problème, contactez : support@cinephoria.fr', 20, 287);
+      doc.text(
+        'En cas de problème, contactez : support@cinephoria.fr',
+        20,
+        287,
+      );
 
       // ── Sauvegarde ──
       doc.save(`billet-cinephoria-${this.reservationId}.pdf`);
@@ -199,17 +210,19 @@ export class ReservationSuccessComponent implements OnInit {
     if (!this.reservationId || this.isSendingEmail || this.emailSent) return;
     this.isSendingEmail = true;
 
-    this.reservationService.sendConfirmationEmail(this.reservationId).subscribe({
-      next: () => {
-        this.emailSent = true;
-        this.isSendingEmail = false;
-      },
-      error: (err) => {
-        console.error('Erreur envoi email:', err);
-        this.isSendingEmail = false;
-        alert("Erreur lors de l'envoi de l'email.");
-      },
-    });
+    this.reservationService
+      .sendConfirmationEmail(this.reservationId)
+      .subscribe({
+        next: () => {
+          this.emailSent = true;
+          this.isSendingEmail = false;
+        },
+        error: (err) => {
+          console.error('Erreur envoi email:', err);
+          this.isSendingEmail = false;
+          alert("Erreur lors de l'envoi de l'email.");
+        },
+      });
   }
 
   // ──────────────────────────────────────────────
@@ -242,9 +255,11 @@ export class ReservationSuccessComponent implements OnInit {
   }
 
   get formattedSeats(): string {
-    const sieges = this.reservationDetails?.siegesReserves;
-    if (!sieges?.length) return 'N/A';
-    return sieges.map((s: any) => `${s.rangee}${s.numero_siege}`).join(', ');
+    const billets = this.reservationDetails?.billets;
+    if (!billets?.length) return 'N/A';
+    return billets
+      .map((b: any) => `${b.siege.rangee}${b.siege.numero_siege}`)
+      .join(', ');
   }
 
   get filmTitle(): string {

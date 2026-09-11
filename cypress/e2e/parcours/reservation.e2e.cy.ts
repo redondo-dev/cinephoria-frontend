@@ -8,7 +8,7 @@ const TEST_USER = {
   captchaToken: '10000000-aaaa-bbbb-cccc-000000000001',
 };
 
-const FILM_ID_AVEC_SEANCES = 7;
+
 
 describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du paiement)", () => {
   it('parcours complet : films → séance → sièges → réservation → confirmation → paiement', () => {
@@ -26,6 +26,15 @@ describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du p
         name: `${res.body.user.prenom} ${res.body.user.nom}`,
       };
 
+      // ---- Récupère dynamiquement un film ayant des séances ----
+      cy.request({
+        method: 'GET',
+        url: `${API}/films?page=1&limit=20`,
+      }).then((filmsRes) => {
+        expect(filmsRes.body.films, 'au moins un film en base pour ce test').to.have.length.greaterThan(0);
+        const filmId = filmsRes.body.films[0].id;
+
+
       // ---- 1. Liste des films ----
       cy.visitAsUser('/home', token, userWithName);
       cy.visitAsUser('/films', token, userWithName);
@@ -36,7 +45,7 @@ describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du p
       );
 
       // ---- 2. Détail du film ----
-      cy.visitAsUser(`/films/${FILM_ID_AVEC_SEANCES}`, token, userWithName);
+      cy.visitAsUser(`/films/${filmId}`, token, userWithName);
       cy.url().should('include', '/films/');
 
       cy.wait('@getSeances').then((interception) => {
@@ -70,11 +79,10 @@ describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du p
       cy.get('#stripe-card-element', { timeout: 10000 }).should('be.visible');
       cy.get('.btn-pay', { timeout: 10000 }).should('exist');
 
-      // Le paiement Stripe lui-même (saisie carte + confirmation) est démontré
-      // manuellement — voir manuel d'utilisation. Stripe Elements déclenche un
+      //Stripe Elements déclenche un
       // mécanisme anti-bot (Radar) qui interfère avec les navigateurs automatisés.
     });
   });
 });
-
+})
 export {};

@@ -8,7 +8,7 @@ const TEST_USER = {
   captchaToken: '10000000-aaaa-bbbb-cccc-000000000001',
 };
 
-const SEANCE_ID = 1576; // séance confirmée avec des sièges disponibles
+const SEANCE_ID = 15;
 
 describe('API - Création de réservation confirmée et génération des billets', () => {
   it('une réservation confirmée crée des billets au statut valide', () => {
@@ -32,8 +32,11 @@ describe('API - Création de réservation confirmée et génération des billets
       }).then((siegesRes) => {
         expect(siegesRes.status).to.eq(200);
 
-        const siegeDisponible = siegesRes.body.sieges.find((s: any) => s.disponible);
-        expect(siegeDisponible, 'au moins un siège disponible pour ce test').to.exist;
+        const siegeDisponible = siegesRes.body.sieges.find(
+          (s: any) => s.disponible,
+        );
+        expect(siegeDisponible, 'au moins un siège disponible pour ce test').to
+          .exist;
 
         // ---- 3. Créer la réservation directement, comme le fait stripe-payment.component.ts
         //          après confirmation du paiement (statut_reservation: 'confirmee') ----
@@ -63,10 +66,16 @@ describe('API - Création de réservation confirmée et génération des billets
           }).then((getRes) => {
             expect(getRes.status).to.eq(200);
             expect(getRes.body.statut_reservation).to.eq('confirmee');
-            expect(getRes.body.billets, 'billets inclus dans la réponse').to.have.length.greaterThan(0);
+            expect(
+              getRes.body.billets,
+              'billets inclus dans la réponse',
+            ).to.have.length.greaterThan(0);
 
             getRes.body.billets.forEach((billet: any) => {
-              expect(billet.statut_billet, `billet ${billet.id} doit être valide`).to.eq('valide');
+              expect(
+                billet.statut_billet,
+                `billet ${billet.id} doit être valide`,
+              ).to.eq('valide');
             });
           });
         });
@@ -91,8 +100,13 @@ describe('API - Création de réservation confirmée et génération des billets
         url: `${API}/public/reservations/seances/${SEANCE_ID}/sieges`,
       }).then((siegesRes) => {
         // Prendre un autre siège disponible que le précédent test
-        const siegesLibres = siegesRes.body.sieges.filter((s: any) => s.disponible);
-        expect(siegesLibres.length, 'au moins un siège disponible').to.be.greaterThan(0);
+        const siegesLibres = siegesRes.body.sieges.filter(
+          (s: any) => s.disponible,
+        );
+        expect(
+          siegesLibres.length,
+          'au moins un siège disponible',
+        ).to.be.greaterThan(0);
         const siege = siegesLibres[0];
 
         cy.request({

@@ -266,7 +266,7 @@ describe('Contraintes PostgreSQL', () => {
           seance_id: 15,
           nb_places: 1,
           prix_unitaire: 9.9,
-          sieges: [43],
+          sieges: [60],
         },
       }).then((created) => {
         const id = created.body.id;

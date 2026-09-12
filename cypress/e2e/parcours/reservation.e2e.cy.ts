@@ -36,9 +36,31 @@ describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du p
         const filmId = filmsRes.body.films[0].id;
 
         // ---- 1. Liste des films ----
-        cy.visitAsUser('/home', token, userWithName);
+        // cy.visitAsUser('/home', token, userWithName);
+        // cy.visitAsUser('/films', token, userWithName);
+        // cy.wait('@getFilms');
+        // cy.get('.film-card', { timeout: 20000 }).should(
+        //   'have.length.greaterThan',
+        //   0,
+        // );
+
         cy.visitAsUser('/films', token, userWithName);
-        cy.wait('@getFilms');
+
+        cy.wait('@getFilms').then((interception) => {
+          cy.log(`URL API : ${interception.request.url}`);
+          cy.log(`Status API : ${interception.response?.statusCode}`);
+
+          cy.log(
+            `Réponse API : ${JSON.stringify(interception.response?.body)}`,
+          );
+
+          expect(interception.response?.statusCode).to.eq(200);
+
+          expect(interception.response?.body).to.have.property('films');
+          expect(interception.response?.body.films).to.be.an('array');
+          expect(interception.response?.body.films.length).to.be.greaterThan(0);
+        });
+
         cy.get('.film-card', { timeout: 20000 }).should(
           'have.length.greaterThan',
           0,

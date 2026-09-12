@@ -14,7 +14,8 @@ RUN npm ci
 COPY . .
 
 # Build de production
-RUN npm run build -- --configuration production
+ARG BUILD_CONFIG=production
+RUN npm run build -- --configuration ${BUILD_CONFIG}
 
 # Stage 2: Serveur NGINX
 FROM nginx:alpine

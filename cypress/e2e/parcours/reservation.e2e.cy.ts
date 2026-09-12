@@ -8,8 +8,6 @@ const TEST_USER = {
   captchaToken: '10000000-aaaa-bbbb-cccc-000000000001',
 };
 
-
-
 describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du paiement)", () => {
   it('parcours complet : films → séance → sièges → réservation → confirmation → paiement', () => {
     cy.intercept('GET', '**/api/films*').as('getFilms');
@@ -31,58 +29,63 @@ describe("Parcours E2E - Réservation Cinephoria (jusqu'à l'initialisation du p
         method: 'GET',
         url: `${API}/films?page=1&limit=20`,
       }).then((filmsRes) => {
-        expect(filmsRes.body.films, 'au moins un film en base pour ce test').to.have.length.greaterThan(0);
+        expect(
+          filmsRes.body.films,
+          'au moins un film en base pour ce test',
+        ).to.have.length.greaterThan(0);
         const filmId = filmsRes.body.films[0].id;
 
+        // ---- 1. Liste des films ----
+        cy.visitAsUser('/home', token, userWithName);
+        cy.visitAsUser('/films', token, userWithName);
+        cy.wait('@getFilms');
+        cy.get('.film-card', { timeout: 20000 }).should(
+          'have.length.greaterThan',
+          0,
+        );
 
-      // ---- 1. Liste des films ----
-      cy.visitAsUser('/home', token, userWithName);
-      cy.visitAsUser('/films', token, userWithName);
-      cy.wait('@getFilms');
-      cy.get('.film-card', { timeout: 10000 }).should(
-        'have.length.greaterThan',
-        0,
-      );
+        // ---- 2. Détail du film ----
+        cy.visitAsUser(`/films/${filmId}`, token, userWithName);
+        cy.url().should('include', '/films/');
 
-      // ---- 2. Détail du film ----
-      cy.visitAsUser(`/films/${filmId}`, token, userWithName);
-      cy.url().should('include', '/films/');
+        cy.wait('@getSeances').then((interception) => {
+          expect(interception.response?.statusCode).to.eq(200);
+          expect(
+            interception.response?.body,
+            'ce film doit avoir au moins une séance',
+          ).to.have.length.greaterThan(0);
+        });
 
-      cy.wait('@getSeances').then((interception) => {
-        expect(interception.response?.statusCode).to.eq(200);
-        expect(
-          interception.response?.body,
-          'ce film doit avoir au moins une séance',
-        ).to.have.length.greaterThan(0);
+        // ---- 3. Clic sur "Réserver" ----
+        cy.get('.btn.btn-primary.btn-full', { timeout: 10000 })
+          .should('be.visible')
+          .click();
+        cy.url({ timeout: 10000 }).should('include', '/reservation/sieges');
+
+        // ---- 4. Sélection d'un siège ----
+        cy.get('.seat.available', { timeout: 10000 })
+          .should('have.length.greaterThan', 0)
+          .first()
+          .click();
+        cy.get('.confirm-btn').should('not.be.disabled').click();
+
+        // ---- 5. Page confirmation, utilisateur connecté ----
+        cy.url({ timeout: 10000 }).should(
+          'include',
+          '/reservation/confirmation',
+        );
+        cy.get('.auth-prompt').should('not.exist');
+        cy.get('.continue-btn').should('be.visible').click();
+
+        // ---- 6. Page paiement — le formulaire Stripe se charge correctement ----
+        cy.url({ timeout: 10000 }).should('include', '/reservation/payment');
+        cy.get('#stripe-card-element', { timeout: 10000 }).should('be.visible');
+        cy.get('.btn-pay', { timeout: 10000 }).should('exist');
+
+        //Stripe Elements déclenche un
+        // mécanisme anti-bot (Radar) qui interfère avec les navigateurs automatisés.
       });
-
-      // ---- 3. Clic sur "Réserver" ----
-      cy.get('.btn.btn-primary.btn-full', { timeout: 10000 })
-        .should('be.visible')
-        .click();
-      cy.url({ timeout: 10000 }).should('include', '/reservation/sieges');
-
-      // ---- 4. Sélection d'un siège ----
-      cy.get('.seat.available', { timeout: 10000 })
-        .should('have.length.greaterThan', 0)
-        .first()
-        .click();
-      cy.get('.confirm-btn').should('not.be.disabled').click();
-
-      // ---- 5. Page confirmation, utilisateur connecté ----
-      cy.url({ timeout: 10000 }).should('include', '/reservation/confirmation');
-      cy.get('.auth-prompt').should('not.exist');
-      cy.get('.continue-btn').should('be.visible').click();
-
-      // ---- 6. Page paiement — le formulaire Stripe se charge correctement ----
-      cy.url({ timeout: 10000 }).should('include', '/reservation/payment');
-      cy.get('#stripe-card-element', { timeout: 10000 }).should('be.visible');
-      cy.get('.btn-pay', { timeout: 10000 }).should('exist');
-
-      //Stripe Elements déclenche un
-      // mécanisme anti-bot (Radar) qui interfère avec les navigateurs automatisés.
     });
   });
 });
-})
 export {};

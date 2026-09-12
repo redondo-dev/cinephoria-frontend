@@ -35,6 +35,12 @@
           <span class="user-name" *ngIf="currentUser$ | async as user">
             Bonjour, {{ user.name }}
           </span>
+          <a *ngIf="(currentUser$ | async)?.role === 'CLIENT'" routerLink="/mon-espace" routerLinkActive="active"
+            (click)="closeMenu()" class="btn-mon-espace">
+            Mon espace
+          </a>
+
+
           <button (click)="logout(); closeMenu()" class="btn-logout">
             Se déconnecter
           </button>

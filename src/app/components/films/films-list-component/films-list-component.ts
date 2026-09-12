@@ -178,23 +178,6 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       );
     }
 
-    // ✅ Filtre genre par id
-    if (this.selectedGenre) {
-      const genreIdNum = Number(this.selectedGenre);
-      filtered = filtered.filter((film) =>
-        film.genres?.some((g) => g.id === genreIdNum),
-      );
-    }
-
-    // ✅ Filtre cinéma — via seances.salle.cinema.id
-    if (this.selectedCinema) {
-      const cinemaIdNum = Number(this.selectedCinema);
-      filtered = filtered.filter((film) =>
-        film.seances?.some(
-          (seance: any) => seance.salle?.cinema?.id === cinemaIdNum,
-        ),
-      );
-    }
 
     // ✅ Filtre date — via seances.dateHeureDebut
     if (this.selectedDate) {
@@ -260,13 +243,13 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   onGenreChange(genre: string): void {
     this.selectedGenre = genre;
     this.currentPage = 1;
-    this.applyFilters();
+    this.loadFilms();
   }
 
   onCinemaChange(cinemaId: string): void {
     this.selectedCinema = cinemaId;
     this.currentPage = 1;
-    this.applyFilters();
+    this.loadFilms();
   }
 
   onDateChange(date: string): void {

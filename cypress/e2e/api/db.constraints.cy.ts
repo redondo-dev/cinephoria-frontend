@@ -114,7 +114,7 @@ describe('Contraintes PostgreSQL', () => {
         failOnStatusCode: false,
         headers: { Authorization: `Bearer ${Cypress.env('token')}` },
         body: {
-          seance_id: 15,
+          seance_id: 1,
           nb_places: null, // champ NOT NULL → rejeté
           prix_unitaire: 9.9,
         },
@@ -165,7 +165,7 @@ describe('Contraintes PostgreSQL', () => {
         failOnStatusCode: false,
         headers: { Authorization: `Bearer ${Cypress.env('token')}` },
         body: {
-          seance_id: 15,
+          seance_id: 1,
           nb_places: 1,
           prix_unitaire: 9.9,
           statut_reservation: 'statut_qui_nexiste_pas', // hors ENUM → rejeté
@@ -266,7 +266,7 @@ describe('Contraintes PostgreSQL', () => {
           seance_id: 15,
           nb_places: 1,
           prix_unitaire: 9.9,
-          sieges: [43],
+          sieges: [60],
         },
       }).then((created) => {
         const id = created.body.id;

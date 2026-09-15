@@ -8,7 +8,7 @@ const TEST_USER = {
   captchaToken: '10000000-aaaa-bbbb-cccc-000000000001',
 };
 
-const SEANCE_ID = 15;
+const SEANCE_ID = 442;
 
 describe('API - Création de réservation confirmée et génération des billets', () => {
   it('une réservation confirmée crée des billets au statut valide', () => {

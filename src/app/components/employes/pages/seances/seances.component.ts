@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 import {
   SeancesService,
@@ -29,6 +30,7 @@ export class SeancesComponent implements OnInit {
     private seancesService: SeancesService,
     private filmsService: FilmsService,
     private sallesService: SallesService,
+    private toast: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -92,19 +94,32 @@ export class SeancesComponent implements OnInit {
         .update(this.currentSeance.id, this.currentSeance)
         .subscribe({
           next: () => {
+            this.toast.success('Séance modifiée avec succès');
             this.loadSeances();
             this.resetForm();
           },
-          error: (err) => console.error('Erreur modification', err),
+          error: (err) => {
+            this.toast.error(
+              err.message || 'Erreur lors de la modification de la séance',
+            );
+            console.error('Erreur modification', err);
+          },
         });
     } else {
       // Création
       this.seancesService.create(this.currentSeance).subscribe({
         next: () => {
+          this.toast.success('Séance créée avec succès');
           this.loadSeances();
           this.resetForm();
         },
-        error: (err) => console.error('Erreur création', err),
+
+        error: (err) => {
+          this.toast.error(
+            err.message || 'Erreur lors de la création de la séance',
+          );
+          console.error('Erreur création', err);
+        },
       });
     }
   }
@@ -131,8 +146,16 @@ export class SeancesComponent implements OnInit {
   deleteSeance(id: number): void {
     if (confirm('Confirmer la suppression ?')) {
       this.seancesService.delete(id).subscribe({
-        next: () => this.loadSeances(),
-        error: (err) => console.error('Erreur suppression', err),
+        next: () => {
+          this.toast.success('Séance supprimée avec succès');
+          this.loadSeances();
+        },
+        error: (err) => {
+          this.toast.error(
+            err.message || 'Erreur lors de la suppression de la séance',
+          );
+          console.error('Erreur suppression', err);
+        },
       });
     }
   }

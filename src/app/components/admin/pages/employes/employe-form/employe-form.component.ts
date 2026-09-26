@@ -101,7 +101,6 @@ export class EmployeFormComponent implements OnInit {
 
     if (!employeData.password) {
       delete employeData.password; // Supprime le champ password si il est vide pour éviter les problèmes d’API
-      return;
     }
 
     console.log('Données envoyées :', employeData); // 👈 Vérifie ici dans la console

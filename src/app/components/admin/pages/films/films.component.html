@@ -19,11 +19,12 @@
 <div *ngIf="!loading && !error && films.length > 0" class="films-grid">
   <div *ngFor="let film of films; trackBy: trackById" class="film-card">
     <!-- Affiche -->
-    <img *ngIf="film.affiche; else noPoster" [src]="film.affiche" [alt]="film.titre" class="film-poster">
-    <ng-template #noPoster>
-      <div class="film-poster-placeholder">🎬</div>
-    </ng-template>
-
+    <div class="poster-wrapper">
+      <img *ngIf="film.affiche; else noPoster" [src]="film.affiche" [alt]="film.titre" class="film-poster">
+      <ng-template #noPoster>
+        <div class="film-poster-placeholder">🎬</div>
+      </ng-template>
+    </div>
     <div class="film-content">
       <h3>{{ film.titre }}</h3>
       <p class="film-genre">{{ film.genres?.[0]?.nom || 'Non spécifié' }}</p>

@@ -8,7 +8,15 @@
   <form *ngIf="showForm" (ngSubmit)="saveFilm()" class="film-form">
     <input [(ngModel)]="currentFilm.titre" name="titre" placeholder="Titre" required>
     <input [(ngModel)]="currentFilm.duree" name="duree" type="number" placeholder="Durée (min)" required>
-    <input [(ngModel)]="currentFilm.genre_id" name="genre" placeholder="Genre" required>
+
+    <!-- Remplacé : un champ texte libre envoyait une chaîne ("Science-fiction") au lieu
+         d'un ID numérique valide, ce qui faisait échouer film.setGenres() côté backend
+         avec une 500. -->
+    <select [(ngModel)]="currentFilm.genre_id" name="genre" required>
+      <option value="" disabled selected>Sélectionnez un genre</option>
+      <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nom }}</option>
+    </select>
+
     <textarea [(ngModel)]="currentFilm.description" name="synopsis" placeholder="Synopsis" required></textarea>
     <input [(ngModel)]="currentFilm.affiche" name="affiche" placeholder="URL Affiche">
     <input [(ngModel)]="currentFilm.date_ajout" name="datesSortie" type="date" required>
@@ -29,7 +37,6 @@
     <tbody>
       <tr *ngFor="let film of films">
         <td>{{ film.titre }}</td>
-        <!-- <td>{{ film.realisateur }}</td> -->
         <td>{{ film.duree }} min</td>
         <td>{{ film.genres?.[0]?.nom || 'Non spécifié' }}</td>
         <td>{{ film.date_ajout | date:'dd/MM/yyyy' }}</td>

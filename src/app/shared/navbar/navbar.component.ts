@@ -1,7 +1,7 @@
 // src/app/components/navbar/navbar.component.ts
 import { Component, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class NavbarComponent {
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   // Observables pour l'authentification
   isAuthenticated$ = this.authService.isAuthenticated$;
@@ -40,5 +41,6 @@ export class NavbarComponent {
   // Méthode de déconnexion avec confirmation
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/']);
   }
 }

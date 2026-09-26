@@ -9,7 +9,7 @@ import { EmployeFormComponent } from '../employe-form/employe-form.component';
 @Component({
   selector: 'app-employes-list',
   standalone: true,
-  imports: [RouterLink, FormsModule, CommonModule,EmployeFormComponent],
+  imports: [RouterLink, FormsModule, CommonModule, EmployeFormComponent],
   templateUrl: './employes-list.component.html',
   styleUrls: ['./employes-list.component.scss'],
 })
@@ -30,7 +30,6 @@ export class EmployesListComponent implements OnInit {
 
   showFormModal = false; // Ajout modal création/édition
   employeToEdit: Employe | undefined;
-
 
   ngOnInit() {
     this.loadEmployes();
@@ -68,7 +67,7 @@ export class EmployesListComponent implements OnInit {
   }
 
   resetPassword() {
-    if (!this.selectedEmploye?.id || !this.newPassword) {
+    if (!this.selectedEmploye?.id) {
       return;
     }
 
@@ -77,31 +76,31 @@ export class EmployesListComponent implements OnInit {
     this.resetSuccess = null;
 
     this.adminService
-      .resetPasswordEmploye(String(this.selectedEmploye.id), this.newPassword)
+      .resetPasswordEmploye(String(this.selectedEmploye.id))
       .subscribe({
-        next: () => {
-          this.resetSuccess = 'Mot de passe réinitialisé avec succès !';
+        next: (res) => {
+           this.resetSuccess = res.message || 'Un mot de passe temporaire a été envoyé par email à l\'employé.';
           this.resetting = false;
           setTimeout(() => {
             this.closeResetModal();
           }, 2000);
         },
         error: (err) => {
-          this.resetError =
-            'Erreur lors de la réinitialisation du mot de passe';
+
+           this.resetError = err.message || 'Erreur lors de la réinitialisation du mot de passe';
           this.resetting = false;
           console.error(err);
         },
       });
   }
   openCreateModal() {
-  this.showFormModal = true;
-  this.employeToEdit = undefined;
-}
-openEditModal(employe: Employe) {
-  this.showFormModal = true;
-  this.employeToEdit = employe;
-}
+    this.showFormModal = true;
+    this.employeToEdit = undefined;
+  }
+  openEditModal(employe: Employe) {
+    this.showFormModal = true;
+    this.employeToEdit = employe;
+  }
   onEditEmploye(id?: number): void {
     if (!id) return;
     this.router.navigate(['/admin/employes/edit', id]);

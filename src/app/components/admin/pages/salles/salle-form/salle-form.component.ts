@@ -9,6 +9,12 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService, Salle } from '../../../services/admin.service';
 
+interface Cinema {
+  id: number;
+  nom: string;
+  ville: string;
+}
+
 @Component({
   selector: 'app-salle-from',
   standalone: true,
@@ -23,6 +29,7 @@ export class SalleFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   salleForm!: FormGroup;
+  cinemas: Cinema[] = [];
   isEditMode = false;
   salleId: string | null = null;
   loading = false;
@@ -31,6 +38,7 @@ export class SalleFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.loadCinemas();
     this.salleId = this.route.snapshot.paramMap.get('id');
     if (this.salleId) {
       this.isEditMode = true;
@@ -43,6 +51,14 @@ export class SalleFormComponent implements OnInit {
       nom: ['', Validators.required],
       nombrePlaces: [null, [Validators.required, Validators.min(1)]],
       qualiteProjection: ['', Validators.required],
+      cinema_id: ['', Validators.required],
+    });
+  }
+
+  loadCinemas() {
+    this.adminService.getCinemasForSalle().subscribe({
+      next: (data) => (this.cinemas = data || []),
+      error: (err) => console.error('Erreur chargement cinémas:', err),
     });
   }
 
@@ -50,11 +66,12 @@ export class SalleFormComponent implements OnInit {
     this.loading = true;
     this.adminService.getSalle(id).subscribe({
       next: (response: any) => {
-        const salle = response.data || response; // ← extraire data
+        const salle = response.data || response;
         this.salleForm.patchValue({
           nom: salle.nom,
           nombrePlaces: salle.nombrePlaces,
           qualiteProjection: salle.qualiteProjection,
+          cinema_id: salle.cinema_id,
         });
         this.loading = false;
       },
@@ -89,7 +106,9 @@ export class SalleFormComponent implements OnInit {
         this.router.navigate(['/admin/salles']);
       },
       error: (err) => {
-        this.error = `Erreur lors de ${this.isEditMode ? 'la modification' : 'la création'} de la salle`;
+        this.error =
+          err.message ||
+          `Erreur lors de ${this.isEditMode ? 'la modification' : 'la création'} de la salle`;
         this.submitting = false;
         console.error(err);
       },

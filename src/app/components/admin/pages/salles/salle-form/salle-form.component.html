@@ -16,7 +16,19 @@
       <span class="error-text">Le nom est requis</span>
       }
     </div>
-
+    <div class="form-group">
+      <label for="cinema_id">Cinéma *</label>
+      <select id="cinema_id" formControlName="cinema_id" class="form-control"
+        [class.error]="salleForm.get('cinema_id')?.invalid && salleForm.get('cinema_id')?.touched">
+        <option value="">Sélectionnez un cinéma</option>
+        @for (cinema of cinemas; track cinema.id) {
+        <option [value]="cinema.id">{{ cinema.nom }} — {{ cinema.ville }}</option>
+        }
+      </select>
+      @if (salleForm.get('cinema_id')?.invalid && salleForm.get('cinema_id')?.touched) {
+      <span class="error-text">Le cinéma est requis</span>
+      }
+    </div>
     <div class="form-group">
       <label for="nombrePlaces">Nombre de places *</label>
       <input type="number" id="nombrePlaces" formControlName="nombrePlaces" class="form-control" placeholder="Ex: 150"

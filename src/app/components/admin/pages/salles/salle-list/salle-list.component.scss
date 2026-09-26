@@ -1,23 +1,23 @@
 // ================================
 // TOKENS
 // ================================
-$bg-page:     #0f1117;
-$bg-card:     #1a1d27;
+$bg-page: #0f1117;
+$bg-card: #1a1d27;
 $bg-elevated: #22263a;
-$accent:      #6c8eff;       // bleu doux
+$accent: #6c8eff; // bleu doux
 $accent-dark: #4a6be0;
-$teal:        #2dd4bf;
-$purple:      #a78bfa;
-$amber:       #fbbf24;
-$text:        #f0f2ff;
-$text-muted:  #8b92b8;
-$border:      rgba(255,255,255,0.07);
-$danger:      #f87171;
+$teal: #2dd4bf;
+$purple: #a78bfa;
+$amber: #fbbf24;
+$text: #f0f2ff;
+$text-muted: #8b92b8;
+$border: rgba(255, 255, 255, 0.07);
+$danger: #f87171;
 $danger-dark: #dc2626;
 $radius-card: 16px;
-$radius-btn:  8px;
-$shadow:      0 4px 24px rgba(0,0,0,0.4);
-$shadow-hover:0 8px 32px rgba(108,142,255,0.15);
+$radius-btn: 8px;
+$shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+$shadow-hover: 0 8px 32px rgba(108, 142, 255, 0.15);
 
 /* ================================
    PAGE HEADER
@@ -82,7 +82,10 @@ $shadow-hover:0 8px 32px rgba(108,142,255,0.15);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -101,19 +104,33 @@ $shadow-hover:0 8px 32px rgba(108,142,255,0.15);
   overflow: hidden;
 
   // Dégradé selon qualité — appliqué via classe sur le parent
-  &.icon-standard { background: linear-gradient(135deg, #1e2a4a, #2d3a5e); }
-  &.icon-imax     { background: linear-gradient(135deg, #1a1a3e, #2d1b69); }
-  &.icon-dolby    { background: linear-gradient(135deg, #1a2e1a, #1e4d3a); }
-  &.icon-3d       { background: linear-gradient(135deg, #2e1a1a, #4d2e1e); }
-  &.icon-4dx      { background: linear-gradient(135deg, #2e2a1a, #4d3e1e); }
-  &.icon-screenx  { background: linear-gradient(135deg, #1a2a2e, #1e3d4d); }
-  &.icon-2d       { background: linear-gradient(135deg, #1e1e2e, #2a2a3e); }
+  &.icon-standard {
+    background: linear-gradient(135deg, #1e2a4a, #2d3a5e);
+  }
+  &.icon-imax {
+    background: linear-gradient(135deg, #1a1a3e, #2d1b69);
+  }
+  &.icon-dolby {
+    background: linear-gradient(135deg, #1a2e1a, #1e4d3a);
+  }
+  &.icon-3d {
+    background: linear-gradient(135deg, #2e1a1a, #4d2e1e);
+  }
+  &.icon-4dx {
+    background: linear-gradient(135deg, #2e2a1a, #4d3e1e);
+  }
+  &.icon-screenx {
+    background: linear-gradient(135deg, #1a2a2e, #1e3d4d);
+  }
+  &.icon-2d {
+    background: linear-gradient(135deg, #1e1e2e, #2a2a3e);
+  }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.15);
+    background: rgba(0, 0, 0, 0.15);
   }
 }
 
@@ -181,25 +198,65 @@ $shadow-hover:0 8px 32px rgba(108,142,255,0.15);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  &.quality-standard { background: rgba($text-muted, 0.15); color: $text-muted; }
-  &.quality-imax     { background: rgba($purple, 0.2);      color: $purple; }
-  &.quality-dolby    { background: rgba($teal, 0.2);        color: $teal; }
-  &.quality-3d       { background: rgba($accent, 0.2);      color: $accent; }
-  &.quality-4dx      { background: rgba($amber, 0.2);       color: $amber; }
-  &.quality-screenx  { background: rgba($teal, 0.15);       color: $teal; }
-  &.quality-2d       { background: rgba($text-muted, 0.1);  color: $text-muted; }
+  &.quality-standard {
+    background: rgba($text-muted, 0.15);
+    color: $text-muted;
+  }
+  &.quality-imax {
+    background: rgba($purple, 0.2);
+    color: $purple;
+  }
+  &.quality-dolby {
+    background: rgba($teal, 0.2);
+    color: $teal;
+  }
+  &.quality-3d {
+    background: rgba($accent, 0.2);
+    color: $accent;
+  }
+  &.quality-4dx {
+    background: rgba($amber, 0.2);
+    color: $amber;
+  }
+  &.quality-screenx {
+    background: rgba($teal, 0.15);
+    color: $teal;
+  }
+  &.quality-2d {
+    background: rgba($text-muted, 0.1);
+    color: $text-muted;
+  }
 }
 
 /* ================================
    ACTIONS
 ================================ */
+
 .salle-actions {
   display: flex;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
   padding-top: 1rem;
   border-top: 1px solid $border;
+
+  .btn {
+    flex: 1 1 calc(50% - 0.3rem);
+    min-width: 0; // permet au texte de rétrécir/tronquer plutôt que de forcer le débordement
+
+    &-danger {
+      // Sur sa propre ligne, centré, 80% de large — jamais partagé avec un autre bouton.
+      flex: 1 1 100%;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+  }
 }
 
+.btn-sm {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+}
 /* ================================
    BUTTONS
 ================================ */
@@ -221,14 +278,18 @@ $shadow-hover:0 8px 32px rgba(108,142,255,0.15);
   &-primary {
     background: $accent;
     color: #fff;
-    &:hover { background: $accent-dark; }
+    &:hover {
+      background: $accent-dark;
+    }
   }
 
   &-secondary {
     background: $bg-elevated;
     color: $text;
     border: 1px solid $border;
-    &:hover { background: lighten($bg-elevated, 5%); }
+    &:hover {
+      background: lighten($bg-elevated, 5%);
+    }
   }
 
   &-danger {
@@ -281,8 +342,13 @@ $shadow-hover:0 8px 32px rgba(108,142,255,0.15);
     align-items: stretch;
     gap: 1rem;
 
-    h1 { font-size: 1.4rem; }
-    .btn { width: 100%; justify-content: center; }
+    h1 {
+      font-size: 1.4rem;
+    }
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
   }
 
   .salles-grid {
@@ -295,6 +361,11 @@ $shadow-hover:0 8px 32px rgba(108,142,255,0.15);
 }
 
 @media (max-width: 480px) {
-  .salle-content { padding: 1rem; }
-  .salle-icon { height: 100px; font-size: 2.8rem; }
+  .salle-content {
+    padding: 1rem;
+  }
+  .salle-icon {
+    height: 100px;
+    font-size: 2.8rem;
+  }
 }

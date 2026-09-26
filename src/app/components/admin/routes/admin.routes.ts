@@ -92,7 +92,11 @@ export const ADMIN_ROUTES: Routes = [
             (m) => m.SeanceFormComponent
           ),
         title: 'Créer une Séance',
+
+
       },
+
+
       {
         path: 'seances/edit/:id',
         loadComponent: () =>
@@ -101,6 +105,7 @@ export const ADMIN_ROUTES: Routes = [
           ),
         title: 'Modifier une Séance',
       },
+
       //routes pour salles
       {
         path: 'salles',

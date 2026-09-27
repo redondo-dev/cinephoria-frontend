@@ -46,3 +46,6 @@ allure-results/
 mochawesome-report/
 cypress/reports/
 cypress/videos/
+cypress/screenshots/
+cypress/videos/
+cypress/debug-dump.html

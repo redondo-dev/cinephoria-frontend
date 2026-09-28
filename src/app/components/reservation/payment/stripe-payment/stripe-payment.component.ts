@@ -75,14 +75,14 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
         style: {
           base: {
             fontSize: '16px',
-            color: '#1a1a2e',
+            color: '#ffffff',
             fontFamily: '"DM Sans", sans-serif',
-            '::placeholder': { color: '#a0a0b0' },
+            '::placeholder': { color: '##6b6b6b' },
             iconColor: '#e50914',
           },
           invalid: {
-            color: '#e50914',
-            iconColor: '#e50914',
+            color: '#ff6b6b',
+            iconColor: '#ff6b6b',
           },
         },
         hidePostalCode: true,
@@ -105,7 +105,9 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
   }
 
   get selectedSeatsDisplay(): string {
-    return this.selectedSeats.map((s) => `${s.rangee}${s.numero_siege}`).join(', ');
+    return this.selectedSeats
+      .map((s) => `${s.rangee}${s.numero_siege}`)
+      .join(', ');
   }
 
   private getUserId(): number | null {
@@ -128,7 +130,7 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
 
     try {
       // 5. Demander un PaymentIntent au backend
-      const { clientSecret } = await this.http
+      const { clientSecret } = (await this.http
         .post<{ clientSecret: string }>(
           `${environment.apiUrl}/api/payments/create-payment-intent`,
           {
@@ -139,7 +141,7 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
             },
           },
         )
-        .toPromise() as { clientSecret: string };
+        .toPromise()) as { clientSecret: string };
 
       // 6. Confirmer le paiement côté Stripe (carte jamais envoyée à votre serveur)
       const { error, paymentIntent } = await this.stripe.confirmCardPayment(
@@ -185,7 +187,8 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
           });
       }
     } catch (err: any) {
-      this.errorMessage = err?.message || 'Erreur inattendue. Veuillez réessayer.';
+      this.errorMessage =
+        err?.message || 'Erreur inattendue. Veuillez réessayer.';
       this.isProcessing = false;
     }
   }

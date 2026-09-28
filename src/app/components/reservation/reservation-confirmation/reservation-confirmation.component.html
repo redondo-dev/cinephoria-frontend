@@ -1,44 +1,86 @@
-<div class="confirmation-container">
-  <h1>Récapitulatif de votre réservation</h1>
+<div class="confirmation-page">
+  <div class="confirmation-card">
 
-  <div class="details">
-    <p><strong>Film :</strong> {{ reservationData?.film?.titre || 'Non spécifié'}}</p>
-    <p><strong>Cinéma :</strong> {{ reservationData?.cinema?.nom || 'Non spécifié'}}</p>
-    <p><strong>Séance :</strong> {{ seanceDisplay }}</p>
-    <p><strong>Nombre de places :</strong> {{ reservationData?.nombrePersonnes }}</p>
-
-    <!-- Version avec badges individuels -->
-    <p><strong>Sièges :</strong></p>
-    <div class="seats-badges">
-      <span class="seat-badge" *ngFor="let seat of selectedSeats">
-        {{ seat.rangee }}{{ seat.numero_siege }}
-      </span>
+    <div class="card-header">
+      <span class="header-icon">🎬</span>
+      <h1>Récapitulatif de votre réservation</h1>
     </div>
 
-    <p><strong>Total :</strong> {{ totalPrice | number:'1.2-2' }} €</p>
-  </div>
+    <div class="film-highlight">
+      <h2>{{ reservationData?.film?.titre || 'Non spécifié' }}</h2>
+    </div>
 
-  <div class="auth-prompt" *ngIf="!isAuthenticated">
-    <div class="icon">🔐</div>
-    <h3>Connectez-vous pour continuer</h3>
-    <p>Vous devez être connecté pour finaliser votre réservation</p>
-    <div class="auth-buttons">
-      <button class="btn-login" (click)="goToLogin()">
-        J'ai déjà un compte
+    <div class="details-grid">
+      <div class="detail-row">
+        <span class="detail-icon">📍</span>
+        <div class="detail-text">
+          <span class="detail-label">Cinéma</span>
+          <span class="detail-value">{{ reservationData?.cinema?.nom || 'Non spécifié' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon">📅</span>
+        <div class="detail-text">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">{{ seanceDateDisplay }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon">🕐</span>
+        <div class="detail-text">
+          <span class="detail-label">Horaire</span>
+          <span class="detail-value">{{ seanceHeureDisplay }} — {{ salleDisplay }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon">🎟️</span>
+        <div class="detail-text">
+          <span class="detail-label">Places</span>
+          <span class="detail-value">{{ reservationData?.nombrePersonnes }} place(s)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="seats-section">
+      <span class="detail-label">Sièges sélectionnés</span>
+      <div class="seats-badges">
+        <span class="seat-badge" *ngFor="let seat of selectedSeats">
+          {{ seat.rangee }}{{ seat.numero_siege }}
+        </span>
+      </div>
+    </div>
+
+    <div class="total-section">
+      <span class="total-label">Total à payer</span>
+      <span class="total-value">{{ totalPrice | number:'1.2-2' }} €</span>
+    </div>
+
+    <div class="auth-prompt" *ngIf="!isAuthenticated">
+      <div class="icon">🔐</div>
+      <h3>Connectez-vous pour continuer</h3>
+      <p>Vous devez être connecté pour finaliser votre réservation</p>
+      <div class="auth-buttons">
+        <button class="btn-login" (click)="goToLogin()">
+          J'ai déjà un compte
+        </button>
+        <button class="btn-register" (click)="goToRegister()">
+          Créer un compte
+        </button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="back-btn" (click)="goBack()">
+        <span>←</span> Retour
       </button>
-      <button class="btn-register" (click)="goToRegister()">
-        Créer un compte
+
+      <button class="continue-btn" (click)="continueToPayment()" *ngIf="isAuthenticated">
+        Continuer vers le paiement <span>→</span>
       </button>
     </div>
+
   </div>
-
-  <div class="actions">
-    <button class="back-btn" (click)="goBack()">⬅️ Retour</button>
-
-    <!-- Si déjà connecté, aller directement au paiement -->
-    <button class="continue-btn" (click)="continueToPayment()" *ngIf="isAuthenticated">
-      Continuer vers le paiement →
-    </button>
-  </div>
-
 </div>

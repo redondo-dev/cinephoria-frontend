@@ -1,12 +1,21 @@
 /* success.component.scss */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap");
 
+$primary-color: #e50914;
+$bg-dark: #141414;
+$card-bg: #1f1f1f;
+$card-bg-alt: #262626;
+$border-subtle: rgba(255, 255, 255, 0.1);
+$text-muted: #b3b3b3;
+$text-dim: #808080;
+
 :host {
   display: block;
   font-family: "DM Sans", sans-serif;
-  background: #f7f7fb;
+  background: $bg-dark;
   min-height: 100vh;
   padding: 2rem 1rem 4rem;
+  color: #fff;
 }
 
 /* ─── Header ─────────────────────────────────── */
@@ -20,6 +29,7 @@
   height: 64px;
   margin: 0 auto 1rem;
   animation: pop 0.4s ease-out;
+  color: #22c55e;
 
   svg {
     width: 100%;
@@ -30,39 +40,39 @@
 h1 {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #fff;
   margin: 0 0 0.4rem;
 }
 
 .subtitle {
-  color: #666;
+  color: $text-muted;
   font-size: 0.95rem;
   margin: 0 0 0.8rem;
 }
 
 .reservation-ref {
   display: inline-block;
-  background: #f0f0fb;
-  color: #635bff;
+  background: rgba($primary-color, 0.12);
+  color: #ff6b6b;
   font-family: "DM Mono", monospace;
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
-  border: 1px solid #e0e0f5;
+  border: 1px solid rgba($primary-color, 0.3);
 }
 
 /* ─── Ticket ─────────────────────────────────── */
 .ticket-card {
   display: flex;
   align-items: stretch;
-  background: white;
+  background: linear-gradient(145deg, $card-bg 0%, $card-bg-alt 100%);
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   max-width: 720px;
   margin: 0 auto 2rem;
   overflow: hidden;
-  border: 1px solid #e8e8f0;
+  border: 1px solid $border-subtle;
 }
 
 .ticket-left {
@@ -76,7 +86,7 @@ h1 {
   align-items: flex-start;
   gap: 1rem;
   padding: 0.6rem 0;
-  border-bottom: 1px dashed #f0f0f8;
+  border-bottom: 1px dashed $border-subtle;
 
   &:last-child {
     border-bottom: none;
@@ -85,7 +95,7 @@ h1 {
 
 .detail-label {
   font-size: 0.82rem;
-  color: #999;
+  color: $text-muted;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -93,20 +103,22 @@ h1 {
 .detail-value {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #fff;
   text-align: right;
 
   &.seats {
     font-family: "DM Mono", monospace;
     font-size: 0.82rem;
-    background: #f3f3fb;
+    background: rgba($primary-color, 0.15);
+    border: 1px solid rgba($primary-color, 0.3);
     padding: 0.2rem 0.5rem;
     border-radius: 6px;
   }
 
   &.price {
-    color: #635bff;
-    font-size: 1rem;
+    color: $primary-color;
+    font-size: 1.05rem;
+    font-weight: 800;
   }
 }
 
@@ -117,12 +129,12 @@ h1 {
   align-items: center;
   position: relative;
   width: 24px;
-  background: #f7f7fb;
+  background: $bg-dark;
 
   .circle {
     width: 20px;
     height: 20px;
-    background: #f7f7fb;
+    background: $bg-dark;
     border-radius: 50%;
     position: absolute;
     left: 2px;
@@ -137,7 +149,7 @@ h1 {
 
   .dashes {
     flex: 1;
-    border-left: 2px dashed #e0e0ec;
+    border-left: 2px dashed $border-subtle;
     margin: 12px 0;
   }
 }
@@ -152,13 +164,15 @@ h1 {
 
   img {
     border-radius: 8px;
-    border: 1px solid #e8e8f0;
+    border: 1px solid $border-subtle;
+    background: #fff;
+    padding: 4px;
   }
 }
 
 .qr-label {
   font-size: 0.72rem;
-  color: #aaa;
+  color: $text-dim;
   text-align: center;
   max-width: 140px;
   line-height: 1.4;
@@ -199,14 +213,15 @@ h1 {
 
   // Bouton principal — Télécharger
   &.primary {
-    background: linear-gradient(135deg, #635bff, #4f46e5);
+    background: $primary-color;
     color: white;
     grid-column: span 2;
-    box-shadow: 0 4px 14px rgba(99, 91, 255, 0.3);
+    box-shadow: 0 4px 14px rgba($primary-color, 0.4);
 
     &:hover:not(:disabled) {
+      background: darken($primary-color, 8%);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(99, 91, 255, 0.4);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.5);
     }
 
     @media (max-width: 500px) {
@@ -216,12 +231,12 @@ h1 {
 
   // Bouton secondaire — Email
   &.secondary {
-    background: #1a1a2e;
+    background: #333;
     color: white;
     grid-column: span 2;
 
     &:hover:not(:disabled) {
-      background: #2a2a4e;
+      background: #444;
     }
 
     @media (max-width: 500px) {
@@ -231,26 +246,26 @@ h1 {
 
   // Outline
   &.outline {
-    background: white;
-    color: #1a1a2e;
-    border: 1.5px solid #e0e0ec;
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid $border-subtle;
 
     &:hover {
-      border-color: #635bff;
-      color: #635bff;
+      border-color: $primary-color;
+      color: #ff6b6b;
     }
   }
 
   // Ghost
   &.ghost {
     background: transparent;
-    color: #888;
-    border: 1.5px solid #e8e8f0;
+    color: $text-muted;
+    border: 1.5px solid $border-subtle;
     grid-column: span 2;
 
     &:hover {
-      color: #1a1a2e;
-      border-color: #c0c0d0;
+      color: #fff;
+      border-color: #555;
     }
 
     @media (max-width: 500px) {
@@ -259,7 +274,7 @@ h1 {
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
     transform: none !important;
   }
@@ -284,8 +299,8 @@ h1 {
 .spinner-large {
   width: 48px;
   height: 48px;
-  border: 3px solid #e0e0ec;
-  border-top-color: #635bff;
+  border: 3px solid $border-subtle;
+  border-top-color: $primary-color;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin: 0 auto 1rem;
@@ -302,7 +317,7 @@ h1 {
 .loading-state,
 .error-state {
   text-align: center;
-  color: #666;
+  color: $text-muted;
 
   p {
     margin-top: 0.5rem;
@@ -311,13 +326,17 @@ h1 {
   button {
     margin-top: 1rem;
     padding: 0.6rem 1.5rem;
-    background: #635bff;
+    background: $primary-color;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-family: inherit;
     font-weight: 600;
+
+    &:hover {
+      background: darken($primary-color, 8%);
+    }
   }
 }
 
@@ -368,7 +387,7 @@ h1 {
 
     .dashes {
       border-left: none;
-      border-top: 2px dashed #e0e0ec;
+      border-top: 2px dashed $border-subtle;
       margin: 0 12px;
       flex: 1;
     }

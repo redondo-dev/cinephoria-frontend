@@ -2,13 +2,14 @@
 
 .register-container {
   min-height: 100vh;
-  background: linear-gradient(
+  background:
+    linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.7) 0%,
       rgba(0, 0, 0, 0.5) 50%,
       rgba(0, 0, 0, 0.7) 100%
     ),
-    url("https://assets.nflxext.com/ffe/siteui/vlv3/fc164b4b-f085-44ee-bb7f-ec7df8539eff/d23a1608-7d90-4da1-93d6-bae2fe60a69b/CA-en-20230814-popsignuptwoweeks-perspective_alpha_website_large.jpg");
+    url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1920&auto=format&fit=crop");
   background-size: cover;
   background-position: center;
   display: flex;

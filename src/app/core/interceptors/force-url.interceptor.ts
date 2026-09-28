@@ -1,10 +1,10 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-const PROD_API = 'https://cinephoria-backend-cja3.onrender.com';
+const PROD_API = 'https://cinephoria-backend-xayv.onrender.com';
 
 export const forceUrlInterceptor: HttpInterceptorFn = (req, next) => {
-  if (!environment.production) {
+  if (!environment.forceProdApi) {
     return next(req);
   }
   let url = req.url;

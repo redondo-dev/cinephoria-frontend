@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { ReservationService } from '../../../../core/services/reservation.service';
 import { SiegeWithStatus } from '../../../../core/models/siege.model';
 import { environment } from '../../../../../environments/environment';
-import { loadStripe, Stripe, StripeCardElement } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js/pure';
+import type { Stripe, StripeCardElement } from '@stripe/stripe-js';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -59,13 +60,16 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
 
   private async initStripe(): Promise<void> {
     try {
+      if (!environment.production) {
+        loadStripe.setLoadParameters({ advancedFraudSignals: false });
+      }
+
       this.stripe = await loadStripe(environment.stripePublicKey);
 
       if (!this.stripe) {
         this.errorMessage = 'Impossible de charger le module de paiement.';
         return;
       }
-
       const elements = this.stripe.elements({
         locale: 'fr',
       });

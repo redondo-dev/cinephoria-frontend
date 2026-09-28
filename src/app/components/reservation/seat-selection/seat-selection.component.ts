@@ -34,6 +34,9 @@ export class SeatSelectionComponent implements OnInit {
       this.reservationData = JSON.parse(data);
       console.log('📦 Données de réservation:', this.reservationData);
       this.loadSeats();
+    } else if (this.seanceId) {
+      this.reservationData = { seanceId: this.seanceId, nombrePersonnes: 1 };
+      this.loadSeats();
     } else {
       console.error(' Pas de données de réservation');
       this.router.navigate(['/reservation']);

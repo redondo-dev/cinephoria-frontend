@@ -1,4 +1,5 @@
 const API = 'http://localhost:3000/api';
+const SEANCE_ID = 442;
 
 describe('API Réservations', () => {
   before(() => {
@@ -11,38 +12,69 @@ describe('API Réservations', () => {
         captchaToken: '10000000-aaaa-bbbb-cccc-000000000001',
       },
     }).then((res) => {
-      // Stocke le token dans Cypress env
       Cypress.env('token', res.body.token);
     });
   });
 
-  // Helper qui lit le token depuis Cypress.env
+  // Helper d'authentification
   const auth = (options: Partial<Cypress.RequestOptions>) => {
     return cy.request({
       ...options,
       headers: {
+        ...(options.headers || {}),
         Authorization: `Bearer ${Cypress.env('token')}`,
       },
     } as Cypress.RequestOptions);
   };
 
+  // Récupère un nombre donné de sièges disponibles pour la séance de test
+  const getAvailableSeats = (count: number) => {
+    return auth({
+      method: 'GET',
+      url: `${API}/public/reservations/seances/${SEANCE_ID}/sieges`,
+    }).then((res) => {
+      expect(res.status).to.eq(200);
+
+      const siegesLibres = res.body.sieges.filter(
+        (siege: any) => siege.disponible,
+      );
+
+      expect(
+        siegesLibres.length,
+        `au moins ${count} siège(s) disponible(s) pour la séance ${SEANCE_ID}`,
+      ).to.be.at.least(count);
+
+      return siegesLibres.slice(0, count).map((siege: any) => siege.id);
+    });
+  };
+
   describe('POST /api/reservations', () => {
     it('crée une réservation valide', () => {
-      auth({
-        method: 'POST',
-        url: `${API}/reservations`,
-        body: {
-          seance_id: 15,
-          nb_places: 2,
-          prix_unitaire: 9.9,
-          sieges: [43, 44],
-          statut_reservation: 'en_attente',
-        },
-      }).then((res) => {
-        expect(res.status).to.eq(201);
-        expect(res.body).to.have.property('id');
-        expect(res.body).to.have.property('statut_reservation', 'en_attente');
-        expect(res.body).to.have.property('seance_id', 15);
+      getAvailableSeats(2).then((sieges) => {
+        auth({
+          method: 'POST',
+          url: `${API}/reservations`,
+          body: {
+            seance_id: SEANCE_ID,
+            nb_places: 2,
+            prix_unitaire: 9.9,
+            sieges,
+            statut_reservation: 'en_attente',
+          },
+        }).then((res) => {
+          expect(res.status).to.eq(201);
+          expect(res.body).to.have.property('id');
+          expect(res.body).to.have.property('statut_reservation', 'en_attente');
+          expect(res.body).to.have.property('seance_id', SEANCE_ID);
+
+          // Nettoyage
+          auth({
+            method: 'DELETE',
+            url: `${API}/reservations/${res.body.id}`,
+          }).then((deleteRes) => {
+            expect(deleteRes.status).to.eq(200);
+          });
+        });
       });
     });
 
@@ -51,7 +83,10 @@ describe('API Réservations', () => {
         method: 'POST',
         url: `${API}/reservations`,
         failOnStatusCode: false,
-        body: { nb_places: 2, prix_unitaire: 9.9 },
+        body: {
+          nb_places: 2,
+          prix_unitaire: 9.9,
+        },
       }).then((res) => {
         expect(res.status).to.eq(400);
         expect(res.body.message).to.include('seance_id');
@@ -63,7 +98,10 @@ describe('API Réservations', () => {
         method: 'POST',
         url: `${API}/reservations`,
         failOnStatusCode: false,
-        body: { seance_id: 15, prix_unitaire: 9.9 },
+        body: {
+          seance_id: SEANCE_ID,
+          prix_unitaire: 9.9,
+        },
       }).then((res) => {
         expect(res.status).to.eq(400);
       });
@@ -74,7 +112,10 @@ describe('API Réservations', () => {
         method: 'POST',
         url: `${API}/reservations`,
         failOnStatusCode: false,
-        body: { seance_id: 15, nb_places: 2 },
+        body: {
+          seance_id: SEANCE_ID,
+          nb_places: 2,
+        },
       }).then((res) => {
         expect(res.status).to.eq(400);
       });
@@ -98,7 +139,10 @@ describe('API Réservations', () => {
         url: `${API}/reservations`,
       }).then((res) => {
         const id = res.body[0]?.id;
-        if (!id) return;
+
+        if (!id) {
+          return;
+        }
 
         auth({
           method: 'GET',
@@ -126,31 +170,46 @@ describe('API Réservations', () => {
 
   describe('PUT /api/reservations/:id', () => {
     it("met à jour le statut d'une réservation", () => {
-      auth({
-        method: 'POST',
-        url: `${API}/reservations`,
-        body: {
-          seance_id: 3725,
-          nb_places: 1,
-          prix_unitaire: 9.9,
-          sieges: [1024],
-        },
-      }).then((created) => {
-        const id = created.body.id;
-
+      getAvailableSeats(1).then((sieges) => {
         auth({
-          method: 'PUT',
-          url: `${API}/reservations/${id}`,
-          body: { statut_reservation: 'confirmee' },
-        }).then((update) => {
-          expect(update.status).to.eq(200);
-          expect(update.body).to.have.property(
-            'statut_reservation',
-            'confirmee',
-          );
-        });
+          method: 'POST',
+          url: `${API}/reservations`,
+          body: {
+            seance_id: SEANCE_ID,
+            nb_places: 1,
+            prix_unitaire: 9.9,
+            sieges,
+            statut_reservation: 'en_attente',
+          },
+        }).then((created) => {
+          expect(created.status).to.eq(201);
 
-        auth({ method: 'DELETE', url: `${API}/reservations/${id}` });
+          const id = created.body.id;
+
+          auth({
+            method: 'PUT',
+            url: `${API}/reservations/${id}`,
+            body: {
+              statut_reservation: 'confirmee',
+            },
+          })
+            .then((update) => {
+              expect(update.status).to.eq(200);
+              expect(update.body).to.have.property(
+                'statut_reservation',
+                'confirmee',
+              );
+            })
+            .then(() => {
+              // Nettoyage après la mise à jour
+              auth({
+                method: 'DELETE',
+                url: `${API}/reservations/${id}`,
+              }).then((deleteRes) => {
+                expect(deleteRes.status).to.eq(200);
+              });
+            });
+        });
       });
     });
 
@@ -159,7 +218,9 @@ describe('API Réservations', () => {
         method: 'PUT',
         url: `${API}/reservations/999999`,
         failOnStatusCode: false,
-        body: { statut_reservation: 'confirmee' },
+        body: {
+          statut_reservation: 'confirmee',
+        },
       }).then((res) => {
         expect(res.status).to.eq(404);
       });
@@ -168,32 +229,39 @@ describe('API Réservations', () => {
 
   describe('DELETE /api/reservations/:id', () => {
     it('supprime une réservation et vérifie 404 ensuite', () => {
-      auth({
-        method: 'POST',
-        url: `${API}/reservations`,
-        body: {
-          seance_id: 3725,
-          nb_places: 1,
-          prix_unitaire: 9.9,
-          sieges: [1024],
-        },
-      }).then((created) => {
-        const id = created.body.id;
-
+      getAvailableSeats(1).then((sieges) => {
         auth({
-          method: 'DELETE',
-          url: `${API}/reservations/${id}`,
-        }).then((deleted) => {
-          expect(deleted.status).to.eq(200);
-          expect(deleted.body.message).to.include('supprimée');
-        });
+          method: 'POST',
+          url: `${API}/reservations`,
+          body: {
+            seance_id: SEANCE_ID,
+            nb_places: 1,
+            prix_unitaire: 9.9,
+            sieges,
+            statut_reservation: 'en_attente',
+          },
+        }).then((created) => {
+          expect(created.status).to.eq(201);
 
-        auth({
-          method: 'GET',
-          url: `${API}/reservations/${id}`,
-          failOnStatusCode: false,
-        }).then((check) => {
-          expect(check.status).to.eq(404);
+          const id = created.body.id;
+
+          auth({
+            method: 'DELETE',
+            url: `${API}/reservations/${id}`,
+          })
+            .then((deleted) => {
+              expect(deleted.status).to.eq(200);
+              expect(deleted.body.message).to.include('supprimée');
+            })
+            .then(() => {
+              auth({
+                method: 'GET',
+                url: `${API}/reservations/${id}`,
+                failOnStatusCode: false,
+              }).then((check) => {
+                expect(check.status).to.eq(404);
+              });
+            });
         });
       });
     });

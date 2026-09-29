@@ -43,9 +43,13 @@
           <a [routerLink]="['/admin/salles/edit', salle.id]" class="btn btn-sm btn-secondary">
             Modifier
           </a>
+          <a [routerLink]="['/admin/seances']" [queryParams]="{ salleId: salle.id }" class="btn btn-sm btn-secondary">
+            📅 Séances
+          </a>
           <button (click)="deleteSalle(salle)" class="btn btn-sm btn-danger">
             Supprimer
           </button>
+
         </div>
       </div>
     </div>

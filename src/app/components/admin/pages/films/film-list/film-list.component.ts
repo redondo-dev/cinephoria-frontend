@@ -20,6 +20,7 @@ export class FilmListComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
+
   ngOnInit() {
     this.loadFilms();
   }
@@ -52,19 +53,18 @@ export class FilmListComponent implements OnInit {
     if (film.id) {
       this.adminService.deleteFilm(film.id).subscribe({
         next: () => {
-          // CORRECTION : Mettre à jour la liste locale ET recharger pour être sûr
           this.films = this.films.filter((f) => f.id !== film.id);
           this.toast.success('Film supprimé avec succès');
         },
         error: (err) => {
-          // CORRECTION : Utiliser toastr au lieu de alert
-          this.toast.error('Erreur lors de la suppression du film');
+          this.toast.error(
+            err.message || 'Erreur lors de la suppression du film',
+          );
           console.error('Erreur suppression:', err);
         },
       });
     }
   }
-
   formatDate(dateStr: string): string {
     if (!dateStr) return 'Date inconnue';
     try {

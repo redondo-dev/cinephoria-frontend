@@ -156,8 +156,8 @@ export class FilmService {
     });
   }
   //Récupère tous les genres disponibles
-  getGenres(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/genres`);
+  getGenres(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/genres`);
   }
 
   // Ajouter un film aux favoris (API)

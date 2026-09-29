@@ -2,17 +2,19 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { AdminService, Salle} from '../../../services/admin.service';
+import { AdminService, Salle } from '../../../services/admin.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-salles-list',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './salle-list.component.html',
-  styleUrls:['./salle-list.component.scss'],
+  styleUrls: ['./salle-list.component.scss'],
 })
 export class SalleListComponent implements OnInit {
   private adminService = inject(AdminService);
+  private toast = inject(ToastrService);
 
   salles: Salle[] = [];
   loading = true;
@@ -48,9 +50,12 @@ export class SalleListComponent implements OnInit {
       this.adminService.deleteSalle(salle.id.toString()).subscribe({
         next: () => {
           this.salles = this.salles.filter((s) => s.id !== salle.id);
+          this.toast.success('Salle supprimée avec succès');
         },
         error: (err) => {
-          alert('Erreur lors de la suppression de la salle');
+          this.toast.error(
+            err.message || 'Erreur lors de la suppression de la salle',
+          );
           console.error(err);
         },
       });

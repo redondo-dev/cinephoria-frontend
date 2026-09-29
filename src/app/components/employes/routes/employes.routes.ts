@@ -38,4 +38,5 @@ export const EMPLOYE_ROUTES: Routes = [
       import('../pages/avis/avis.component').then((m) => m.AvisComponent),
     title: 'Modération des Avis',
   },
+
 ];

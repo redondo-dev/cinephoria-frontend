@@ -79,14 +79,14 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
         style: {
           base: {
             fontSize: '16px',
-            color: '#1a1a2e',
+            color: '#ffffff',
             fontFamily: '"DM Sans", sans-serif',
-            '::placeholder': { color: '#a0a0b0' },
+            '::placeholder': { color: '##6b6b6b' },
             iconColor: '#e50914',
           },
           invalid: {
-            color: '#e50914',
-            iconColor: '#e50914',
+            color: '#ff6b6b',
+            iconColor: '#ff6b6b',
           },
         },
         hidePostalCode: true,

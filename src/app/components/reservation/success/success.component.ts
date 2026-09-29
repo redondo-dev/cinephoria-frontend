@@ -256,9 +256,11 @@ export class ReservationSuccessComponent implements OnInit {
 
   get formattedSeats(): string {
     const billets = this.reservationDetails?.billets;
+
     if (!billets?.length) return 'N/A';
     return billets
-      .map((b: any) => `${b.siege.rangee}${b.siege.numero_siege}`)
+      .map((b: any) => `${b.siege?.rangee ?? ''}${b.siege?.numero_siege ?? ''}`)
+      .filter((s: string) => s.trim().length > 0)
       .join(', ');
   }
 

@@ -19,6 +19,44 @@
 </div>
 } @else {
 
+<!-- Bandeau de filtre (film OU salle — un seul actif à la fois) -->
+@if (filmId || salleId) {
+<div class="filter-banner">
+  <span>🎬 Filtré sur : <strong>{{ filmTitreFiltre || salleNomFiltre || 'cet élément' }}</strong></span>
+  <button (click)="clearFilmFilter()" class="btn btn-sm btn-secondary">✕ Retirer le filtre</button>
+</div>
+}
+
+<!-- Barre d'action de la sélection multiple -->
+@if (selectedIds.size > 0) {
+<div class="bulk-actions-bar">
+  <span>{{ selectedIds.size }} séance(s) sélectionnée(s)</span>
+  <button class="btn btn-sm btn-danger" [disabled]="bulkDeleting" (click)="bulkDelete()">
+    {{ bulkDeleting ? 'Suppression...' : '🗑️ Supprimer la sélection' }}
+  </button>
+</div>
+}
+
+<!-- Une fois le film totalement vidé de ses séances -->
+@if (canDeleteFilmNow) {
+<div class="empty-state">
+  <p>✅ Toutes les séances de <strong>{{ filmTitreFiltre || 'ce film' }}</strong> ont été supprimées.</p>
+  <button class="btn btn-danger" (click)="deleteFilmNow()">
+    🗑️ Supprimer maintenant le film
+  </button>
+</div>
+}
+
+<!-- Une fois la salle totalement vidée de ses séances -->
+@if (canDeleteSalleNow) {
+<div class="empty-state">
+  <p>✅ Toutes les séances de <strong>{{ salleNomFiltre || 'cette salle' }}</strong> ont été supprimées.</p>
+  <button class="btn btn-danger" (click)="deleteSalleNow()">
+    🗑️ Supprimer maintenant la salle
+  </button>
+</div>
+}
+
 <div class="table-meta">
   <span class="total-info">{{ total }} séances au total</span>
   @if (totalPages > 1) {
@@ -30,6 +68,9 @@
   <table class="seances-table">
     <thead>
       <tr>
+        <th class="col-select">
+          <input type="checkbox" [checked]="allSelectedOnPage" (change)="toggleSelectAll()" />
+        </th>
         <th class="col-film">Film</th>
         <th class="col-salle">Salle</th>
         <th class="col-date">Date &amp; Heure</th>
@@ -39,7 +80,7 @@
     <tbody>
       @if (seances.length === 0) {
       <tr>
-        <td colspan="4" class="empty-row">
+        <td colspan="5" class="empty-row">
           <div class="empty-state">
             <p>Aucune séance programmée</p>
             <a routerLink="/admin/seances/create" class="btn btn-primary">
@@ -50,7 +91,10 @@
       </tr>
       } @else {
       @for (seance of seances; track seance.id) {
-      <tr>
+      <tr [class.row-selected]="isSelected(seance.id)">
+        <td class="col-select">
+          <input type="checkbox" [checked]="isSelected(seance.id)" (change)="toggleSelection(seance.id)" />
+        </td>
         <td class="col-film"><strong>{{ seance.film }}</strong></td>
         <td class="col-salle">
           <span class="badge-salle">{{ seance.salle }}</span>

@@ -236,6 +236,10 @@ export class AvisService {
     return this.http.patch<Avis>(`${this.apiUrl}/${id}/valider`, {});
   }
 
+  reject(id: number, motif: string): Observable<Avis> {
+  return this.http.patch<Avis>(`${this.apiUrl}/${id}/rejeter`, { motif });
+}
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

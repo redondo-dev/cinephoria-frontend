@@ -69,10 +69,10 @@ export class AdminService {
       .pipe(catchError(this.handleError));
   }
 
-  resetPasswordEmploye(id: string, newPassword: string): Observable<void> {
-    return this.http.patch<void>( // ← PATCH
+  resetPasswordEmploye(id: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(
       `${this.apiUrl}/employes/${id}/reset-password`,
-      { newPassword },
+      {},
     );
   }
 
@@ -126,36 +126,47 @@ export class AdminService {
 
   // === FILMS ===
   getFilms(): Observable<Film[]> {
-    return this.http.get<Film[]>(`${this.apiUrl}/films`);
+    return this.http
+      .get<{ data: Film[] }>(`${this.apiUrl}/films`)
+      .pipe(map((res) => res.data || []));
   }
 
   getFilm(id: string): Observable<Film> {
-    return this.http.get<Film>(`${this.apiUrl}/films/${id}`);
+    return this.http
+      .get<{ data: Film }>(`${this.apiUrl}/films/${id}`)
+      .pipe(map((res) => res.data));
   }
 
   createFilm(film: Film): Observable<Film> {
-    return this.http.post<Film>(`${this.apiUrl}/films`, film);
+    return this.http
+      .post<{ data: Film }>(`${this.apiUrl}/films`, film)
+      .pipe(map((res) => res.data));
   }
 
   updateFilm(id: string, film: Film): Observable<Film> {
-    return this.http.put<Film>(`${this.apiUrl}/films/${id}`, film);
+    return this.http
+      .put<{ data: Film }>(`${this.apiUrl}/films/${id}`, film)
+      .pipe(map((res) => res.data));
   }
 
   deleteFilm(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/films/${id}`);
   }
-
   //CRUD Seances
-
-  getSeances(page = 1, limit = 20): Observable<any> {
-    return this.http.get(`${this.apiUrl}/seances`, {
-      params: {
-        page: page.toString(),
-        limit: limit.toString(),
-      },
-    });
+  getSeances(
+    page = 1,
+    limit = 20,
+    filmId?: number,
+    salleId?: number,
+  ): Observable<any> {
+    const params: any = {
+      page: page.toString(),
+      limit: limit.toString(),
+    };
+    if (filmId) params.filmId = filmId.toString();
+    if (salleId) params.salleId = salleId.toString();
+    return this.http.get(`${this.apiUrl}/seances`, { params });
   }
-
   getSeance(id: string): Observable<Seance> {
     return this.http.get<Seance>(`${this.apiUrl}/seances/${id}`);
   }
@@ -170,6 +181,16 @@ export class AdminService {
 
   deleteSeance(id: number | string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/seances/${id}`);
+  }
+
+  bulkDeleteSeances(ids: number[]): Observable<any> {
+    return this.http.request('delete', `${this.apiUrl}/seances/bulk`, {
+      body: { ids },
+    });
+  }
+
+  getCinemasForSalle(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/api/cinemas`);
   }
 
   //Crud salles

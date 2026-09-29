@@ -199,6 +199,29 @@
   flex-wrap: wrap;
 }
 
+/* À ajouter dans seance-list.component.scss */
+
+.bulk-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(#e50914, 0.12);
+  border: 1px solid rgba(#e50914, 0.4);
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.col-select {
+  width: 40px;
+  text-align: center;
+}
+
+.row-selected {
+  background-color: rgba(#e50914, 0.08);
+}
 /* ================================
    📭 EMPTY STATE
 ================================ */

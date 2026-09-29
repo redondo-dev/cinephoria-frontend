@@ -44,17 +44,42 @@
     "GHSA-g7r4-m6w7-qqqr", // esbuild - File read on Windows
     "GHSA-73rr-hh4g-fpgx", // diff - DoS in parsePatch
 
-    // === 🆕 NOUVEAUX AJOUTS ===
     // webpack-dev-server (4 vulnérabilités)
-    "GHSA-79cf-xcqc-c78w", // webpack-dev-server - [description]
-    "GHSA-f5vj-f2hx-8m93", // webpack-dev-server - [description]
-    "GHSA-m28w-2pqf-7qgj", // webpack-dev-server - [description]
-    "GHSA-mx8g-39q3-5c79", // webpack-dev-server - [description]
-    // piscina (1 vulnérabilité)
-    "GHSA-x9g3-xrwr-cwfg", // piscina - Prototype Pollution → RCE
+    "GHSA-79cf-xcqc-c78w",
+    "GHSA-f5vj-f2hx-8m93",
+    "GHSA-m28w-2pqf-7qgj",
+    "GHSA-mx8g-39q3-5c79",
+    // piscina
+    "GHSA-x9g3-xrwr-cwfg",
+
+    // === AJOUTS FUSION main -> dev (28/09/2026) ===
+    // Dépendances de build (@angular-devkit/build-angular, @angular/cli, webpack) :
+    // outillage exécuté uniquement au moment de ng build/ng serve/npm install,
+    // jamais livré au navigateur de l'utilisateur.
+    // dompurify et js-yaml sont volontairement EXCLUS : à vérifier séparément,
+    // car ils peuvent affecter le runtime.
+    "GHSA-hh8m-fm6v-7cvg", // Sanitization bypass via directive host bindings (moderate)
+    "GHSA-jj27-h5hq-8x99", // Angular i18n - XSS via event-handler attributes (high)
+    "GHSA-jhpw-976m-542j", // @angular/common - Cache-Key Ambiguity (high)
+    "GHSA-p297-fm68-3q8c", // @angular/common - Info leak (moderate)
+    "GHSA-w4pp-8pjf-rmxw", // pacote - DoS via addGitSha (high)
+    "GHSA-w5vr-8v7q-w6rv", // baseline-browser-mapping - DoS (moderate)
+    "GHSA-x5fp-wj9c-mxmx", // qs - array-limit bypass (moderate)
+    "GHSA-4mjr-xmp4-gh2g", // qs - DoS via isBuffer (moderate)
+    "GHSA-5jgf-p345-68v8", // fast-uri - host confusion IDN (high)
+    "GHSA-f65p-4m7j-42xc", // fast-uri - SSRF IPv6 (high)
+    "GHSA-fph4-wmhf-6fwf", // fast-uri - SSRF hostname decoding (high)
+    "GHSA-jqff-g426-hqxp", // fast-uri - host confusion percent-encoded (high)
+    "GHSA-2v37-7h3g-55p8", // nanoid - infinite loop (high)
+    "GHSA-2m8v-j782-fhvr", // socket.io-parser - memory exhaustion (high)
+    "GHSA-73wf-gq98-2v4g", // browserslist - crash/prototype write (high)
+    "GHSA-c83g-rgw3-j3cx", // browserslist - unbounded memory (high)
+    "GHSA-4xrf-jv44-h6hh", // ip-address - CIDR suffix bypass (moderate)
+    "GHSA-22jq-vg5j-6vgg", // ip-address - IPv4-mapped misclassification (moderate)
+    "GHSA-mwp4-54f8-5fhr", // ip-address - leading-zero octet SSRF (high)
+    "GHSA-fxqj-rqcc-2cmp", // postcss - incomplete fix sourceMappingURL (moderate)
   ],
 
-  // 🚨 BLOQUE TOUT CE QUI N'EST PAS DANS LA LISTE
   "high": false,
   "critical": false,
   "moderate": false,

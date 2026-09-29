@@ -62,6 +62,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     this.loadFilms();
     this.loadCinemas();
     this.loadAvailableDates();
+    this.loadGenres();
   }
 
   // ── Recherche avec debounce ───────────────────
@@ -97,6 +98,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       cinema: this.selectedCinema,
       date: this.selectedDate,
       search: this.searchTerm,
+      sort: this.sortBy,
     };
 
     this.filmService
@@ -105,13 +107,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.films = response.films;
-          console.log(
-            '🎬 Premier film:',
-            JSON.stringify(this.films[0], null, 2),
-          );
           this.totalFilms = response.total;
           this.totalPages = Math.ceil(this.totalFilms / this.itemsPerPage);
-          this.extractGenres();
           this.applyFilters();
           this.isLoading = false;
         },
@@ -146,16 +143,21 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  // ── Extraire les genres uniques ───────────────
-  private extractGenres(): void {
-    const genresMap = new Map<number, string>();
-    this.films.forEach((film) => {
-      film.genres?.forEach((g) => genresMap.set(g.id, g.nom));
-    });
-    this.genres = Array.from(genresMap, ([id, nom]) => ({ id, nom })).sort(
-      (a, b) => a.nom.localeCompare(b.nom),
-    );
-    console.log('✅ Genres extraits:', this.genres);
+  // ── Charger la liste COMPLÈTE des genres ───────
+
+  private loadGenres(): void {
+    this.filmService
+      .getGenres()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: any) => {
+          const genres = data?.data || data || [];
+          this.genres = genres
+            .map((g: any) => ({ id: g.id, nom: g.nom }))
+            .sort((a: any, b: any) => a.nom.localeCompare(b.nom));
+        },
+        error: (error) => console.error('Erreur chargement genres:', error),
+      });
   }
 
   // ── Appliquer les filtres ─────────────────────
@@ -178,20 +180,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       );
     }
 
-
-    // ✅ Filtre date — via seances.dateHeureDebut
-    if (this.selectedDate) {
-      filtered = filtered.filter((film) =>
-        film.seances?.some((seance: any) => {
-          const seanceDate = new Date(
-            seance.date_heure_debut || seance.dateHeureDebut,
-          )
-            .toISOString()
-            .split('T')[0];
-          return seanceDate === this.selectedDate;
-        }),
-      );
-    }
+    // Le filtre Jour est désormais géré côté serveur (getAllFilmsPublic).
 
     // Tri
     filtered = this.sortFilms(filtered);
@@ -255,12 +244,20 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   onDateChange(date: string): void {
     this.selectedDate = date;
     this.currentPage = 1;
-    this.applyFilters();
+    // ⚠️ Correctif : appelait applyFilters() (filtrage CÔTÉ CLIENT sur film.seances,
+    // qui n'est jamais chargé dans la liste des films) au lieu de loadFilms() —
+    // le filtre Jour n'avait donc littéralement aucun effet, quelle que soit la
+    // date choisie. Le backend gère maintenant ce filtre correctement (US5).
+    this.loadFilms();
   }
 
   onSortChange(sortBy: string): void {
     this.sortBy = sortBy;
-    this.applyFilters();
+    this.currentPage = 1;
+    // ⚠️ Correctif : appelait applyFilters() (tri CÔTÉ CLIENT, limité aux films de
+    //Le backend gère maintenant le tri
+    // ("recent" et "rating") sur l'ensemble des résultats filtrés.
+    this.loadFilms();
   }
 
   resetFilters(): void {
@@ -270,7 +267,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     this.selectedDate = '';
     this.sortBy = 'recent';
     this.currentPage = 1;
-    this.applyFilters();
+    this.searchSubject.next('');
+    this.loadFilms();
   }
 
   // ── Pagination ────────────────────────────────

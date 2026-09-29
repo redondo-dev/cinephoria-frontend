@@ -72,6 +72,15 @@ export const routes: Routes = [
         (m) => m.LoginComponent,
       ),
   },
+  // Route de confirmation de compte
+
+  {
+    path: 'auth/confirm/:token',
+    loadComponent: () =>
+      import('./components/auth/confirm-account/confirm-account.component').then(
+        (m) => m.ConfirmAccountComponent,
+      ),
+  },
   // Route reservations
   {
     path: 'reservation',

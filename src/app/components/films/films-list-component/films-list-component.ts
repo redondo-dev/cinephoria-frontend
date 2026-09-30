@@ -203,7 +203,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
       default:
         return films.sort(
           (a, b) =>
-            new Date(b.dateAjout).getTime() - new Date(a.dateAjout).getTime(),
+            new Date(b.date_ajout).getTime() - new Date(a.date_ajout).getTime(),
         );
     }
   }

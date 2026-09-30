@@ -51,7 +51,7 @@
         <!-- Titre et année -->
         <div class="film-header">
           <h1 class="film-title-large">{{ film.titre }}</h1>
-          <span class="film-year-badge">{{ film.annee }}</span>
+          <span class="film-year-badge" *ngIf="film.annee">{{ film.annee }}</span>
         </div>
 
         <!-- Rating -->
@@ -84,14 +84,14 @@
 
           <div class="metadata-item">
             <span class="metadata-label">Ajouté le</span>
-            <span class="metadata-value">{{ film.dateAjout | date: 'dd/MM/yyyy' }}</span>
+            <span class="metadata-value">{{ film.date_ajout | date: 'dd/MM/yyyy' }}</span>
           </div>
         </div>
 
         <!-- Genre tags -->
         <div class="genre-tags">
           <span class="genre-tag">{{ film.genres?.[0]?.nom }}</span>
-        </div>ss
+        </div>
         <!-- Synopsis -->
         <div class="film-description-section">
           <h2 class="section-title">Synopsis</h2>
@@ -99,7 +99,6 @@
         </div>
         <!-- Séances du film -->
         <div class="film-seances-section" *ngIf="film && film.seances && film.seances.length > 0">
-          <h2 class="section-title">Séances disponibles</h2>
           <app-seances-list [filmId]="filmId" [seances]="seancesDisponibles">
           </app-seances-list>
         </div>

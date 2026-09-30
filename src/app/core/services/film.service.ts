@@ -36,7 +36,7 @@ export interface Film {
   note_moyenne?: number;
   genres?: Genre[];
   duree: number;
-  dateAjout: string;
+  date_ajout: string;
   description: string;
   annee: number;
   age_min?: number;
@@ -143,7 +143,7 @@ export class FilmService {
 
   getLatestFilms(limit = 10): Observable<Film[]> {
     const params = new HttpParams()
-      .set('sort', 'dateAjout')
+      .set('sort', 'date_ajout')
       .set('order', 'desc')
       .set('limit', limit.toString());
 

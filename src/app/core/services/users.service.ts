@@ -1,7 +1,7 @@
 // src/app/core/services/users.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Commande } from '../models/commande.model';
 import { Film } from '../models/commande.model';
 import { environment } from '../../../environments/environment';
@@ -36,7 +36,7 @@ getMesCommandes(): Observable<Commande[]> {
       }),
       catchError(error => {
         console.error('❌ [USERS SERVICE] Erreur:', error);
-        return of([]); // Retourne un tableau vide en cas d'erreur
+        return throwError(() => error);
       })
     );
   }

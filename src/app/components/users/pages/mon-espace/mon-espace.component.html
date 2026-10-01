@@ -23,7 +23,12 @@
       </div>
 
       <!-- Aucun avis -->
-      <div *ngIf="!loadingAvis && !hasAvis" class="no-avis">
+      <!-- Erreur (ex: compte non confirme) -->
+      <div *ngIf="!loadingAvis && errorAvis" class="error-message">
+        <p>{{ errorAvis }}</p>
+      </div>
+
+      <div *ngIf="!loadingAvis && !hasAvis && !errorAvis" class="no-avis">
         <p>Vous n'avez pas encore donné d'avis.</p>
         <small>Les avis que vous donnerez apparaîtront ici.</small>
       </div>

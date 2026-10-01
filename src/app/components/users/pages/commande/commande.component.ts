@@ -39,7 +39,11 @@ export class CommandesComponent implements OnInit {
       },
       error: (error) => {
         console.error('❌ Erreur getMesCommandes:', error);
-        this.error = 'Erreur lors du chargement des réservations';
+        if (error.status === 403) {
+          this.error = error.error?.message || 'Veuillez confirmer votre compte pour accéder à vos réservations.';
+        } else {
+          this.error = 'Erreur lors du chargement des réservations';
+        }
         this.loading = false;
       },
     });

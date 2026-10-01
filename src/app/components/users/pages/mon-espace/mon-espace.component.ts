@@ -19,6 +19,7 @@ export class MonEspaceComponent implements OnInit {
   hasAvis: boolean = false;
   loadingAvis: boolean = false;
   mesAvis: Avis[] = [];
+  errorAvis: string = '';
   ngOnInit() {
     this.chargerAvis();
   }
@@ -37,6 +38,11 @@ export class MonEspaceComponent implements OnInit {
       error: (error) => {
         console.error('Erreur chargement avis:', error);
         this.loadingAvis = false;
+        if (error.status === 403) {
+          this.errorAvis = error.error?.message || 'Veuillez confirmer votre compte pour acceder a vos avis.';
+        } else {
+          this.errorAvis = 'Erreur lors du chargement des avis';
+        }
         this.hasAvis = false;
       },
     });

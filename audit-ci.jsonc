@@ -78,6 +78,24 @@
     "GHSA-22jq-vg5j-6vgg", // ip-address - IPv4-mapped misclassification (moderate)
     "GHSA-mwp4-54f8-5fhr", // ip-address - leading-zero octet SSRF (high)
     "GHSA-fxqj-rqcc-2cmp", // postcss - incomplete fix sourceMappingURL (moderate)
+
+    // === AJOUTS CI Docker Node 22 (01/10/2026) ===
+    "GHSA-2gc4-cqfq-p2gv", // engine.io - Protocol Revision Mismatch DoS (high)
+    "GHSA-6j4f-fj2g-mc7p", // brace-expansion - DoS uncontrolled recursion parseCommaParts (high)
+    "GHSA-ff3f-86qr-9cv3", // @angular/router - SSR DoS via numeric URL matrix params (high)
+    "GHSA-g84c-rxfj-3j2c", // webpack-dev-middleware - Path Traversal publicPath (high)
+    "GHSA-q2hr-2g5m-vwhr", // brace-expansion - Quadratic-time expansion DoS (moderate)
+    "GHSA-qhr7-859c-m2p7", // brace-expansion - DoS uncontrolled recursion nested braces (high)
+    "GHSA-67c8-pqhq-4rmx", // piscina - Prototype-pollution gadget RCE via ThreadPool.options (critical, build-time only)
+
+    // === AJOUTS CI Docker Node 22 (01/10/2026) ===
+    "GHSA-2gc4-cqfq-p2gv", // engine.io - Protocol Revision Mismatch DoS (high)
+    "GHSA-6j4f-fj2g-mc7p", // brace-expansion - DoS uncontrolled recursion parseCommaParts (high)
+    "GHSA-ff3f-86qr-9cv3", // @angular/router - SSR DoS via numeric URL matrix params (high)
+    "GHSA-g84c-rxfj-3j2c", // webpack-dev-middleware - Path Traversal publicPath (high)
+    "GHSA-q2hr-2g5m-vwhr", // brace-expansion - Quadratic-time expansion DoS (moderate)
+    "GHSA-qhr7-859c-m2p7", // brace-expansion - DoS uncontrolled recursion nested braces (high)
+    "GHSA-67c8-pqhq-4rmx", // piscina - Prototype-pollution gadget RCE via ThreadPool.options (critical, build-time only)
   ],
 
   "high": false,

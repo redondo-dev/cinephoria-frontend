@@ -1,5 +1,9 @@
 {
   "allowlist": [
+    // === OUTILS DE BUILD / TEST / DEV UNIQUEMENT (alertes apparues en octobre 2026) ===
+    "GHSA-vfj7-8cjw-p6xm", // braces - DoS par motifs imbriqués (Karma, copy-webpack-plugin, fast-glob)
+    "GHSA-ch52-4w7c-c8xp", // http-cache-semantics - outils npm de l'Angular CLI (pacote, sigstore)
+    "GHSA-86w9-cpqp-85rv", // node-forge - certificat auto-signé du serveur de dev (webpack-dev-server)
     // === VULNÉRABILITÉS ANGULAR (HIGH) ===
     "GHSA-39pv-4j6c-2g6v", // @angular/common - Weak cache key hashing
     "GHSA-48r7-hpm6-gfxm", // @angular/common - Denial of Service

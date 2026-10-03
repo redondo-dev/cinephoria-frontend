@@ -83,14 +83,14 @@ describe('Sécurité API — Tests approfondis', () => {
         expect(res.body.message).to.include('Token');
       });
     });
-
-    it('token valide donne accès', () => {
+    it('token valide : authentifié mais liste complète refusée à un client (403)', () => {
       cy.request({
         method: 'GET',
         url: `${API()}/reservations`,
+        failOnStatusCode: false,
         headers: { Authorization: `Bearer ${validToken}` },
       }).then((res) => {
-        expect(res.status).to.eq(200);
+        expect(res.status).to.eq(403);
       });
     });
   });

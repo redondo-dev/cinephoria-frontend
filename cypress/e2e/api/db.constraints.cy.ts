@@ -10,6 +10,7 @@
  * Prérequis :
  *  - Backend Express démarré sur localhost:3000
  *  - Utilisateur test@cinema.fr présent en base (npm run seed:test)
+ *  - Utilisateur employe@cinema.fr (personnel) présent en base : liste complète et suppression des réservations
  */
 
 const DB_API = 'http://localhost:3000/api';
@@ -31,6 +32,20 @@ describe('Contraintes PostgreSQL', () => {
       },
     }).then((res) => {
       Cypress.env('token', res.body.token);
+    });
+
+    // Compte du personnel (cree par le seeder de test) : lecture de la liste complete
+    // et suppression, reservees au personnel
+    cy.request({
+      method: 'POST',
+      url: `${DB_API}/auth/login`,
+      body: {
+        email: 'employe@cinema.fr',
+        password: 'password123',
+        captchaToken: '10000000-aaaa-bbbb-cccc-000000000001',
+      },
+    }).then((res) => {
+      Cypress.env('tokenStaff', res.body.token);
     });
   });
 
@@ -214,7 +229,7 @@ describe('Contraintes PostgreSQL', () => {
       cy.request({
         method: 'GET',
         url: `${DB_API}/reservations`,
-        headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+        headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
       }).then((res) => {
         expect(res.status).to.eq(200);
         const id = res.body[0]?.id;
@@ -223,7 +238,7 @@ describe('Contraintes PostgreSQL', () => {
         cy.request({
           method: 'GET',
           url: `${DB_API}/reservations/${id}`,
-          headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+          headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
         }).then((detail) => {
           expect(detail.status).to.eq(200);
           expect(detail.body).to.have.property('seance');
@@ -261,7 +276,7 @@ describe('Contraintes PostgreSQL', () => {
       cy.request({
         method: 'POST',
         url: `${DB_API}/reservations`,
-        headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+        headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
         body: {
           seance_id: 15,
           nb_places: 1,
@@ -275,7 +290,7 @@ describe('Contraintes PostgreSQL', () => {
         cy.request({
           method: 'DELETE',
           url: `${DB_API}/reservations/${id}`,
-          headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+          headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
         }).then((res) => {
           expect(res.status).to.eq(200);
         });
@@ -285,7 +300,7 @@ describe('Contraintes PostgreSQL', () => {
           method: 'GET',
           url: `${DB_API}/reservations/${id}`,
           failOnStatusCode: false,
-          headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+          headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
         }).then((res) => {
           expect(res.status).to.eq(404);
         });
@@ -342,7 +357,7 @@ describe('Contraintes PostgreSQL', () => {
       cy.request({
         method: 'GET',
         url: `${DB_API}/reservations`,
-        headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+        headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
       }).then((res) => {
         expect(res.status).to.eq(200);
         expect(res.body).to.be.an('array');
@@ -393,7 +408,7 @@ describe('Contraintes PostgreSQL', () => {
       cy.request({
         method: 'GET',
         url: `${DB_API}/reservations`,
-        headers: { Authorization: `Bearer ${Cypress.env('token')}` },
+        headers: { Authorization: `Bearer ${Cypress.env('tokenStaff')}` },
       }).then((res) => {
         expect(res.status).to.eq(200);
       });

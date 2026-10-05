@@ -16,11 +16,11 @@ jobs:
       - name: Installer Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Installer les dependances
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       # --- Audit de securite des dependances ---
       - name: Audit npm (dependances vulnerables)
@@ -44,16 +44,17 @@ jobs:
       - name: Installer Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Installer les dependances
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Tests composants Cypress
         uses: cypress-io/github-action@v6
         with:
           component: true
+          install-command: npm install --legacy-peer-deps
 
   # Les tests End-to-End (parcours utilisateur complets : login, reservation,
   # paiement...) necessitent le frontend ET le backend actifs simultanement.

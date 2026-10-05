@@ -87,7 +87,6 @@ export class AuthService {
       ')',
     );
     return result;
-
   }
 
   getCurrentUser(): User | null {
@@ -120,8 +119,7 @@ export class AuthService {
     password: string,
     captchaToken: string,
   ): Observable<LoginResponse> {
-    console.log(' [AUTH SERVICE] Tentative de login:', email);
-    console.log('[AUTH SERVICE] Password length:', password?.length);
+    console.log(' [AUTH SERVICE] Tentative de login');
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, {
         email,
@@ -130,7 +128,7 @@ export class AuthService {
       })
       .pipe(
         tap((response: LoginResponse) => {
-          console.log(' [AUTH SERVICE] Login réussi:', response);
+          console.log(' [AUTH SERVICE] Login réussi:');
 
           // Ajouter l'alias 'name' pour compatibilité
           const userWithName = {
@@ -148,14 +146,7 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
 
           // Vérification immédiate
-          console.log(
-            ' [AUTH SERVICE] Token sauvegardé:',
-            localStorage.getItem('token'),
-          );
-          console.log(
-            ' [AUTH SERVICE] User sauvegardé:',
-            localStorage.getItem('user'),
-          );
+          console.log(' [AUTH SERVICE] Login réussi:');
         }),
       );
   }
@@ -165,11 +156,11 @@ export class AuthService {
   // ========================================
 
   register(data: RegisterData): Observable<any> {
-    console.log("[AUTH SERVICE] Tentative d'inscription:", data.email);
+    console.log("[AUTH SERVICE] Tentative d'inscription:");
 
     return this.http.post(`${this.apiUrl}/register`, data).pipe(
       tap((response: any) => {
-        console.log('[AUTH SERVICE] Inscription réussie:', response);
+        console.log('[AUTH SERVICE] Inscription réussie:');
       }),
     );
   }
@@ -179,10 +170,7 @@ export class AuthService {
   // ========================================
 
   resetPassword(email: string): Observable<{ message: string }> {
-    console.log(
-      ' [AUTH SERVICE] Demande de réinitialisation mot de passe:',
-      email,
-    );
+    console.log(' [AUTH SERVICE] Demande de réinitialisation mot de passe:');
 
     return this.http
       .post<{ message: string }>(`${this.apiUrl}/forgot-password-visiteur`, {
@@ -267,7 +255,7 @@ export class AuthService {
         this.currentUserSubject.next(user);
         this.isAuthenticatedSubject.next(true);
 
-        console.log('[AUTH SERVICE] User chargé:', user);
+        console.log('[AUTH SERVICE] User chargé:');
       } catch (error) {
         console.error(' [AUTH SERVICE] Erreur parsing user:', error);
         this.logout();

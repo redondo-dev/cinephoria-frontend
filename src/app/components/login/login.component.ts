@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    */
   onSubmit(): void {
     if (!this.loginForm.valid) {
-        this.loginForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched();
       this.errorMessage = 'Veuillez remplir correctement tous les champs';
       return;
     }
@@ -103,8 +103,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginForm.disable();
 
     const credentials = this.loginForm.value;
-    console.log('DEBUG credentials envoyés:', credentials);
-    
+
     this.authService
       .login(credentials.email, credentials.password, this.captchaToken)
       .pipe(takeUntil(this.destroy$))

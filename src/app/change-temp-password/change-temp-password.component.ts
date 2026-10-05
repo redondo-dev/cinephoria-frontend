@@ -28,7 +28,7 @@ export class ChangeTempPasswordComponent implements OnInit {
     // Récupérer l'email de l'utilisateur connecté
     const user = this.authService.getCurrentUser();
     if (!user) {
-      this.router.navigate(['/connexion']);
+      this.router.navigate(['/auth/login']);
       return;
     }
     this.userEmail = user.email;
@@ -43,7 +43,7 @@ export class ChangeTempPasswordComponent implements OnInit {
 
     if (this.newPassword.length < 8) {
       this.error.set(
-        'Le nouveau mot de passe doit contenir au moins 6 caractères'
+        'Le nouveau mot de passe doit contenir au moins 8 caractères',
       );
       return;
     }
@@ -55,7 +55,7 @@ export class ChangeTempPasswordComponent implements OnInit {
 
     if (this.tempPassword === this.newPassword) {
       this.error.set(
-        'Le nouveau mot de passe doit être différent du mot de passe temporaire'
+        'Le nouveau mot de passe doit être différent du mot de passe temporaire',
       );
       return;
     }
@@ -68,18 +68,18 @@ export class ChangeTempPasswordComponent implements OnInit {
       .changeTemporaryPassword(
         this.userEmail,
         this.tempPassword,
-        this.newPassword
+        this.newPassword,
       )
       .subscribe({
         next: () => {
           this.submitting.set(false);
           alert(
-            'Mot de passe changé avec succès ! Vous pouvez maintenant utiliser votre nouveau mot de passe.'
+            'Mot de passe changé avec succès ! Vous pouvez maintenant utiliser votre nouveau mot de passe.',
           );
 
           // Déconnecter et rediriger vers login
           this.authService.logout();
-          this.router.navigate(['/connexion']);
+          this.router.navigate(['/auth/login']);
         },
         error: (err) => {
           this.submitting.set(false);
@@ -93,6 +93,6 @@ export class ChangeTempPasswordComponent implements OnInit {
   }
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/connexion']);
+    this.router.navigate(['/auth/login']);
   }
 }

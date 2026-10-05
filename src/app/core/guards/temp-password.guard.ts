@@ -11,12 +11,13 @@ export const tempPasswordGuard: CanActivateFn = () => {
 
   // Si l'utilisateur doit changer son mot de passe
   if (user && (user as any).mustChangePassword) {
-    console.log('⚠️ [TEMP PASSWORD GUARD] Utilisateur doit changer son mot de passe');
+    console.log(
+      '⚠️ [TEMP PASSWORD GUARD] Utilisateur doit changer son mot de passe',
+    );
     return true;
   }
 
   // Sinon rediriger vers l'accueil
-  router.navigate(['/accueil']);
+  router.navigate(['/home']);
   return false;
 };
-

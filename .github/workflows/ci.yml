@@ -54,6 +54,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           component: true
+          install-command: npm install --legacy-peer-deps
 
   # Les tests End-to-End (parcours utilisateur complets : login, reservation,
   # paiement...) necessitent le frontend ET le backend actifs simultanement.

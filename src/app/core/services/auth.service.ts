@@ -17,8 +17,8 @@ export interface User {
 }
 
 export interface LoginResponse {
-  token: string;
   user: User;
+  message: string;
 }
 
 export interface RegisterData {
@@ -56,38 +56,12 @@ export class AuthService {
   }
 
   // ========================================
-  // TOKEN MANAGEMENT
-  // ========================================
-
-  getToken(): string | null {
-    const token = localStorage.getItem('token');
-    console.log(
-      '🔑 [AUTH SERVICE] getToken appelé, token:',
-      token ? ' Présent' : 'Absent',
-    );
-    return token;
-  }
-
-  // ========================================
   // AUTHENTICATION STATUS
   // ========================================
 
   isAuthenticated(): boolean {
-    const token = this.getToken();
     const user = localStorage.getItem('user');
-    const result = !!token && !!user;
-
-    console.log(
-      '[AUTH SERVICE] isAuthenticated:',
-      result,
-      '(token:',
-      !!token,
-      ', user:',
-      !!user,
-      ')',
-    );
-    return result;
-
+    return !!user && this.isAuthenticatedSubject.value;
   }
 
   getCurrentUser(): User | null {
@@ -138,8 +112,6 @@ export class AuthService {
             name: `${response.user.prenom} ${response.user.nom}`,
           };
 
-          // Sauvegarder le token et l'utilisateur
-          localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(userWithName));
 
           // Mettre à jour les signals et subjects
@@ -219,62 +191,41 @@ export class AuthService {
   // LOGOUT
   // ========================================
 
-  logout(): void {
-    console.log(' [AUTH SERVICE] Logout...');
-
-    // Réinitialiser tout
-    this.currentUser.set(null);
-    this.currentUserSubject.next(null);
-    this.isAuthenticatedSubject.next(false);
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-
-    this.clearRedirectUrl();
-
-    console.log(' [AUTH SERVICE] LocalStorage nettoyé');
-  }
-
+logout(): void {
+  // Appeler le backend pour effacer le cookie HttpOnly
+  this.http.post(`${this.apiUrl}/logout`, {},
+    { withCredentials: true }
+  ).subscribe({
+    complete: () => {
+      this.currentUser.set(null);
+      this.currentUserSubject.next(null);
+      this.isAuthenticatedSubject.next(false);
+      localStorage.removeItem('user');
+      this.clearRedirectUrl();
+      this.router.navigate(['/login']);
+    }
+  });
+}
   // ========================================
   // LOAD USER FROM STORAGE
   // ========================================
 
   private loadUserFromStorage(): void {
-    const token = this.getToken();
-    const userStr = localStorage.getItem('user');
-
-    console.log(
-      '[AUTH SERVICE] Chargement depuis localStorage - Token:',
-      !!token,
-      'User:',
-      !!userStr,
-    );
-    if (!token) {
-      this.isAuthenticatedSubject.next(false);
-      return;
-    }
-
-    if (token && userStr) {
-      try {
-        const user = JSON.parse(userStr);
-
-        // Ajouter 'name' si manquant
-        if (!user.name && user.prenom && user.nom) {
-          user.name = `${user.prenom} ${user.nom}`;
-        }
-
-        this.currentUser.set(user);
-        this.currentUserSubject.next(user);
-        this.isAuthenticatedSubject.next(true);
-
-        console.log('[AUTH SERVICE] User chargé:', user);
-      } catch (error) {
-        console.error(' [AUTH SERVICE] Erreur parsing user:', error);
-        this.logout();
+  const userStr = localStorage.getItem('user');
+  if (userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      if (!user.name && user.prenom && user.nom) {
+        user.name = `${user.prenom} ${user.nom}`;
       }
-    } else {
-      console.log(' [AUTH SERVICE] Pas de données en localStorage');
-      this.isAuthenticatedSubject.next(false);
+      this.currentUser.set(user);
+      this.currentUserSubject.next(user);
+      this.isAuthenticatedSubject.next(true);
+    } catch {
+      this.logout();
     }
+  } else {
+    this.isAuthenticatedSubject.next(false);
   }
+}
 }

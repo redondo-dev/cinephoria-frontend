@@ -1,6 +1,6 @@
 // src/app/admin/pages/seances/seance-form/seance-form.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   FormBuilder,
   FormGroup,
@@ -18,7 +18,7 @@ import {
 @Component({
   selector: 'app-seance-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './seance-form.component.html',
   styleUrls: ['./seance-form.component.scss'],
 })

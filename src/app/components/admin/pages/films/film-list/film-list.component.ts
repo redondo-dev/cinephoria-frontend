@@ -1,6 +1,6 @@
 // src/app/admin/pages/films/films-list/films-list.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterLink } from '@angular/router';
 import { AdminService, Film } from '../../../services/admin.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-film-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './film-list.component.html',
   styleUrls: ['./film-list.component.scss'],
 })

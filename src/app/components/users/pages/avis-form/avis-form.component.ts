@@ -8,7 +8,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   FormBuilder,
   FormGroup,
@@ -25,7 +25,7 @@ import { Film, Avis } from '../../../../core/models/commande.model';
 @Component({
   selector: 'app-avis-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './avis-form.component.html',
   styleUrls: ['./avis-form.component.scss'],
 })

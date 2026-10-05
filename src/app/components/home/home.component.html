@@ -28,51 +28,55 @@
     </div>
 
     <!-- État de chargement -->
-    <div *ngIf="isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Chargement des films...</p>
-    </div>
+    @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Chargement des films...</p>
+      </div>
+    }
 
     <!-- État d'erreur -->
-    <div *ngIf="errorMessage && !isLoading" class="error-state">
-      <p class="error-message">{{ errorMessage }}</p>
-      <button (click)="loadRecentFilms()" class="btn btn-primary">Réessayer</button>
-    </div>
+    @if (errorMessage && !isLoading) {
+      <div class="error-state">
+        <p class="error-message">{{ errorMessage }}</p>
+        <button (click)="loadRecentFilms()" class="btn btn-primary">Réessayer</button>
+      </div>
+    }
 
     <!-- Grille de films -->
-    <div *ngIf="!isLoading && !errorMessage" class="films-grid">
-      <div *ngIf="recentFilms.length === 0" class="no-films">
-        <p>Aucun film ajouté cette semaine pour le moment.</p>
+    @if (!isLoading && !errorMessage) {
+      <div class="films-grid">
+        @if (recentFilms.length === 0) {
+          <div class="no-films">
+            <p>Aucun film ajouté cette semaine pour le moment.</p>
+          </div>
+        }
+        @for (film of recentFilms; track film) {
+          <article class="film-card" [routerLink]="['/films', film.id]">
+            <div class="film-poster">
+              <img [src]="film.affiche" [alt]="film.titre" class="poster-image" loading="lazy" />
+              <div class="film-overlay">
+                <span class="rating" [ngClass]="getRatingClass(film.note_moyenne)">
+                  ★ {{ film.note_moyenne?.toFixed(1) || 'N/A' }}
+                </span>
+              </div>
+            </div>
+            <div class="film-info">
+              <h3 class="film-title">{{ film.titre }}</h3>
+              <div class="film-meta">
+                <span class="genre">{{ film.genres?.[0]?.nom || 'Genre non disponible' }}</span>
+                <span class="duration">⏱ {{ formatDuration(film.duree) }}</span>
+              </div>
+              <!-- <p class="film-year">{{ film.année }}</p> -->
+              <div class="film-description">
+                {{ film.description | slice:0:80 }}...
+              </div>
+              <button class="btn-details">Voir les détails</button>
+            </div>
+          </article>
+        }
       </div>
-
-      <article *ngFor="let film of recentFilms" class="film-card" [routerLink]="['/films', film.id]">
-        <div class="film-poster">
-          <img [src]="film.affiche" [alt]="film.titre" class="poster-image" loading="lazy" />
-          <div class="film-overlay">
-            <span class="rating" [ngClass]="getRatingClass(film.note_moyenne)">
-              ★ {{ film.note_moyenne?.toFixed(1) || 'N/A' }}
-            </span>
-          </div>
-        </div>
-
-        <div class="film-info">
-          <h3 class="film-title">{{ film.titre }}</h3>
-
-          <div class="film-meta">
-            <span class="genre">{{ film.genres?.[0]?.nom || 'Genre non disponible' }}</span>
-            <span class="duration">⏱ {{ formatDuration(film.duree) }}</span>
-          </div>
-
-          <!-- <p class="film-year">{{ film.année }}</p> -->
-
-          <div class="film-description">
-            {{ film.description | slice:0:80 }}...
-          </div>
-
-          <button class="btn-details">Voir les détails</button>
-        </div>
-      </article>
-    </div>
+    }
 
     <!-- Bouton Voir tous les films -->
     <div class="action-section">

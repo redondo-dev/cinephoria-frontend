@@ -11,7 +11,9 @@
         <img [src]="film.affiche" [alt]="film.titre" class="film-affiche" />
         <div class="film-info">
           <h4>{{ film.titre }}</h4>
-          <p *ngIf="film.date_derniere_seance">Année: {{ film.date_derniere_seance }}</p>
+          @if (film.date_derniere_seance) {
+            <p>Année: {{ film.date_derniere_seance }}</p>
+          }
         </div>
       </div>
 
@@ -21,25 +23,25 @@
           <label>Votre note *</label>
           <div class="note-selector">
             @for (star of [1, 2, 3, 4, 5]; track star) {
-            <button type="button" class="star-btn" [class.active]="noteSelectionnee() >= star"
-              (click)="selectionnerNote(star)">
-              {{ noteSelectionnee() >= star ? '⭐' : '☆' }}
-            </button>
+              <button type="button" class="star-btn" [class.active]="noteSelectionnee() >= star"
+                (click)="selectionnerNote(star)">
+                {{ noteSelectionnee() >= star ? '⭐' : '☆' }}
+              </button>
             }
             <span class="note-label">{{ noteSelectionnee() }}/5</span>
           </div>
           @if (avisForm.get('note')?.touched && avisForm.get('note')?.invalid) {
-          <small class="error-text">
-            @if (avisForm.get('note')?.hasError('required')) {
-            Veuillez sélectionner une note
-            }
-            @if (avisForm.get('note')?.hasError('min')) {
-            La note doit être au moins 1
-            }
-            @if (avisForm.get('note')?.hasError('max')) {
-            La note ne peut pas dépasser 5
-            }
-          </small>
+            <small class="error-text">
+              @if (avisForm.get('note')?.hasError('required')) {
+                Veuillez sélectionner une note
+              }
+              @if (avisForm.get('note')?.hasError('min')) {
+                La note doit être au moins 1
+              }
+              @if (avisForm.get('note')?.hasError('max')) {
+                La note ne peut pas dépasser 5
+              }
+            </small>
           }
         </div>
 
@@ -48,16 +50,16 @@
           <label for="contenu">Votre commentaire *</label>
           <textarea id="contenu" formControlName="contenu" rows="5"
             placeholder="Partagez votre expérience avec ce film (minimum 10 caractères)..."
-            [class.error]="avisForm.get('contenu')?.touched && avisForm.get('contenu')?.invalid"></textarea>
+          [class.error]="avisForm.get('contenu')?.touched && avisForm.get('contenu')?.invalid"></textarea>
           @if (avisForm.get('contenu')?.touched && avisForm.get('contenu')?.invalid) {
-          <small class="error-text">
-            @if (avisForm.get('contenu')?.hasError('required')) {
-            Le commentaire est obligatoire
-            }
-            @if (avisForm.get('contenu')?.hasError('minlength')) {
-            Le commentaire doit contenir au moins 10 caractères
-            }
-          </small>
+            <small class="error-text">
+              @if (avisForm.get('contenu')?.hasError('required')) {
+                Le commentaire est obligatoire
+              }
+              @if (avisForm.get('contenu')?.hasError('minlength')) {
+                Le commentaire doit contenir au moins 10 caractères
+              }
+            </small>
           }
           <small class="help-text">
             Votre avis sera soumis pour validation avant publication.
@@ -66,23 +68,23 @@
 
         <!-- Message d'information pour avis existant -->
         @if (avisExistant()) {
-        <div class="info-message">
-          ⚠️ Vous avez déjà donné un avis pour ce film. Vous pouvez le modifier.
-        </div>
+          <div class="info-message">
+            ⚠️ Vous avez déjà donné un avis pour ce film. Vous pouvez le modifier.
+          </div>
         }
 
         <!-- Loading -->
         @if (submitting()) {
-        <div class="loading-state">
-          <p>Envoi en cours...</p>
-        </div>
+          <div class="loading-state">
+            <p>Envoi en cours...</p>
+          </div>
         }
 
         <!-- Erreur -->
         @if (errorMessage()) {
-        <div class="error-message">
-          {{ errorMessage() }}
-        </div>
+          <div class="error-message">
+            {{ errorMessage() }}
+          </div>
         }
 
         <!-- Actions -->

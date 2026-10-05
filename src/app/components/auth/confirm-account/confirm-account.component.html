@@ -1,15 +1,21 @@
 <div class="confirm-container">
-  <div *ngIf="status === 'loading'">
-    <p>Confirmation de votre compte en cours...</p>
-  </div>
+  @if (status === 'loading') {
+    <div>
+      <p>Confirmation de votre compte en cours...</p>
+    </div>
+  }
 
-  <div *ngIf="status === 'success'">
-    <h2>✅ {{ message }}</h2>
-    <button (click)="goToLogin()">Se connecter</button>
-  </div>
+  @if (status === 'success') {
+    <div>
+      <h2>✅ {{ message }}</h2>
+      <button (click)="goToLogin()">Se connecter</button>
+    </div>
+  }
 
-  <div *ngIf="status === 'error'">
-    <h2>❌ {{ message }}</h2>
-    <button (click)="goToLogin()">Retour à la connexion</button>
-  </div>
+  @if (status === 'error') {
+    <div>
+      <h2>❌ {{ message }}</h2>
+      <button (click)="goToLogin()">Retour à la connexion</button>
+    </div>
+  }
 </div>

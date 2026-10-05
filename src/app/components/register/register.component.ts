@@ -1,6 +1,6 @@
 // src/app/features/auth/register/register.component.ts
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   FormBuilder,
   FormGroup,
@@ -15,7 +15,7 @@ import { CaptchaComponent } from '../../components/captcha/captcha.component';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, CaptchaComponent],
+  imports: [ReactiveFormsModule, RouterLink, CaptchaComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

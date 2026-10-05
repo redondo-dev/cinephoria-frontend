@@ -1,121 +1,135 @@
 <div class="login-container">
-<div class="login-form-wrapper">
-  <div class="form-container">
-    <h2 class="form-title">Connexion</h2>
-    <p class="form-subtitle">Connectez-vous à votre compte Cinephoria</p>
+  <div class="login-form-wrapper">
+    <div class="form-container">
+      <h2 class="form-title">Connexion</h2>
+      <p class="form-subtitle">Connectez-vous à votre compte Cinephoria</p>
 
-    <!-- Messages d'erreur -->
-    <div *ngIf="errorMessage" class="alert alert-error">
-      <div class="alert-icon">⚠️</div>
-      <div class="alert-content">
-        <p>{{ errorMessage }}</p>
-      </div>
-      <button (click)="errorMessage = null" class="alert-close">✕</button>
-    </div>
-
-    <!-- Message de succès -->
-    <div *ngIf="successMessage" class="alert alert-success">
-      <div class="alert-icon">✓</div>
-      <div class="alert-content">
-        <p>{{ successMessage }}</p>
-      </div>
-    </div>
-
-    <!-- Formulaire -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
-
-      <!-- Email Field -->
-      <div class="form-group">
-        <label for="email" class="form-label">Email</label>
-        <div class="input-wrapper">
-          <input id="email" type="email" formControlName="email" placeholder="votre@email.com" autocomplete="email"
-            class="form-input" [class.error]="hasError('email')" />
-          <span class="input-icon">📧</span>
+      <!-- Messages d'erreur -->
+      @if (errorMessage) {
+        <div class="alert alert-error">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-content">
+            <p>{{ errorMessage }}</p>
+          </div>
+          <button (click)="errorMessage = null" class="alert-close">✕</button>
         </div>
-        <div *ngIf="hasError('email')" class="error-message">
-          {{ getFieldError('email') }}
+      }
+
+      <!-- Message de succès -->
+      @if (successMessage) {
+        <div class="alert alert-success">
+          <div class="alert-icon">✓</div>
+          <div class="alert-content">
+            <p>{{ successMessage }}</p>
+          </div>
         </div>
-      </div>
+      }
 
-      <!-- Password Field -->
-      <div class="form-group">
-        <label for="password" class="form-label">Mot de passe</label>
-        <div class="input-wrapper">
-          <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
-            placeholder="••••••••" class="form-input" autocomplete="current-password"
-            [class.error]="hasError('password')" />
-          <button type="button" (click)="togglePasswordVisibility()" class="password-toggle" [disabled]="isLoading">
-            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
-          </button>
+      <!-- Formulaire -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-wrapper">
+            <input id="email" type="email" formControlName="email" placeholder="votre@email.com" autocomplete="email"
+              class="form-input" [class.error]="hasError('email')" />
+              <span class="input-icon">📧</span>
+            </div>
+            @if (hasError('email')) {
+              <div class="error-message">
+                {{ getFieldError('email') }}
+              </div>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password" class="form-label">Mot de passe</label>
+            <div class="input-wrapper">
+              <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                placeholder="••••••••" class="form-input" autocomplete="current-password"
+                [class.error]="hasError('password')" />
+                <button type="button" (click)="togglePasswordVisibility()" class="password-toggle" [disabled]="isLoading">
+                  {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+                </button>
+              </div>
+              @if (hasError('password')) {
+                <div class="error-message">
+                  {{ getFieldError('password') }}
+                </div>
+              }
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="form-footer-top">
+              <label class="checkbox">
+                <input type="checkbox" autocomplete="off" [disabled]="isLoading" />
+                <span>Se souvenir de moi</span>
+              </label>
+              <button type="button" class="forgot-link" (click)="openForgotPassword()">
+                Mot de passe oublié ?
+              </button>
+            </div>
+            <!-- ✅ Consentement RGPD -->
+            <div class="form-group rgpd-group">
+              <label class="checkbox rgpd-checkbox" [class.error]="hasError('rgpdConsent')">
+                <input type="checkbox" formControlName="rgpdConsent" [disabled]="isLoading" />
+                <span>
+                  J'accepte la
+                  <a href="/politique-de-confidentialite" target="_blank" class="rgpd-link">politique de confidentialité</a>
+                  et consens au traitement de mes données personnelles conformément au RGPD.
+                </span>
+              </label>
+              @if (hasError('rgpdConsent')) {
+                <div class="error-message">
+                  Vous devez accepter la politique de confidentialité pour continuer.
+                </div>
+              }
+            </div>
+
+            <!-- Ajout capcha avant le bouton submit -->
+            <app-captcha (tokenChange)="onCaptchaResolved($event)"></app-captcha>
+
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-login" [disabled]="isLoading || !loginForm.valid">
+              @if (!isLoading) {
+                <span>Se connecter</span>
+              }
+              @if (isLoading) {
+                <span class="loading-spinner">
+                  <span class="spinner"></span> Connexion en cours...
+                </span>
+              }
+            </button>
+
+
+            <!-- Divider -->
+            <div class="divider">
+              <span>ou</span>
+            </div>
+
+            <!-- Social Login (Optional)
+            <div class="social-login">
+              <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Google">
+                <span>🔵 Google</span>
+              </button>
+              <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Facebook">
+                <span>📘 Facebook</span>
+              </button>
+            </div> -->
+          </form>
+          @if (showForgotPassword()) {
+            <app-forgot-password (close)="closeForgotPassword()">
+            </app-forgot-password>
+          }
+          <!-- Sign Up Link -->
+          <div class="form-footer">
+            <p>
+              Pas de compte ?
+              <a routerLink="/auth/register" class="signup-link">S'inscrire maintenant</a>
+            </p>
+          </div>
         </div>
-        <div *ngIf="hasError('password')" class="error-message">
-          {{ getFieldError('password') }}
-        </div>
-      </div>
-
-      <!-- Remember Me & Forgot Password -->
-      <div class="form-footer-top">
-        <label class="checkbox">
-          <input type="checkbox" autocomplete="off" [disabled]="isLoading" />
-          <span>Se souvenir de moi</span>
-        </label>
-        <button type="button" class="forgot-link" (click)="openForgotPassword()">
-          Mot de passe oublié ?
-        </button>
-      </div>
-      <!-- ✅ Consentement RGPD -->
-      <div class="form-group rgpd-group">
-        <label class="checkbox rgpd-checkbox" [class.error]="hasError('rgpdConsent')">
-          <input type="checkbox" formControlName="rgpdConsent" [disabled]="isLoading" />
-          <span>
-            J'accepte la
-            <a href="/politique-de-confidentialite" target="_blank" class="rgpd-link">politique de confidentialité</a>
-            et consens au traitement de mes données personnelles conformément au RGPD.
-          </span>
-        </label>
-        <div *ngIf="hasError('rgpdConsent')" class="error-message">
-          Vous devez accepter la politique de confidentialité pour continuer.
-        </div>
-      </div>
-
-      <!-- Ajout capcha avant le bouton submit -->
-      <app-captcha (tokenChange)="onCaptchaResolved($event)"></app-captcha>
-
-
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary btn-login" [disabled]="isLoading || !loginForm.valid">
-        <span *ngIf="!isLoading">Se connecter</span>
-        <span *ngIf="isLoading" class="loading-spinner">
-          <span class="spinner"></span> Connexion en cours...
-        </span>
-      </button>
-
-
-      <!-- Divider -->
-      <div class="divider">
-        <span>ou</span>
-      </div>
-
-      <!-- Social Login (Optional)
-      <div class="social-login">
-        <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Google">
-          <span>🔵 Google</span>
-        </button>
-        <button type="button" class="btn btn-social" [disabled]="isLoading" title="Connexion avec Facebook">
-          <span>📘 Facebook</span>
-        </button>
-      </div> -->
-    </form>
-    @if (showForgotPassword()) {
-    <app-forgot-password (close)="closeForgotPassword()">
-    </app-forgot-password>
-    }
-    <!-- Sign Up Link -->
-    <div class="form-footer">
-      <p>
-        Pas de compte ?
-        <a routerLink="/auth/register" class="signup-link">S'inscrire maintenant</a>
-      </p>
-    </div>
-  </div>
-</div></div>
+      </div></div>

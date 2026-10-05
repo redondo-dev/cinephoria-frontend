@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -18,7 +18,7 @@ interface Cinema {
 @Component({
   selector: 'app-salle-from',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './salle-form.component.html',
   styleUrls: ['./salle-form.component.scss'],
 })

@@ -5,47 +5,52 @@
     {{ showForm ? 'Annuler' : 'Ajouter une salle' }}
   </button>
 
-  <form *ngIf="showForm" (ngSubmit)="saveSalle()" class="salle-form">
-    <input [(ngModel)]="currentSalle.nom" name="nom" placeholder="Nom de la salle" required>
-    <input [(ngModel)]="currentSalle.nombrePlaces" name="nombrePlaces" type="number" placeholder="Nombre de places"
-      required>
+  @if (showForm) {
+    <form (ngSubmit)="saveSalle()" class="salle-form">
+      <input [(ngModel)]="currentSalle.nom" name="nom" placeholder="Nom de la salle" required>
+      <input [(ngModel)]="currentSalle.nombrePlaces" name="nombrePlaces" type="number" placeholder="Nombre de places"
+        required>
+        <!-- Ajouté : obligatoire côté backend, absent jusqu'ici -->
+        <select [(ngModel)]="currentSalle.cinema_id" name="cinema_id" required>
+          <option value="" disabled selected>-- Sélectionnez un cinéma --</option>
+          @for (cinema of cinemas; track cinema) {
+            <option [value]="cinema.id">{{ cinema.nom }} — {{ cinema.ville }}</option>
+          }
+        </select>
+        <select [(ngModel)]="currentSalle.qualiteProjection" name="qualiteProjection" required>
+          <option value="">-- Qualité de projection --</option>
+          <option value="Standard">Standard</option>
+          <option value="IMAX">IMAX</option>
+          <option value="3D">3D</option>
+          <option value="4DX">4DX</option>
+        </select>
+        <button type="submit">{{ currentSalle.id ? 'Modifier' : 'Créer' }}</button>
+      </form>
+    }
 
-    <!-- Ajouté : obligatoire côté backend, absent jusqu'ici -->
-    <select [(ngModel)]="currentSalle.cinema_id" name="cinema_id" required>
-      <option value="" disabled selected>-- Sélectionnez un cinéma --</option>
-      <option *ngFor="let cinema of cinemas" [value]="cinema.id">{{ cinema.nom }} — {{ cinema.ville }}</option>
-    </select>
-
-    <select [(ngModel)]="currentSalle.qualiteProjection" name="qualiteProjection" required>
-      <option value="">-- Qualité de projection --</option>
-      <option value="Standard">Standard</option>
-      <option value="IMAX">IMAX</option>
-      <option value="3D">3D</option>
-      <option value="4DX">4DX</option>
-    </select>
-
-    <button type="submit">{{ currentSalle.id ? 'Modifier' : 'Créer' }}</button>
-  </form>
-
-  <table *ngIf="salles.length > 0">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Nombre de places</th>
-        <th>Qualité</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let salle of salles">
-        <td>{{ salle.nom }}</td>
-        <td>{{ salle.nombrePlaces }}</td>
-        <td>{{ salle.qualiteProjection }}</td>
-        <td>
-          <button (click)="editSalle(salle)">Modifier</button>
-          <button (click)="deleteSalle(salle.id!)">Supprimer</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    @if (salles.length > 0) {
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Nombre de places</th>
+            <th>Qualité</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (salle of salles; track salle) {
+            <tr>
+              <td>{{ salle.nom }}</td>
+              <td>{{ salle.nombrePlaces }}</td>
+              <td>{{ salle.qualiteProjection }}</td>
+              <td>
+                <button (click)="editSalle(salle)">Modifier</button>
+                <button (click)="deleteSalle(salle.id!)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>

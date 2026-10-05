@@ -10,7 +10,7 @@ import {
   AfterViewInit,
   NgZone,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { environment } from '../../../environments/environment';
 
 declare global {
@@ -28,7 +28,7 @@ declare global {
 @Component({
   selector: 'app-captcha',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './captcha.component.html',
   styleUrls: ['./captcha.component.scss'],
 })

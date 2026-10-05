@@ -47,9 +47,11 @@
     <div class="seats-section">
       <span class="detail-label">Sièges sélectionnés</span>
       <div class="seats-badges">
-        <span class="seat-badge" *ngFor="let seat of selectedSeats">
-          {{ seat.rangee }}{{ seat.numero_siege }}
-        </span>
+        @for (seat of selectedSeats; track seat) {
+          <span class="seat-badge">
+            {{ seat.rangee }}{{ seat.numero_siege }}
+          </span>
+        }
       </div>
     </div>
 
@@ -58,28 +60,32 @@
       <span class="total-value">{{ totalPrice | number:'1.2-2' }} €</span>
     </div>
 
-    <div class="auth-prompt" *ngIf="!isAuthenticated">
-      <div class="icon">🔐</div>
-      <h3>Connectez-vous pour continuer</h3>
-      <p>Vous devez être connecté pour finaliser votre réservation</p>
-      <div class="auth-buttons">
-        <button class="btn-login" (click)="goToLogin()">
-          J'ai déjà un compte
-        </button>
-        <button class="btn-register" (click)="goToRegister()">
-          Créer un compte
-        </button>
+    @if (!isAuthenticated) {
+      <div class="auth-prompt">
+        <div class="icon">🔐</div>
+        <h3>Connectez-vous pour continuer</h3>
+        <p>Vous devez être connecté pour finaliser votre réservation</p>
+        <div class="auth-buttons">
+          <button class="btn-login" (click)="goToLogin()">
+            J'ai déjà un compte
+          </button>
+          <button class="btn-register" (click)="goToRegister()">
+            Créer un compte
+          </button>
+        </div>
       </div>
-    </div>
+    }
 
     <div class="actions">
       <button class="back-btn" (click)="goBack()">
         <span>←</span> Retour
       </button>
 
-      <button class="continue-btn" (click)="continueToPayment()" *ngIf="isAuthenticated">
-        Continuer vers le paiement <span>→</span>
-      </button>
+      @if (isAuthenticated) {
+        <button class="continue-btn" (click)="continueToPayment()">
+          Continuer vers le paiement <span>→</span>
+        </button>
+      }
     </div>
 
   </div>

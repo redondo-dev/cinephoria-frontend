@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ToastrService } from 'ngx-toastr';
 import {
   FormBuilder,
@@ -13,7 +13,7 @@ import { AdminService, Film } from '../../../services/admin.service';
 @Component({
   selector: 'app-film-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './film-form.component.html',
   styleUrls: ['./film-form.component.scss'],
 })

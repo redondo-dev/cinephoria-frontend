@@ -18,46 +18,53 @@
       <h2>Mes Avis</h2>
 
       <!-- Loading -->
-      <div *ngIf="loadingAvis" class="loading">
-        <p>Chargement de vos avis...</p>
-      </div>
+      @if (loadingAvis) {
+        <div class="loading">
+          <p>Chargement de vos avis...</p>
+        </div>
+      }
 
       <!-- Aucun avis -->
       <!-- Erreur (ex: compte non confirme) -->
-      <div *ngIf="!loadingAvis && errorAvis" class="error-message">
-        <p>{{ errorAvis }}</p>
-      </div>
+      @if (!loadingAvis && errorAvis) {
+        <div class="error-message">
+          <p>{{ errorAvis }}</p>
+        </div>
+      }
 
-      <div *ngIf="!loadingAvis && !hasAvis && !errorAvis" class="no-avis">
-        <p>Vous n'avez pas encore donné d'avis.</p>
-        <small>Les avis que vous donnerez apparaîtront ici.</small>
-      </div>
+      @if (!loadingAvis && !hasAvis && !errorAvis) {
+        <div class="no-avis">
+          <p>Vous n'avez pas encore donné d'avis.</p>
+          <small>Les avis que vous donnerez apparaîtront ici.</small>
+        </div>
+      }
 
       <!-- Liste des avis -->
-      <div *ngIf="!loadingAvis && hasAvis" class="avis-list">
-        <p class="avis-count">Vous avez donné {{ mesAvis.length }} avis</p>
-
-        <div *ngFor="let avis of mesAvis" class="avis-card">
-          <div class="avis-header">
-            <h4>{{ avis.film?.titre || 'Film inconnu' }}</h4>
-            <div class="note">
-              <span class="stars">{{ generateStars(avis.note) }}</span>
-              <span class="note-value">{{ avis.note }}/5</span>
+      @if (!loadingAvis && hasAvis) {
+        <div class="avis-list">
+          <p class="avis-count">Vous avez donné {{ mesAvis.length }} avis</p>
+          @for (avis of mesAvis; track avis) {
+            <div class="avis-card">
+              <div class="avis-header">
+                <h4>{{ avis.film?.titre || 'Film inconnu' }}</h4>
+                <div class="note">
+                  <span class="stars">{{ generateStars(avis.note) }}</span>
+                  <span class="note-value">{{ avis.note }}/5</span>
+                </div>
+              </div>
+              <p class="avis-contenu">{{ avis.contenu }}</p>
+              <div class="avis-footer">
+                <span class="date">
+                  Posté le {{ avis.date_avis| date: 'dd/MM/yyyy' }}
+                </span>
+                <span class="statut" [class]="'statut-' + avis.statut_avis">
+                  {{ getStatutLabel(avis.statut_avis!) }}
+                </span>
+              </div>
             </div>
-          </div>
-
-          <p class="avis-contenu">{{ avis.contenu }}</p>
-
-          <div class="avis-footer">
-            <span class="date">
-              Posté le {{ avis.date_avis| date: 'dd/MM/yyyy' }}
-            </span>
-            <span class="statut" [class]="'statut-' + avis.statut_avis">
-              {{ getStatutLabel(avis.statut_avis!) }}
-            </span>
-          </div>
+          }
         </div>
-      </div>
+      }
     </section>
 
   </div>

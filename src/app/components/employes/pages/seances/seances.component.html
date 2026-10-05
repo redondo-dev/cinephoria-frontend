@@ -1,40 +1,47 @@
 <div class="seances-container">
 
-  <form *ngIf="showForm" (ngSubmit)="saveSeance()" class="seance-form">
-    <select [(ngModel)]="currentSeance.filmId" name="filmId" required>
-      <option value="">-- Sélectionner un film --</option>
-      <option *ngFor="let film of films" [value]="film.id">{{ film.titre }}</option>
-    </select>
+  @if (showForm) {
+    <form (ngSubmit)="saveSeance()" class="seance-form">
+      <select [(ngModel)]="currentSeance.filmId" name="filmId" required>
+        <option value="">-- Sélectionner un film --</option>
+        @for (film of films; track film) {
+          <option [value]="film.id">{{ film.titre }}</option>
+        }
+      </select>
+      <select [(ngModel)]="currentSeance.salleId" name="salleId" required>
+        <option value="">-- Sélectionner une salle --</option>
+        @for (salle of salles; track salle) {
+          <option [value]="salle.id">{{ salle.nom }}</option>
+        }
+      </select>
+      <input [(ngModel)]="currentSeance.dateHeureDebut" name="dateHeure" type="datetime-local" required>
+      <button type="submit">{{ currentSeance.id ? 'Modifier' : 'Créer' }}</button>
+    </form>
+  }
 
-    <select [(ngModel)]="currentSeance.salleId" name="salleId" required>
-      <option value="">-- Sélectionner une salle --</option>
-      <option *ngFor="let salle of salles" [value]="salle.id">{{ salle.nom }}</option>
-    </select>
-
-    <input [(ngModel)]="currentSeance.dateHeureDebut" name="dateHeure" type="datetime-local" required>
-
-    <button type="submit">{{ currentSeance.id ? 'Modifier' : 'Créer' }}</button>
-  </form>
-
-  <table *ngIf="seances.length > 0">
-    <thead>
-      <tr>
-        <th>Film</th>
-        <th>Salle</th>
-        <th>Date et Heure</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let seance of seances">
-        <td>{{ seance.filmTitre }}</td>
-        <td>{{ seance.salleNom }}</td>
-        <td>{{ seance.dateHeureDebut | date:'dd/MM/yyyy HH:mm' }}</td>
-        <td>
-          <button (click)="editSeance(seance)">Modifier</button>
-          <button (click)="deleteSeance(seance.id!)">Supprimer</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  @if (seances.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>Film</th>
+          <th>Salle</th>
+          <th>Date et Heure</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (seance of seances; track seance) {
+          <tr>
+            <td>{{ seance.filmTitre }}</td>
+            <td>{{ seance.salleNom }}</td>
+            <td>{{ seance.dateHeureDebut | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <button (click)="editSeance(seance)">Modifier</button>
+              <button (click)="deleteSeance(seance.id!)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 </div>

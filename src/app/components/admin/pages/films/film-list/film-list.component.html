@@ -6,51 +6,61 @@
 </div>
 
 <!-- Loading -->
-<div *ngIf="loading" class="loading">
-  Chargement des films...
-</div>
+@if (loading) {
+  <div class="loading">
+    Chargement des films...
+  </div>
+}
 
 <!-- Error -->
-<div *ngIf="!loading && error" class="error-message">
-  {{ error }}
-</div>
+@if (!loading && error) {
+  <div class="error-message">
+    {{ error }}
+  </div>
+}
 
 <!-- Films grid -->
-<div *ngIf="!loading && !error && films.length > 0" class="films-grid">
-  <div *ngFor="let film of films; trackBy: trackById" class="film-card">
-    <!-- Affiche -->
-    <img *ngIf="film.affiche; else noPoster" [src]="film.affiche" [alt]="film.titre" class="film-poster">
-    <ng-template #noPoster>
-      <div class="film-poster-placeholder">🎬</div>
-    </ng-template>
-
-    <div class="film-content">
-      <h3>{{ film.titre }}</h3>
-      <p class="film-genre">{{ film.genres?.[0]?.nom || 'Non spécifié' }}</p>
-      <p class="film-description">{{ film.description }}</p>
-      <div class="film-meta">
-        <span>⏱️ {{ film.duree }} min</span>
-        <!-- <span>📅 {{ formatDate(film.datesSortie) }}</span> -->
+@if (!loading && !error && films.length > 0) {
+  <div class="films-grid">
+    @for (film of films; track trackById($index, film)) {
+      <div class="film-card">
+        <!-- Affiche -->
+        @if (film.affiche) {
+          <img [src]="film.affiche" [alt]="film.titre" class="film-poster">
+        } @else {
+          <div class="film-poster-placeholder">🎬</div>
+        }
+        <div class="film-content">
+          <h3>{{ film.titre }}</h3>
+          <p class="film-genre">{{ film.genres?.[0]?.nom || 'Non spécifié' }}</p>
+          <p class="film-description">{{ film.description }}</p>
+          <div class="film-meta">
+            <span>⏱️ {{ film.duree }} min</span>
+            <!-- <span>📅 {{ formatDate(film.datesSortie) }}</span> -->
+          </div>
+          <div class="film-actions">
+            <a [routerLink]="['/admin/films/edit', film.id]" class="btn btn-sm btn-secondary">
+              Modifier
+            </a>
+            <a [routerLink]="['/admin/seances']" [queryParams]="{ filmId: film.id }" class="btn btn-sm btn-secondary">
+              📅 Séances
+            </a>
+            <button (click)="deleteFilm(film)" class="btn btn-sm btn-danger">
+              Supprimer
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="film-actions">
-        <a [routerLink]="['/admin/films/edit', film.id]" class="btn btn-sm btn-secondary">
-          Modifier
-        </a>
-        <a [routerLink]="['/admin/seances']" [queryParams]="{ filmId: film.id }" class="btn btn-sm btn-secondary">
-          📅 Séances
-        </a>
-        <button (click)="deleteFilm(film)" class="btn btn-sm btn-danger">
-          Supprimer
-        </button>
-      </div>
-    </div>
+    }
   </div>
-</div>
+}
 
 <!-- Empty state -->
-<div *ngIf="!loading && !error && films.length === 0" class="empty-state">
-  <p>Aucun film enregistré</p>
-  <a routerLink="/admin/films/create" class="btn btn-primary">
-    Créer le premier film
-  </a>
-</div>
+@if (!loading && !error && films.length === 0) {
+  <div class="empty-state">
+    <p>Aucun film enregistré</p>
+    <a routerLink="/admin/films/create" class="btn btn-primary">
+      Créer le premier film
+    </a>
+  </div>
+}

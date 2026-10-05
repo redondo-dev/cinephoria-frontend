@@ -2,7 +2,7 @@
 // FRONTEND: seances-list.component.ts (Angular)
 // ============================================
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from '../../../services/admin.service';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ interface ApiSeance {
 
 @Component({
   selector: 'app-seance-list',
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   standalone: true,
   templateUrl: './seance-list.component.html',
   styleUrls: ['./seance-list.component.scss'],

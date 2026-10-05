@@ -1,6 +1,6 @@
 // reservation.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReservationService } from '../../core/services/reservation.service';
@@ -9,7 +9,7 @@ import { Cinema, Film, Seance } from '../../core/models/reservation.model';
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './reservation.component.html',
   styleUrls: ['./reservation.component.scss'],
 })

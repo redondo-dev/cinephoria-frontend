@@ -3,13 +3,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AdminService, Employe } from '../../../services/admin.service';
 import { FormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
 import { EmployeFormComponent } from '../employe-form/employe-form.component';
 
 @Component({
   selector: 'app-employes-list',
   standalone: true,
-  imports: [RouterLink, FormsModule, EmployeFormComponent],
+  imports: [RouterLink, FormsModule, CommonModule, EmployeFormComponent],
   templateUrl: './employes-list.component.html',
   styleUrls: ['./employes-list.component.scss'],
 })

@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-employe-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './employe-form.component.html',
   styleUrls: ['./employe-form.component.scss'],
 })

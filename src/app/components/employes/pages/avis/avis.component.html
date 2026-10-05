@@ -6,82 +6,64 @@
     <button (click)="showPending()" [class.active]="viewMode === 'pending'">En attente</button>
   </div>
 
-  @if (avis.length > 0) {
-    <table>
-      <thead>
-        <tr>
-          <th>Film</th>
-          <th>Utilisateur</th>
-          <th>Note</th>
-          <th>Commentaire</th>
-          <th>Date</th>
-          <th>Statut</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (avisItem of avis; track avisItem) {
-          <tr [class.pending]="avisItem.statut_avis === 'en_attente'">
-            <td>{{ avisItem.filmTitre }}</td>
-            <td>{{ avisItem.userEmail }}</td>
-            <td>{{ avisItem.note }}/5</td>
-            <td>{{ avisItem.contenu }}</td>
-            <td>{{ avisItem.date_avis | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>
-              @if (avisItem.statut_avis === 'valide') {
-                <span class="badge valid">Validé</span>
-              }
-              @if (avisItem.statut_avis === 'en_attente') {
-                <span class="badge pending">En attente</span>
-              }
-              @if (avisItem.statut_avis === 'rejete') {
-                <span class="badge rejected">Rejeté</span>
-              }
-            </td>
-            <td>
-              @if (avisItem.statut_avis === 'en_attente') {
-                <button (click)="validateAvis(avisItem.id!)">
-                  Valider
-                </button>
-              }
-              @if (avisItem.statut_avis === 'en_attente') {
-                <button (click)="openRejectModal(avisItem)">
-                  Rejeter
-                </button>
-              }
-              <button (click)="deleteAvis(avisItem.id!)">Supprimer</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
+  <table *ngIf="avis.length > 0">
+    <thead>
+      <tr>
+        <th>Film</th>
+        <th>Utilisateur</th>
+        <th>Note</th>
+        <th>Commentaire</th>
+        <th>Date</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let avisItem of avis" [class.pending]="avisItem.statut_avis === 'en_attente'">
+        <td>{{ avisItem.filmTitre }}</td>
+        <td>{{ avisItem.userEmail }}</td>
+        <td>{{ avisItem.note }}/5</td>
+        <td>{{ avisItem.contenu }}</td>
+        <td>{{ avisItem.date_avis | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <span *ngIf="avisItem.statut_avis === 'valide'" class="badge valid">Validé</span>
+          <span *ngIf="avisItem.statut_avis === 'en_attente'" class="badge pending">En attente</span>
+          <span *ngIf="avisItem.statut_avis === 'rejete'" class="badge rejected">Rejeté</span>
+        </td>
+        <td>
+          <button *ngIf="avisItem.statut_avis === 'en_attente'" (click)="validateAvis(avisItem.id!)">
+            Valider
+          </button>
+          <button *ngIf="avisItem.statut_avis === 'en_attente'" (click)="openRejectModal(avisItem)">
+            Rejeter
+          </button>
+          <button (click)="deleteAvis(avisItem.id!)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  @if (avis.length === 0) {
-    <p>Aucun avis à afficher.</p>
-  }
+  <p *ngIf="avis.length === 0">Aucun avis à afficher.</p>
 </div>
 
 <!-- Modale de rejet avec motif obligatoire -->
-@if (showRejectModal) {
-  <div class="modal-overlay" (click)="closeRejectModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <h3>Rejeter l'avis</h3>
-      <p>
-        Film : <strong>{{ avisToReject?.filmTitre }}</strong><br>
-        Auteur : <strong>{{ avisToReject?.userEmail }}</strong>
-      </p>
-      <div class="form-group">
-        <label for="rejectMotif">Motif du rejet *</label>
-        <textarea id="rejectMotif" [(ngModel)]="rejectMotif" name="rejectMotif" rows="3"
+<div *ngIf="showRejectModal" class="modal-overlay" (click)="closeRejectModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Rejeter l'avis</h3>
+    <p>
+      Film : <strong>{{ avisToReject?.filmTitre }}</strong><br>
+      Auteur : <strong>{{ avisToReject?.userEmail }}</strong>
+    </p>
+    <div class="form-group">
+      <label for="rejectMotif">Motif du rejet *</label>
+      <textarea id="rejectMotif" [(ngModel)]="rejectMotif" name="rejectMotif" rows="3"
         placeholder="Expliquez pourquoi cet avis est rejeté..." required></textarea>
-      </div>
-      <div class="modal-actions">
-        <button (click)="closeRejectModal()">Annuler</button>
-        <button (click)="confirmReject()" [disabled]="!rejectMotif.trim() || rejecting" class="btn-danger">
-          {{ rejecting ? 'Rejet en cours...' : 'Confirmer le rejet' }}
-        </button>
-      </div>
+    </div>
+    <div class="modal-actions">
+      <button (click)="closeRejectModal()">Annuler</button>
+      <button (click)="confirmReject()" [disabled]="!rejectMotif.trim() || rejecting" class="btn-danger">
+        {{ rejecting ? 'Rejet en cours...' : 'Confirmer le rejet' }}
+      </button>
     </div>
   </div>
-}
+</div>

@@ -5,12 +5,8 @@
     <p class="subtitle">Vous avez une question ou un problème ? Envoyez-nous un message.</p>
 
     <!-- Messages de succès et erreur -->
-    @if (showSuccess) {
-      <div class="success-message">Votre message a bien été envoyé.</div>
-    }
-    @if (errorMessage) {
-      <div class="error-message">{{ errorMessage }}</div>
-    }
+    <div class="success-message" *ngIf="showSuccess">Votre message a bien été envoyé.</div>
+    <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 
     <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
       <!-- Champ nom -->
@@ -38,17 +34,13 @@
       </button>
     </form>
     <!-- Bannière de succès -->
-    @if (showSuccess) {
-      <div class="success-banner">
-        ✅ Votre message a bien été envoyé !
-      </div>
-    }
+    <div *ngIf="showSuccess" class="success-banner">
+      ✅ Votre message a bien été envoyé !
+    </div>
 
     <!-- Message d'erreur -->
-    @if (errorMessage) {
-      <div class="error-banner">
-        ⚠️ {{ errorMessage }}
-      </div>
-    }
+    <div *ngIf="errorMessage" class="error-banner">
+      ⚠️ {{ errorMessage }}
+    </div>
   </div>
 </div>

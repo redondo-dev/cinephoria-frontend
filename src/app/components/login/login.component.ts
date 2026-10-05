@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { ForgotPasswordComponent } from '../../forgot-password/forgot-password.component';
 import {
   FormBuilder,
@@ -17,11 +17,12 @@ import { CaptchaComponent } from '../../components/captcha/captcha.component';
   selector: 'app-login',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     RouterModule,
     ForgotPasswordComponent,
-    CaptchaComponent
-],
+    CaptchaComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

@@ -1,189 +1,6 @@
-// import { EmployesDashboardComponent } from './components/employes/pages/employes-dashboard/employes-dashboard.component';
-// import { Routes } from '@angular/router';
-// import { AuthGuard } from './core/guards/auth.guard';
-// import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
-// import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
-// import { AdminGuard } from './core/guards/admin.guard';
-// import { ClientGuard } from './core/guards/client.guard';
-// import { RoleGuard } from './core/guards/role.guard';
-// import { ChangeTempPasswordComponent } from './change-temp-password/change-temp-password.component';
-// import { tempPasswordGuard } from './core/guards/temp-password.guard';
-
-// export const routes: Routes = [
-//   {
-//     path: '',
-//     redirectTo: '/home',
-//     pathMatch: 'full',
-//   },
-//   {
-//     path: 'home',
-//     loadComponent: () =>
-//       import('./components/home/home.component').then((m) => m.HomeComponent),
-//   },
-//   // ✅ Route publique RGPD — aucun garde d'authentification
-//   {
-//     path: 'politique-de-confidentialite',
-//     loadComponent: () =>
-//       import('./components/rgpd/rgpd.component').then((m) => m.RgpdComponent),
-//     title: 'Politique de confidentialité – Cinephoria',
-//   },
-//   // Routes d'administration
-//   {
-//     path: 'admin',
-//     canActivate: [AuthGuard, AdminGuard],
-//     children: ADMIN_ROUTES,
-//   },
-
-//   // Route publique - Liste des films
-//   {
-//     path: 'films',
-//     data: { title: 'Cinephoria - Tous les films' },
-//     loadComponent: () =>
-//       import('./components/films/films-list-component/films-list-component').then(
-//         (m) => m.FilmsListComponent,
-//       ),
-//   },
-
-//   // Route publique - Détail d'un film
-//   {
-//     path: 'films/:id',
-//     data: { title: 'Cinephoria - Détail du film' },
-//     loadComponent: () =>
-//       import('./components/films/film-detail-component/film-detail-component').then(
-//         (m) => m.FilmDetailComponent,
-//       ),
-//   },
-//   // Routes d'authentification
-
-//   {
-//     path: 'auth/register',
-
-//     loadComponent: () =>
-//       import('./components/register/register.component').then(
-//         (m) => m.RegisterComponent,
-//       ),
-//     title: 'Créer un compte - Cinephoria',
-//   },
-
-//   {
-//     path: 'auth/login',
-//     loadComponent: () =>
-//       import('./components/login/login.component').then(
-//         (m) => m.LoginComponent,
-//       ),
-//   },
-//   // Route de confirmation de compte
-
-//   {
-//     path: 'auth/confirm/:token',
-//     loadComponent: () =>
-//       import('./components/auth/confirm-account/confirm-account.component').then(
-//         (m) => m.ConfirmAccountComponent,
-//       ),
-//   },
-//   // Route reservations
-//   {
-//     path: 'reservation',
-
-//     children: [
-//       {
-//         path: '',
-//         redirectTo: 'selection',
-//         pathMatch: 'full',
-//       },
-
-//       {
-//         path: 'selection',
-//         loadComponent: () =>
-//           import('./components/reservation/reservation.component').then(
-//             (m) => m.ReservationComponent,
-//           ),
-//       },
-
-//       {
-//         path: 'sieges/:seanceId',
-//         loadComponent: () =>
-//           import('./components/reservation/seat-selection/seat-selection.component').then(
-//             (m) => m.SeatSelectionComponent,
-//           ),
-//       },
-
-//       {
-//         path: 'confirmation',
-//         loadComponent: () =>
-//           import('./components/reservation/reservation-confirmation/reservation-confirmation.component').then(
-//             (m) => m.ReservationConfirmationComponent,
-//           ),
-//       },
-
-//       {
-//         path: 'payment',
-//         canActivate: [AuthGuard],
-//         loadComponent: () =>
-//           import('./components/reservation/payment/stripe-payment/stripe-payment.component').then(
-//             (m) => m.StripePaymentComponent,
-//           ),
-//       },
-
-//       {
-//         path: 'success/:id',
-//         loadComponent: () =>
-//           import('./components/reservation/success/success.component').then(
-//             (m) => m.ReservationSuccessComponent,
-//           ),
-//       },
-//     ],
-//   },
-//   // routes contact
-//   {
-//     path: 'contact',
-//     loadComponent: () =>
-//       import('./components/contact/contact.component').then(
-//         (m) => m.ContactComponent,
-//       ),
-//     title: 'Contact - Cinéphoria',
-//   },
-
-//   //routes employes
-
-//   {
-//     path: 'intranet',
-//     canActivate: [AuthGuard, RoleGuard],
-//     data: { roles: ['EMPLOYE'] },
-//     loadComponent: () =>
-//       import('./components/employes/pages/employes-dashboard/employes-dashboard.component').then(
-//         (m) => m.EmployesDashboardComponent,
-//       ),
-//     title: 'Intranet employé - Cinéphoria',
-//     children: EMPLOYE_ROUTES,
-//   },
-
-//   // routes pour users
-
-//   {
-//     path: 'change-password',
-
-//     loadComponent: () =>
-//       import('./change-temp-password/change-temp-password.component').then(
-//         (m) => m.ChangeTempPasswordComponent,
-//       ),
-//     canActivate: [AuthGuard],
-//   },
-
-//   {
-//     path: 'mon-espace',
-//     canActivate: [AuthGuard, RoleGuard],
-//     data: { roles: ['CLIENT'] },
-//     loadComponent: () =>
-//       import('./components/users/pages/mon-espace/mon-espace.component').then(
-//         (m) => m.MonEspaceComponent,
-//       ),
-//   },
-//   { path: '**', redirectTo: '/home' },
-// ];
 import { EmployesDashboardComponent } from './components/employes/pages/employes-dashboard/employes-dashboard.component';
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard'; // ← fonction, pas classe
+import { AuthGuard } from './core/guards/auth.guard';
 import { ADMIN_ROUTES } from './components/admin/routes/admin.routes';
 import { EMPLOYE_ROUTES } from './components/employes/routes/employes.routes';
 import { AdminGuard } from './core/guards/admin.guard';
@@ -213,7 +30,7 @@ export const routes: Routes = [
   // Routes d'administration
   {
     path: 'admin',
-    canActivate: [authGuard, AdminGuard], // ← authGuard minuscule
+    canActivate: [AuthGuard, AdminGuard],
     children: ADMIN_ROUTES,
   },
 
@@ -237,14 +54,17 @@ export const routes: Routes = [
       ),
   },
   // Routes d'authentification
+
   {
     path: 'auth/register',
+
     loadComponent: () =>
       import('./components/register/register.component').then(
         (m) => m.RegisterComponent,
       ),
     title: 'Créer un compte - Cinephoria',
   },
+
   {
     path: 'auth/login',
     loadComponent: () =>
@@ -253,6 +73,7 @@ export const routes: Routes = [
       ),
   },
   // Route de confirmation de compte
+
   {
     path: 'auth/confirm/:token',
     loadComponent: () =>
@@ -263,12 +84,14 @@ export const routes: Routes = [
   // Route reservations
   {
     path: 'reservation',
+
     children: [
       {
         path: '',
         redirectTo: 'selection',
         pathMatch: 'full',
       },
+
       {
         path: 'selection',
         loadComponent: () =>
@@ -276,6 +99,7 @@ export const routes: Routes = [
             (m) => m.ReservationComponent,
           ),
       },
+
       {
         path: 'sieges/:seanceId',
         loadComponent: () =>
@@ -283,6 +107,7 @@ export const routes: Routes = [
             (m) => m.SeatSelectionComponent,
           ),
       },
+
       {
         path: 'confirmation',
         loadComponent: () =>
@@ -290,14 +115,16 @@ export const routes: Routes = [
             (m) => m.ReservationConfirmationComponent,
           ),
       },
+
       {
         path: 'payment',
-        canActivate: [authGuard], // ← authGuard minuscule
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('./components/reservation/payment/stripe-payment/stripe-payment.component').then(
             (m) => m.StripePaymentComponent,
           ),
       },
+
       {
         path: 'success/:id',
         loadComponent: () =>
@@ -316,10 +143,12 @@ export const routes: Routes = [
       ),
     title: 'Contact - Cinéphoria',
   },
-  // routes employes
+
+  //routes employes
+
   {
     path: 'intranet',
-    canActivate: [authGuard, RoleGuard], // ← authGuard minuscule
+    canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['EMPLOYE'] },
     loadComponent: () =>
       import('./components/employes/pages/employes-dashboard/employes-dashboard.component').then(
@@ -328,18 +157,21 @@ export const routes: Routes = [
     title: 'Intranet employé - Cinéphoria',
     children: EMPLOYE_ROUTES,
   },
+
   // routes pour users
+
   {
     path: 'change-password',
-    canActivate: [authGuard], // ← authGuard minuscule
     loadComponent: () =>
       import('./change-temp-password/change-temp-password.component').then(
         (m) => m.ChangeTempPasswordComponent,
       ),
+    canActivate: [AuthGuard],
   },
+
   {
     path: 'mon-espace',
-    canActivate: [authGuard, RoleGuard], // ← authGuard minuscule
+    canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import('./components/users/pages/mon-espace/mon-espace.component').then(

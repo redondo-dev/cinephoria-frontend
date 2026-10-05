@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { SallesService, Salle } from '../../services/employes.service';
@@ -15,7 +15,7 @@ interface Cinema {
 @Component({
   selector: 'app-salles',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './salles.component.html',
   styleUrl: './salles.component.scss',
 })

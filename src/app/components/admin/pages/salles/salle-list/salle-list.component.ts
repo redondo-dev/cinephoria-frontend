@@ -1,6 +1,6 @@
 // src/app/admin/pages/salles/salles-list/salles-list.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AdminService, Salle } from '../../../services/admin.service';
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-salles-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './salle-list.component.html',
   styleUrls: ['./salle-list.component.scss'],
 })

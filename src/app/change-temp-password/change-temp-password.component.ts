@@ -1,7 +1,7 @@
 // src/app/auth/change-temp-password/change-temp-password.component.ts
 
 import { Component, inject, signal, OnInit } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
@@ -9,7 +9,7 @@ import { AuthService } from '../core/services/auth.service';
 @Component({
   selector: 'app-change-temp-password',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './change-temp-password.component.html',
   styleUrl: './change-temp-password.component.scss',
 })

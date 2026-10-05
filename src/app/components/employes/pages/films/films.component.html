@@ -5,51 +5,46 @@
     {{ showForm ? 'Annuler' : 'Ajouter un film' }}
   </button>
 
-  @if (showForm) {
-    <form (ngSubmit)="saveFilm()" class="film-form">
-      <input [(ngModel)]="currentFilm.titre" name="titre" placeholder="Titre" required>
-      <input [(ngModel)]="currentFilm.duree" name="duree" type="number" placeholder="Durée (min)" required>
-      <!-- Remplacé : un champ texte libre envoyait une chaîne ("Science-fiction") au lieu
-      d'un ID numérique valide, ce qui faisait échouer film.setGenres() côté backend
-      avec une 500. -->
-      <select [(ngModel)]="currentFilm.genre_id" name="genre" required>
-        <option value="" disabled selected>Sélectionnez un genre</option>
-        @for (genre of genres; track genre) {
-          <option [value]="genre.id">{{ genre.nom }}</option>
-        }
-      </select>
-      <textarea [(ngModel)]="currentFilm.description" name="synopsis" placeholder="Synopsis" required></textarea>
-      <input [(ngModel)]="currentFilm.affiche" name="affiche" placeholder="URL Affiche">
-      <input [(ngModel)]="currentFilm.date_ajout" name="datesSortie" type="date" required>
-      <button type="submit">{{ currentFilm.id ? 'Modifier' : 'Créer' }}</button>
-    </form>
-  }
+  <form *ngIf="showForm" (ngSubmit)="saveFilm()" class="film-form">
+    <input [(ngModel)]="currentFilm.titre" name="titre" placeholder="Titre" required>
+    <input [(ngModel)]="currentFilm.duree" name="duree" type="number" placeholder="Durée (min)" required>
 
-  @if (films.length > 0) {
-    <table>
-      <thead>
-        <tr>
-          <th>Titre</th>
-          <th>Durée</th>
-          <th>Genre</th>
-          <th>Date de sortie</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (film of films; track film) {
-          <tr>
-            <td>{{ film.titre }}</td>
-            <td>{{ film.duree }} min</td>
-            <td>{{ film.genres?.[0]?.nom || 'Non spécifié' }}</td>
-            <td>{{ film.date_ajout | date:'dd/MM/yyyy' }}</td>
-            <td>
-              <button (click)="editFilm(film)">Modifier</button>
-              <button (click)="deleteFilm(film.id!)">Supprimer</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
+    <!-- Remplacé : un champ texte libre envoyait une chaîne ("Science-fiction") au lieu
+         d'un ID numérique valide, ce qui faisait échouer film.setGenres() côté backend
+         avec une 500. -->
+    <select [(ngModel)]="currentFilm.genre_id" name="genre" required>
+      <option value="" disabled selected>Sélectionnez un genre</option>
+      <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nom }}</option>
+    </select>
+
+    <textarea [(ngModel)]="currentFilm.description" name="synopsis" placeholder="Synopsis" required></textarea>
+    <input [(ngModel)]="currentFilm.affiche" name="affiche" placeholder="URL Affiche">
+    <input [(ngModel)]="currentFilm.date_ajout" name="datesSortie" type="date" required>
+
+    <button type="submit">{{ currentFilm.id ? 'Modifier' : 'Créer' }}</button>
+  </form>
+
+  <table *ngIf="films.length > 0">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Durée</th>
+        <th>Genre</th>
+        <th>Date de sortie</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let film of films">
+        <td>{{ film.titre }}</td>
+        <td>{{ film.duree }} min</td>
+        <td>{{ film.genres?.[0]?.nom || 'Non spécifié' }}</td>
+        <td>{{ film.date_ajout | date:'dd/MM/yyyy' }}</td>
+        <td>
+          <button (click)="editFilm(film)">Modifier</button>
+          <button (click)="deleteFilm(film.id!)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

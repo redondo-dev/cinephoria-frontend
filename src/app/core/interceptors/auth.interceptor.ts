@@ -1,8 +1,31 @@
+// src/app/core/interceptors/auth.interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const cloned = req.clone({
-    withCredentials: true,
-  });
-  return next(cloned);
+  // Récupérer le token depuis localStorage
+  const token = localStorage.getItem('token');
+
+  // Ne pas ajouter le token pour les routes d'authentification
+  if (
+    req.url.includes('/auth/login') ||
+    req.url.includes('/auth/register') ||
+    req.url.includes('/auth/forgot-password')
+  ) {
+    console.log('[AUTH INTERCEPTOR] Route auth, pas de token ajouté');
+    return next(req);
+  }
+
+  // Si un token existe, l'ajouter au header
+  if (token) {
+    const clonedRequest = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: req.params,
+    });
+
+    return next(clonedRequest);
+  }
+
+  return next(req);
 };

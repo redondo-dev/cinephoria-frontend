@@ -14,15 +14,13 @@
       <span class="dashboard-label">Analytics</span>
       <h1 class="dashboard-title">Tableau de bord</h1>
     </div>
-    @if (periodInfo) {
-      <div class="period-badge">
-        <span class="period-icon">⬤</span>
-        <span>
-          {{ periodInfo.from | date : 'dd MMM' }} →
-          {{ periodInfo.to | date : 'dd MMM yyyy' }}
-        </span>
-      </div>
-    }
+    <div class="period-badge" *ngIf="periodInfo">
+      <span class="period-icon">⬤</span>
+      <span>
+        {{ periodInfo.from | date : 'dd MMM' }} →
+        {{ periodInfo.to | date : 'dd MMM yyyy' }}
+      </span>
+    </div>
   </div>
 
   <div class="chart-card">
@@ -36,15 +34,11 @@
   </div>
 </div>
 
-@if (loading) {
-  <div class="state-container">
-    <div class="spinner"></div>
-    <p>Chargement des données...</p>
-  </div>
-}
+<div class="state-container" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Chargement des données...</p>
+</div>
 
-@if (error) {
-  <div class="state-container error-state">
-    <p>{{ error }}</p>
-  </div>
-}
+<div class="state-container error-state" *ngIf="error">
+  <p>{{ error }}</p>
+</div>

@@ -1,6 +1,6 @@
 // src/app/features/contact/contact.component.ts
 import { Component, OnInit } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -12,7 +12,7 @@ import { ContactService } from './services/contact.service';
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })

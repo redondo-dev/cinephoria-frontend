@@ -27,46 +27,36 @@
       <!-- Bouton Connexion -->
       <div class="auth-section">
 
-        @if (!(isAuthenticated$ | async)) {
-          <a routerLink="/auth/login" (click)="closeMenu()" class="btn-login">
+        <a *ngIf="!(isAuthenticated$ | async)" routerLink="/auth/login" (click)="closeMenu()" class="btn-login">
           Se connecter</a>
-        }
 
         <!-- Si connecté -->
-        @if (isAuthenticated$ | async) {
-          <div class="user-section">
-            @if (currentUser$ | async; as user) {
-              <span class="user-name">
-                Bonjour, {{ user.name }}
-              </span>
-            }
-            @if ((currentUser$ | async)?.role === 'CLIENT') {
-              <a routerLink="/mon-espace" routerLinkActive="active"
-                (click)="closeMenu()" class="btn-mon-espace">
-                Mon espace
-              </a>
-            }
-            <!-- Employé : accès à l'Intranet, même en naviguant sur Films/Réservations
-            (US9 : "un Employé doit être en mesure d'accéder à son espace via le
-            bouton Intranet").  -->
-            @if ((currentUser$ | async)?.role === 'EMPLOYE') {
-              <a routerLink="/intranet" routerLinkActive="active"
-                (click)="closeMenu()" class="btn-mon-espace">
-                Intranet
-              </a>
-            }
-            <!-- Admin : même logique, accès à l'espace Administration -->
-            @if ((currentUser$ | async)?.role === 'ADMIN') {
-              <a routerLink="/admin" routerLinkActive="active"
-                (click)="closeMenu()" class="btn-mon-espace">
-                Administration
-              </a>
-            }
-            <button (click)="logout(); closeMenu()" class="btn-logout">
-              Se déconnecter
-            </button>
-          </div>
-        }
+        <div *ngIf="isAuthenticated$ | async" class="user-section">
+          <span class="user-name" *ngIf="currentUser$ | async as user">
+            Bonjour, {{ user.name }}
+          </span>
+          <a *ngIf="(currentUser$ | async)?.role === 'CLIENT'" routerLink="/mon-espace" routerLinkActive="active"
+            (click)="closeMenu()" class="btn-mon-espace">
+            Mon espace
+          </a>
+          <!-- Employé : accès à l'Intranet, même en naviguant sur Films/Réservations
+               (US9 : "un Employé doit être en mesure d'accéder à son espace via le
+               bouton Intranet").  -->
+          <a *ngIf="(currentUser$ | async)?.role === 'EMPLOYE'" routerLink="/intranet" routerLinkActive="active"
+            (click)="closeMenu()" class="btn-mon-espace">
+            Intranet
+          </a>
+
+          <!-- Admin : même logique, accès à l'espace Administration -->
+          <a *ngIf="(currentUser$ | async)?.role === 'ADMIN'" routerLink="/admin" routerLinkActive="active"
+            (click)="closeMenu()" class="btn-mon-espace">
+            Administration
+          </a>
+
+          <button (click)="logout(); closeMenu()" class="btn-logout">
+            Se déconnecter
+          </button>
+        </div>
       </div>
     </div>
   </div>

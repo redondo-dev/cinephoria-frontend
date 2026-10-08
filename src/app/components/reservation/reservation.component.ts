@@ -81,6 +81,11 @@ export class ReservationComponent implements OnInit {
   }
 
   // ========== GESTION DES FILMS ==========
+  get filmsAffiches(): Film[] {
+    const pre = this.films.find((f) => Number(f.id) === this.filmIdPreselect);
+    return pre ? [pre] : this.films;
+  }
+
   loadFilms(cinemaId: number): void {
     this.loadingFilms = true;
     this.errorFilms = '';

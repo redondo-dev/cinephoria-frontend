@@ -66,7 +66,7 @@
     </div>
 
     <div class="film-grid" *ngIf="!loadingFilms && films.length > 0">
-      <div *ngFor="let film of films" class="film-card" [class.selected]="isFilmSelected(film)"
+      <div *ngFor="let film of filmsAffiches" class="film-card" [class.selected]="isFilmSelected(film)"
         (click)="selectFilm(film)">
         <div class="film-image" *ngIf="film.affiche">
           <img [src]="film.affiche" [alt]="film.titre">

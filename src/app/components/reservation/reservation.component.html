@@ -132,16 +132,9 @@
     <div class="empty-state" *ngIf="!loadingSeances && seances.length === 0">
       <p>Aucune séance disponible pour {{ nombrePersonnes }} personne(s)</p>
     </div>
-    <div style="background:#222;color:lime;padding:8px;margin:8px 0">
-      DEBUG → seances: {{ seances.length }} | loading: {{ loadingSeances }} | error: "{{ errorSeances }}"
-    </div>
+
   </section>
-  <!-- Debug temporaire -->
-  <div style="background:#333;color:lime;padding:10px;margin:10px 0" *ngIf="selectedFilm">
-    seances.length: {{ seances.length }} |
-    loading: {{ loadingSeances }} |
-    error: {{ errorSeances }}
-  </div>
+
 
   <!-- ========== RÉCAPITULATIF ========== -->
   <section class="recap-section" *ngIf="selectedSeance">

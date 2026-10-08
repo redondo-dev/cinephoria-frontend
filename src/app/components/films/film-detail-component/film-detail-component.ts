@@ -143,6 +143,8 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       prix: seance.prix || this.getPrixByQualite(seance.qualite), // ✅ prix API en priorité
       places_disponibles: seance.places_disponibles || 0,
       salle: seance.salle || 'N/A',
+      cinema: seance.cinema,
+      cinema_ville: seance.cinema_ville,
     }));
   }
   /**
@@ -169,21 +171,12 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
   /**
    * Réserver une place
    */
-  bookTicket(): void {
-    if (this.film) {
-      // Si le film a des séances, rediriger vers la première séance
-      if (this.seancesDisponibles && this.seancesDisponibles.length > 0) {
-        const firstSeance = this.seancesDisponibles[0];
-        this.router.navigate(['/reservation/sieges', firstSeance.id]);
-      } else {
-        // Sinon, rediriger vers la page de sélection générale
-        this.router.navigate(['/reservation/selection'], {
-          queryParams: { filmId: this.film.id },
-        });
-      }
-    }
-  }
 
+  bookTicket(): void {
+    document
+      .querySelector('.film-seances-section')
+      ?.scrollIntoView({ behavior: 'smooth' });
+  }
   checkIfFavorite(): void {
     const favorites: string[] = JSON.parse(
       localStorage.getItem('favorites') || '[]',

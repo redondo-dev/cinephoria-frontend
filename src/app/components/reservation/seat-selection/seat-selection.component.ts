@@ -136,6 +136,18 @@ export class SeatSelectionComponent implements OnInit {
     }
   }
 
+  changerNombrePlaces(delta: number): void {
+    const n = Math.min(
+      8,
+      Math.max(1, (this.reservationData.nombrePersonnes || 1) + delta),
+    );
+    this.reservationData.nombrePersonnes = n;
+    while (this.selectedSeats.length > n) {
+      const s = this.selectedSeats.pop();
+      if (s) s.isSelected = false;
+    }
+  }
+
   getPrixByType(type: string): number {
     switch (type?.toLowerCase()) {
       case 'vip':

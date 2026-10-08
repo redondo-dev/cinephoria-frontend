@@ -27,6 +27,12 @@ export const routes: Routes = [
       import('./components/rgpd/rgpd.component').then((m) => m.RgpdComponent),
     title: 'Politique de confidentialité – Cinephoria',
   },
+  {
+    path: 'conditions',
+    loadComponent: () =>
+      import('./components/conditions/conditions.component').then((m) => m.ConditionsComponent),
+    title: 'Conditions – Cinephoria',
+  },
   // Routes d'administration
   {
     path: 'admin',

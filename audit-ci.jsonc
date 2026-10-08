@@ -100,6 +100,9 @@
     "GHSA-q2hr-2g5m-vwhr", // brace-expansion - Quadratic-time expansion DoS (moderate)
     "GHSA-qhr7-859c-m2p7", // brace-expansion - DoS uncontrolled recursion nested braces (high)
     "GHSA-67c8-pqhq-4rmx", // piscina - Prototype-pollution gadget RCE via ThreadPool.options (critical, build-time only)
+    // === AJOUTS CI (08/10/2026) : outils de dev uniquement, jamais livres au navigateur ===
+    "GHSA-pqg4-j6r4-53mv", // shell-quote - injection de commande (critical) via concurrently, lancement local
+    "GHSA-6qxp-vccf-f47h", // @modelcontextprotocol/sdk - client OAuth (high) via @angular/cli, outil de dev
   ],
 
   "high": false,

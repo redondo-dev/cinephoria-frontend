@@ -133,8 +133,8 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       date_seance:
         seance.date ||
         new Date(seance.dateHeureDebut).toISOString().split('T')[0],
-      dateHeureDebut: seance.dateHeureDebut || seance.heure_debut,
-      dateHeureFin: seance.dateHeureFin || seance.heure_fin,
+      dateHeureDebut: seance.date && seance.heure_debut ? `${seance.date}T${seance.heure_debut}:00` : seance.dateHeureDebut,
+      dateHeureFin: seance.date && seance.heure_fin ? `${seance.date}T${seance.heure_fin}:00` : seance.dateHeureFin,
       qualite: (seance.qualite || 'Standard') as
         | 'Standard'
         | '3D'

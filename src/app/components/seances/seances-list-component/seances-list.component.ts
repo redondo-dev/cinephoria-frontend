@@ -10,6 +10,8 @@ export interface Seance {
   qualite: 'Standard' | '3D' | 'IMAX' | 'VIP';
   prix: number;
   places_disponibles: number;
+  cinema?: string;
+  cinema_ville?: string;
   salle?: string;
 }
 
@@ -28,6 +30,7 @@ interface SeancesByDate {
 })
 export class SeancesListComponent implements OnInit {
   @Input() filmId!: number | string;
+  @Input() filmTitre = '';
   @Input() seances: Seance[] = [];
 
   seancesByDate: SeancesByDate[] = [];
@@ -162,10 +165,17 @@ export class SeancesListComponent implements OnInit {
     if (seance.places_disponibles <= 0) {
       return;
     }
-    // Redirection vers la page de réservation avec l'ID de la séance
+    sessionStorage.setItem(
+      'reservationData',
+      JSON.stringify({
+        cinema: { nom: seance.cinema, ville: seance.cinema_ville },
+        film: { id: this.filmId, titre: this.filmTitre },
+        seance: { ...seance, salle: { nom_salle: seance.salle } },
+        nombrePersonnes: 1,
+      }),
+    );
     this.router.navigate(['/reservation/sieges', seance.id]);
   }
-
   /**
    * Vérifier si une séance est disponible
    */

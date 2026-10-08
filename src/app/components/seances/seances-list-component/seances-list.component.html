@@ -56,6 +56,11 @@
 
           <!-- Infos supplémentaires -->
           <div class="seance-info">
+            <div class="info-row" *ngIf="seance.cinema">
+              <span class="info-label">Cinéma</span>
+              <span class="info-value">{{ seance.cinema }}<ng-container *ngIf="seance.cinema_ville"> ({{ seance.cinema_ville }})</ng-container></span>
+            </div>
+
             <div class="info-row">
               <span class="info-label">Salle</span>
               <span class="info-value">{{ seance.salle || 'N/A' }}</span>

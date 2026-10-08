@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ReservationService } from '../../core/services/reservation.service';
 import { Cinema, Film, Seance } from '../../core/models/reservation.model';
 
@@ -24,6 +24,7 @@ export class ReservationComponent implements OnInit {
   selectedFilm?: Film;
   selectedSeance?: Seance;
   nombrePersonnes: number = 2;
+  private filmIdPreselect?: number;
 
   // États de chargement
   loadingCinemas = false;
@@ -38,9 +39,12 @@ export class ReservationComponent implements OnInit {
   constructor(
     private reservationService: ReservationService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    const id = Number(this.route.snapshot.queryParamMap.get("filmId"));
+    if (id) this.filmIdPreselect = id;
     this.loadCinemas();
   }
 
@@ -77,6 +81,11 @@ export class ReservationComponent implements OnInit {
   }
 
   // ========== GESTION DES FILMS ==========
+  get filmsAffiches(): Film[] {
+    const pre = this.films.find((f) => Number(f.id) === this.filmIdPreselect);
+    return pre ? [pre] : this.films;
+  }
+
   loadFilms(cinemaId: number): void {
     this.loadingFilms = true;
     this.errorFilms = '';
@@ -85,6 +94,8 @@ export class ReservationComponent implements OnInit {
       next: (films) => {
         console.log('✅ Films reçus pour cinéma', cinemaId, ':', films);
         this.films = films;
+        const pre = this.films.find((f) => Number(f.id) === this.filmIdPreselect);
+        if (pre) this.selectFilm(pre);
         this.loadingFilms = false;
       },
       error: (error) => {

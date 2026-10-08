@@ -133,8 +133,14 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       date_seance:
         seance.date ||
         new Date(seance.dateHeureDebut).toISOString().split('T')[0],
-      dateHeureDebut: seance.date && seance.heure_debut ? `${seance.date}T${seance.heure_debut}:00` : seance.dateHeureDebut,
-      dateHeureFin: seance.date && seance.heure_fin ? `${seance.date}T${seance.heure_fin}:00` : seance.dateHeureFin,
+      dateHeureDebut:
+        seance.date && seance.heure_debut
+          ? `${seance.date}T${seance.heure_debut}:00`
+          : seance.dateHeureDebut,
+      dateHeureFin:
+        seance.date && seance.heure_fin
+          ? `${seance.date}T${seance.heure_fin}:00`
+          : seance.dateHeureFin,
       qualite: (seance.qualite || 'Standard') as
         | 'Standard'
         | '3D'
@@ -143,6 +149,8 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
       prix: seance.prix || this.getPrixByQualite(seance.qualite), // ✅ prix API en priorité
       places_disponibles: seance.places_disponibles || 0,
       salle: seance.salle || 'N/A',
+      cinema: seance.cinema,
+      cinema_ville: seance.cinema_ville,
     }));
   }
   /**
@@ -169,19 +177,9 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
   /**
    * Réserver une place
    */
+
   bookTicket(): void {
-    if (this.film) {
-      // Si le film a des séances, rediriger vers la première séance
-      if (this.seancesDisponibles && this.seancesDisponibles.length > 0) {
-        const firstSeance = this.seancesDisponibles[0];
-        this.router.navigate(['/reservation/sieges', firstSeance.id]);
-      } else {
-        // Sinon, rediriger vers la page de sélection générale
-        this.router.navigate(['/reservation/selection'], {
-          queryParams: { filmId: this.film.id },
-        });
-      }
-    }
+    this.router.navigate(['/reservation/selection'], { queryParams: { filmId: this.film?.id } });
   }
 
   checkIfFavorite(): void {

@@ -33,6 +33,12 @@ export const routes: Routes = [
       import('./components/conditions/conditions.component').then((m) => m.ConditionsComponent),
     title: 'Conditions – Cinephoria',
   },
+  {
+    path: 'engagements-ecologiques',
+    loadComponent: () =>
+      import('./components/engagements-ecologiques/engagements-ecologiques.component').then((m) => m.EngagementsEcologiquesComponent),
+    title: 'Engagements écologiques – Cinephoria',
+  },
   // Routes d'administration
   {
     path: 'admin',

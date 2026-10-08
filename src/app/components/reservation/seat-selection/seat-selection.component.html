@@ -12,7 +12,7 @@
       <h1>{{ reservationData?.film?.titre }}</h1>
       <p class="details">
         {{ reservationData?.cinema?.nom }} • {{ reservationData?.seance?.horaire }} •
-        {{ reservationData?.nombrePersonnes }} place(s)
+        <button type="button" (click)="changerNombrePlaces(-1)">-</button> {{ reservationData?.nombrePersonnes }} place(s) <button type="button" (click)="changerNombrePlaces(1)">+</button>
       </p>
     </div>
   </div>

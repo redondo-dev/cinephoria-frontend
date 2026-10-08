@@ -179,7 +179,7 @@ export class FilmDetailComponent implements OnInit, OnDestroy {
    */
 
   bookTicket(): void {
-    this.router.navigate(['/reservation/selection']);
+    this.router.navigate(['/reservation/selection'], { queryParams: { filmId: this.film?.id } });
   }
 
   checkIfFavorite(): void {

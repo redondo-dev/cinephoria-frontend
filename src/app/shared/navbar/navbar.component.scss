@@ -47,7 +47,7 @@ body {
   }
 
   @media (max-width: 768px) {
-    margin-right: 12rem;
+    margin-right: 0;
   }
 }
 
@@ -235,11 +235,28 @@ body {
     gap: 1rem;
 
     .user-name {
+      text-transform: capitalize;
       color: #e5e5e5;
       font-size: 0.9rem;
       font-weight: 500;
     }
+    .btn-mon-espace {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      transition: all 0.3s ease;
 
+      &:hover,
+      &.active {
+        color: #fff;
+        border-color: #e50914;
+        background: rgba(229, 9, 20, 0.15);
+      }
+    }
     .btn-logout {
       background: transparent;
       color: #e5e5e5;
@@ -386,6 +403,15 @@ body {
         text-align: center;
         padding-bottom: 1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .btn-mon-espace {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        border-radius: 6px;
       }
 
       .btn-logout {

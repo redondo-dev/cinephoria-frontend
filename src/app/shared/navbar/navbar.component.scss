@@ -47,7 +47,7 @@ body {
   }
 
   @media (max-width: 768px) {
-    margin-right: 12rem;
+    margin-right: 0;
   }
 }
 
@@ -62,7 +62,7 @@ body {
   letter-spacing: -0.5px;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: inherit;
 
   &:hover {
     color: #f40612;
@@ -82,7 +82,7 @@ body {
   background-clip: text;
 }
 
-// Menu Burger - Style Netflix
+// Menu Burger
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -175,7 +175,7 @@ body {
     padding: 0.5rem 0;
     transition: all 0.3s ease;
     position: relative;
-    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: inherit;
 
     &::after {
       content: "";
@@ -219,7 +219,7 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: inherit;
     cursor: pointer;
 
     &:hover {
@@ -235,11 +235,28 @@ body {
     gap: 1rem;
 
     .user-name {
+      text-transform: capitalize;
       color: #e5e5e5;
       font-size: 0.9rem;
       font-weight: 500;
     }
+    .btn-mon-espace {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      transition: all 0.3s ease;
 
+      &:hover,
+      &.active {
+        color: #fff;
+        border-color: #e50914;
+        background: rgba(229, 9, 20, 0.15);
+      }
+    }
     .btn-logout {
       background: transparent;
       color: #e5e5e5;
@@ -274,7 +291,7 @@ body {
   }
 }
 
-// Menu Mobile Fullscreen Netflix Style
+// Menu Mobile Fullscreen
 @media (max-width: 768px) {
   .navbar-menu {
     position: fixed;
@@ -386,6 +403,15 @@ body {
         text-align: center;
         padding-bottom: 1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .btn-mon-espace {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        border-radius: 6px;
       }
 
       .btn-logout {

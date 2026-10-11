@@ -1,22 +1,22 @@
-// Variables Netflix
-$netflix-red: #e50914;
-$netflix-black: #141414;
-$netflix-dark-gray: #1f1f1f;
-$netflix-gray: #2f2f2f;
-$netflix-light-gray: #808080;
-$netflix-white: #ffffff;
+// Variables de la charte
+$cine-red: #e50914;
+$cine-black: #141414;
+$cine-dark-gray: #1f1f1f;
+$cine-gray: #2f2f2f;
+$cine-light-gray: #808080;
+$cine-white: #ffffff;
 
 .seances-container {
   h2 {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    color: $netflix-white;
+    color: $cine-white;
   }
 
   > button {
-    background-color: $netflix-red;
-    color: $netflix-white;
+    background-color: $cine-red;
+    color: $cine-white;
     border: none;
     padding: 0.75rem 2rem;
     font-size: 1rem;
@@ -27,7 +27,7 @@ $netflix-white: #ffffff;
     margin-bottom: 2rem;
 
     &:hover {
-      background-color: darken($netflix-red, 8%);
+      background-color: darken($cine-red, 8%);
       transform: scale(1.02);
     }
 
@@ -37,7 +37,7 @@ $netflix-white: #ffffff;
   }
 
   .seance-form {
-    background-color: $netflix-dark-gray;
+    background-color: $cine-dark-gray;
     padding: 2rem;
     border-radius: 8px;
     margin-bottom: 2rem;
@@ -48,8 +48,8 @@ $netflix-white: #ffffff;
 
     select,
     input {
-      background-color: $netflix-gray;
-      color: $netflix-white;
+      background-color: $cine-gray;
+      color: $cine-white;
       border: 1px solid transparent;
       padding: 0.875rem 1rem;
       font-size: 1rem;
@@ -59,19 +59,19 @@ $netflix-white: #ffffff;
       width: 100%;
 
       &:focus {
-        border-color: $netflix-red;
-        background-color: lighten($netflix-gray, 5%);
+        border-color: $cine-red;
+        background-color: lighten($cine-gray, 5%);
       }
 
       option {
-        background-color: $netflix-gray;
-        color: $netflix-white;
+        background-color: $cine-gray;
+        color: $cine-white;
       }
     }
 
     button[type="submit"] {
-      background-color: $netflix-red;
-      color: $netflix-white;
+      background-color: $cine-red;
+      color: $cine-white;
       border: none;
       padding: 0.875rem 2rem;
       font-size: 1rem;
@@ -82,7 +82,7 @@ $netflix-white: #ffffff;
       grid-column: 1 / -1;
 
       &:hover {
-        background-color: darken($netflix-red, 8%);
+        background-color: darken($cine-red, 8%);
         transform: scale(1.02);
       }
     }
@@ -90,20 +90,20 @@ $netflix-white: #ffffff;
 
   table {
     width: 100%;
-    background-color: $netflix-dark-gray;
+    background-color: $cine-dark-gray;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     border-collapse: collapse;
 
     thead {
-      background-color: $netflix-gray;
+      background-color: $cine-gray;
 
       tr th {
         padding: 1rem;
         text-align: left;
         font-weight: 600;
-        color: $netflix-white;
+        color: $cine-white;
         font-size: 0.95rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -125,7 +125,7 @@ $netflix-white: #ffffff;
 
         td {
           padding: 1rem;
-          color: $netflix-white;
+          color: $cine-white;
           vertical-align: middle;
 
           &:nth-child(4) {
@@ -135,8 +135,8 @@ $netflix-white: #ffffff;
 
           button {
             background-color: transparent;
-            color: $netflix-white;
-            border: 1px solid $netflix-light-gray;
+            color: $cine-white;
+            border: 1px solid $cine-light-gray;
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
             font-weight: 500;
@@ -146,19 +146,19 @@ $netflix-white: #ffffff;
             margin-right: 0.5rem;
 
             &:hover {
-              background-color: $netflix-white;
-              color: $netflix-black;
-              border-color: $netflix-white;
+              background-color: $cine-white;
+              color: $cine-black;
+              border-color: $cine-white;
             }
 
             &:last-child {
               margin-right: 0;
-              border-color: $netflix-red;
-              color: $netflix-red;
+              border-color: $cine-red;
+              color: $cine-red;
 
               &:hover {
-                background-color: $netflix-red;
-                color: $netflix-white;
+                background-color: $cine-red;
+                color: $cine-white;
               }
             }
           }

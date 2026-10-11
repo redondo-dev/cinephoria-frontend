@@ -1,7 +1,7 @@
 // reservation.component.scss
 
 $reserv-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-$primary-color: #e50914; // rouge Netflix
+$primary-color: #e50914; // rouge principal
 $secondary-color: #141414; // fond sombre
 $text-color: #fff;
 $text-muted: #b3b3b3;
@@ -293,7 +293,7 @@ section {
     }
   }
 }
-// ========== SÉANCES GRID (cards Netflix style) ==========
+// ========== SÉANCES GRID (cards) ==========
 
 .section-seances {
   margin-bottom: 40px;
@@ -318,7 +318,7 @@ section {
   }
 
   .seance-card {
-    background: #1f1f1f; // style Netflix dark
+    background: #1f1f1f; // dark
     color: #fff;
     border-radius: 12px;
     padding: 20px;
@@ -333,7 +333,7 @@ section {
     }
 
     &.selected {
-      border: 2px solid #e50914; // rouge Netflix
+      border: 2px solid #e50914; // rouge principal
       box-shadow: 0 6px 18px rgba(229, 9, 20, 0.5);
     }
 
@@ -393,7 +393,7 @@ section {
     font-size: 1.1rem;
   }
 }
-// ========== RÉCAPITULATIF STYLE NETFLIX ==========
+// ========== RÉCAPITULATIF ==========
 
 .recap-section {
   background: linear-gradient(135deg, #141414 0%, #1b1b1b 100%);
@@ -404,7 +404,7 @@ section {
   margin-top: 40px;
 
   h2 {
-    color: #e50914; // rouge Netflix
+    color: #e50914; // rouge principal
     font-size: 1.8rem;
     margin-bottom: 25px;
     text-align: center;
@@ -442,7 +442,7 @@ section {
 
     .btn-continuer {
       width: 100%;
-      background-color: #e50914; // rouge Netflix
+      background-color: #e50914; // rouge principal
       color: white;
       border: none;
       padding: 15px;

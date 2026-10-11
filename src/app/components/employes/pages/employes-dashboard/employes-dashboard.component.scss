@@ -1,15 +1,15 @@
-// Variables Netflix
-$netflix-red: #e50914;
-$netflix-black: #141414;
-$netflix-dark-gray: #1f1f1f;
-$netflix-gray: #2f2f2f;
-$netflix-light-gray: #808080;
-$netflix-white: #ffffff;
+// Variables de la charte
+$cine-red: #e50914;
+$cine-black: #141414;
+$cine-dark-gray: #1f1f1f;
+$cine-gray: #2f2f2f;
+$cine-light-gray: #808080;
+$cine-white: #ffffff;
 
 .dashboard {
   min-height: 100vh;
-  background-color: $netflix-black;
-  color: $netflix-white;
+  background-color: $cine-black;
+  color: $cine-white;
 
   h1 {
     background: linear-gradient(
@@ -32,10 +32,10 @@ $netflix-white: #ffffff;
     gap: 0;
     background: linear-gradient(
       to bottom,
-      $netflix-dark-gray,
-      lighten($netflix-dark-gray, 2%)
+      $cine-dark-gray,
+      lighten($cine-dark-gray, 2%)
     );
-    border-bottom: 3px solid $netflix-black;
+    border-bottom: 3px solid $cine-black;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     position: sticky;
     top: 0;
@@ -50,7 +50,7 @@ $netflix-white: #ffffff;
     a {
       position: relative;
       padding: 1.25rem 2.5rem;
-      color: $netflix-light-gray;
+      color: $cine-light-gray;
       text-decoration: none;
       font-size: 1rem;
       font-weight: 600;
@@ -79,7 +79,7 @@ $netflix-white: #ffffff;
       }
 
       &:hover {
-        color: $netflix-white;
+        color: $cine-white;
         background-color: rgba(255, 255, 255, 0.03);
 
         &::before {
@@ -89,8 +89,8 @@ $netflix-white: #ffffff;
 
       // État actif
       &.active {
-        color: $netflix-white;
-        border-bottom-color: $netflix-red;
+        color: $cine-white;
+        border-bottom-color: $cine-red;
         background-color: rgba(229, 9, 20, 0.1);
 
         &::after {
@@ -103,8 +103,8 @@ $netflix-white: #ffffff;
           background: linear-gradient(
             90deg,
             transparent,
-            $netflix-red 20%,
-            $netflix-red 80%,
+            $cine-red 20%,
+            $cine-red 80%,
             transparent
           );
           animation: slideIn 0.3s ease-out;
@@ -113,7 +113,7 @@ $netflix-white: #ffffff;
 
       // Effet de focus pour accessibilité
       &:focus-visible {
-        outline: 2px solid $netflix-red;
+        outline: 2px solid $cine-red;
         outline-offset: -2px;
       }
     }

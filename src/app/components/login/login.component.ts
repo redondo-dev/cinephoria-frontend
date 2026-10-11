@@ -120,11 +120,13 @@ export class LoginComponent implements OnInit, OnDestroy {
             return;
           }
 
-          // ✅ 1. Vérifier redirectAfterLogin EN PREMIER — priorité absolue
+          // Redirection vers l'action demandée : réservée aux clients.
+          // On vide toujours la valeur pour qu'elle ne reste pas dans l'onglet.
           const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-          if (redirectUrl) {
-            sessionStorage.removeItem('redirectAfterLogin');
-            this.router.navigateByUrl(redirectUrl); // → /reservation/payment
+          sessionStorage.removeItem('redirectAfterLogin');
+          const role = String(response.user.role || '').toLowerCase();
+          if (redirectUrl && redirectUrl.startsWith('/') && role === 'client') {
+            this.router.navigateByUrl(redirectUrl);
             return;
           }
           /** Redirection selon le rôle **/

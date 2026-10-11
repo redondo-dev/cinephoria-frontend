@@ -215,12 +215,12 @@ export class AuthService {
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
 
+    // Supprimer les données de session
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    sessionStorage.removeItem('redirectAfterLogin');
 
     this.clearRedirectUrl();
-
-    console.log(' [AUTH SERVICE] LocalStorage nettoyé');
   }
 
   // ========================================

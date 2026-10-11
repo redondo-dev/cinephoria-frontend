@@ -62,7 +62,7 @@ body {
   letter-spacing: -0.5px;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: inherit;
 
   &:hover {
     color: #f40612;
@@ -82,7 +82,7 @@ body {
   background-clip: text;
 }
 
-// Menu Burger - Style Netflix
+// Menu Burger
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -175,7 +175,7 @@ body {
     padding: 0.5rem 0;
     transition: all 0.3s ease;
     position: relative;
-    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: inherit;
 
     &::after {
       content: "";
@@ -219,7 +219,7 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: inherit;
     cursor: pointer;
 
     &:hover {
@@ -274,7 +274,7 @@ body {
   }
 }
 
-// Menu Mobile Fullscreen Netflix Style
+// Menu Mobile Fullscreen
 @media (max-width: 768px) {
   .navbar-menu {
     position: fixed;

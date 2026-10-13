@@ -36,7 +36,7 @@
     "jspdf": "^4.2.1",
     "ng-hcaptcha": "^2.8.0",
     "ngx-toastr": "^19.1.0",
-    "ngx-turnstile": "^0.2.5",
+    "ngx-turnstile": "^1.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

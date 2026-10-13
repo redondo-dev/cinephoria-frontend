@@ -73,15 +73,6 @@ export class AuthService {
     const user = localStorage.getItem('user');
     const result = !!token && !!user;
 
-    console.log(
-      '[AUTH SERVICE] isAuthenticated:',
-      result,
-      '(token:',
-      !!token,
-      ', user:',
-      !!user,
-      ')',
-    );
     return result;
   }
 

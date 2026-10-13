@@ -61,10 +61,6 @@ export class AuthService {
 
   getToken(): string | null {
     const token = localStorage.getItem('token');
-    console.log(
-      '🔑 [AUTH SERVICE] getToken appelé, token:',
-      token ? ' Présent' : 'Absent',
-    );
     return token;
   }
 
@@ -77,15 +73,6 @@ export class AuthService {
     const user = localStorage.getItem('user');
     const result = !!token && !!user;
 
-    console.log(
-      '[AUTH SERVICE] isAuthenticated:',
-      result,
-      '(token:',
-      !!token,
-      ', user:',
-      !!user,
-      ')',
-    );
     return result;
   }
 
@@ -231,12 +218,6 @@ export class AuthService {
     const token = this.getToken();
     const userStr = localStorage.getItem('user');
 
-    console.log(
-      '[AUTH SERVICE] Chargement depuis localStorage - Token:',
-      !!token,
-      'User:',
-      !!userStr,
-    );
     if (!token) {
       this.isAuthenticatedSubject.next(false);
       return;

@@ -61,10 +61,6 @@ export class AuthService {
 
   getToken(): string | null {
     const token = localStorage.getItem('token');
-    console.log(
-      '🔑 [AUTH SERVICE] getToken appelé, token:',
-      token ? ' Présent' : 'Absent',
-    );
     return token;
   }
 
@@ -231,12 +227,6 @@ export class AuthService {
     const token = this.getToken();
     const userStr = localStorage.getItem('user');
 
-    console.log(
-      '[AUTH SERVICE] Chargement depuis localStorage - Token:',
-      !!token,
-      'User:',
-      !!userStr,
-    );
     if (!token) {
       this.isAuthenticatedSubject.next(false);
       return;
